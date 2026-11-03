@@ -11,6 +11,7 @@ git clone https://github.com/roditim/Gymmi-AI-Submission.git
 cd Gymmi-AI-Submission
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+$env:PYTHONIOENCODING='utf-8'
 .\.venv\Scripts\python.exe run.py --download --output runs/verified
 .\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\python.exe -m streamlit run app.py
@@ -56,6 +57,8 @@ Scientist מקבל רק clean_data.csv והחוזה. ה־Flow בודק אותם 
 ## עבודה והגשה
 
 זהו ייצוא נקי של פרויקט שפותח קודם בריפו פרטי. ההיסטוריה הציבורית מתחילה בייבוא מסומן, ללא שחזור של תאריכים, משתתפים או ביקורות. EXPORT_PROVENANCE.json מתעד את מקור הייצוא. נעזרנו בעוזר קוד; [מדריך ההסבר](docs/PROJECT_EXPLAINED_HE.md) מיועד להבנת המימוש, לא לטענה שנכתב ללא עזרה.
+
+[מצגת בעברית](https://roditim.github.io/Gymmi-AI-Submission/) · [קובץ מצגת לפתיחה מקומית](docs/index.html) · [הערות למגיש](docs/PRESENTER_NOTES_HE.md) · [הדגמת הצלחה וכשל](docs/DEMO_HE.md)
 
 [בדיקת דרישות ההגשה](docs/SUBMISSION_CHECKLIST.md) · [הנחיות פיתוח](docs/DEVELOPMENT.md).
 הגשת קישור למרצה ואישור נושא/הרכב צוות הם שלבים נפרדים; אין כאן טענה שכבר התקבלו. לא נשלחה הודעת הגשה.
