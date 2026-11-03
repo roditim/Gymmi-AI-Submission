@@ -11,6 +11,7 @@ git clone https://github.com/roditim/Gymmi-AI-Submission.git
 cd Gymmi-AI-Submission
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+$env:PYTHONIOENCODING='utf-8'
 .\.venv\Scripts\python.exe run.py --download --output runs/verified
 .\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\python.exe -m streamlit run app.py

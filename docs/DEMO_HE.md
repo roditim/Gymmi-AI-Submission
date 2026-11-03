@@ -8,6 +8,7 @@
 4. להדגים כשל בהעתק בלבד:
 
 ```powershell
+$env:PYTHONIOENCODING='utf-8'
 python run.py --handoff artifacts/weekly-live --break units --output runs/demo-units-new
 ```
 
