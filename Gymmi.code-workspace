@@ -1,0 +1,10 @@
+{
+  "folders": [{ "name": "Gymmi AI", "path": "." }],
+  "settings": {
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "files.exclude": { "**/__pycache__": true, "**/.pytest_cache": true },
+    "search.exclude": { "**/.venv": true, "**/runs": true, "**/data": true }
+  }
+}
