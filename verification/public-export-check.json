@@ -1,0 +1,16 @@
+{
+  "checked_utc": "2026-11-03T19:34:50.103325+00:00",
+  "source_commit": "7b02b83c28ae2c71cc59bfe8c0d7da43da2769fe",
+  "method": "Allowlisted clean export; official source downloaded and Flow rerun from the export directory",
+  "pytest_result": "112 passed, 155 warnings",
+  "pytest_seconds": 126.26,
+  "secret_scan": "Actual local provider keys and private Drive links not found in 92 export files; raw downloads/runs and private history excluded",
+  "runtime_code": "app.py, run.py and gymmi modules matched source bytes at export",
+  "hosted_ci": "Not active: OAuth publisher lacks workflow scope. docs/ci-tests.example.yml is an inactive example.",
+  "no_claims": [
+    "independent human review",
+    "instructor approval",
+    "blind external evaluation",
+    "new live provider execution during packaging"
+  ]
+}
