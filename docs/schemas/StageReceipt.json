@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "crew": {
+      "enum": [
+        "analyst",
+        "scientist"
+      ],
+      "title": "Crew",
+      "type": "string"
+    },
+    "stage": {
+      "title": "Stage",
+      "type": "string"
+    },
+    "status": {
+      "const": "done",
+      "default": "done",
+      "title": "Status",
+      "type": "string"
+    },
+    "artifacts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "crew",
+    "stage",
+    "artifacts"
+  ],
+  "title": "StageReceipt",
+  "type": "object"
+}

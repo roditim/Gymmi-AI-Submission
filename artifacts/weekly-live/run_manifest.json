@@ -1,0 +1,181 @@
+{
+  "run_id": "67952e70-6a1a-43a4-8487-d12fd470fde4",
+  "success": true,
+  "stage": "completed",
+  "failed_stage": null,
+  "mode": "live_llm",
+  "live_llm_completed": true,
+  "live_crews_completed": [
+    "analyst",
+    "scientist"
+  ],
+  "analyst_handoff_reused": false,
+  "validation_passed": true,
+  "error": null,
+  "events": [
+    {
+      "utc": "2026-11-03T18:23:28.156639+00:00",
+      "stage": "analyst_crew_started"
+    },
+    {
+      "utc": "2026-11-03T18:23:46.330420+00:00",
+      "stage": "analyst_crew_completed",
+      "crew": "analyst",
+      "agents": 3,
+      "completed_tasks": 3,
+      "completed_tools": 3,
+      "tool_calls": 3,
+      "scripted_llm_calls": 0,
+      "provider_usage": {
+        "total_tokens": 13567,
+        "prompt_tokens": 12533,
+        "cached_prompt_tokens": 5632,
+        "completion_tokens": 1034,
+        "reasoning_tokens": 0,
+        "cache_creation_tokens": 0,
+        "successful_requests": 6
+      },
+      "estimated_cost_usd": null,
+      "review_stages": [
+        {
+          "stage": "ingest",
+          "role": "Ingestion and cleaning analyst",
+          "tool_calls": 1,
+          "checked_claims": 8
+        },
+        {
+          "stage": "explore",
+          "role": "Exploratory data analyst",
+          "tool_calls": 1,
+          "checked_claims": 8
+        },
+        {
+          "stage": "publish",
+          "role": "Dataset contract publisher",
+          "tool_calls": 1,
+          "checked_claims": 5
+        }
+      ],
+      "grounded_notes": 3,
+      "semantic_review_required": true,
+      "mode": "live_llm"
+    },
+    {
+      "utc": "2026-11-03T18:23:46.342919+00:00",
+      "stage": "validation_gate_started"
+    },
+    {
+      "utc": "2026-11-03T18:23:46.384588+00:00",
+      "stage": "validation_gate_passed",
+      "rows": 389,
+      "contract_version": "3.0"
+    },
+    {
+      "utc": "2026-11-03T18:23:46.395620+00:00",
+      "stage": "scientist_crew_started"
+    },
+    {
+      "utc": "2026-11-03T18:23:50.610501+00:00",
+      "stage": "feature_gate_started"
+    },
+    {
+      "utc": "2026-11-03T18:23:50.714315+00:00",
+      "stage": "feature_gate_passed",
+      "rows": 389,
+      "features_sha256": "c7d817b5a034176de01117548900726ceb1d8b1b92bfe77c59c682b6c4b19889"
+    },
+    {
+      "utc": "2026-11-03T18:24:00.131455+00:00",
+      "stage": "scientist_crew_completed",
+      "crew": "scientist",
+      "agents": 3,
+      "completed_tasks": 3,
+      "completed_tools": 3,
+      "tool_calls": 3,
+      "scripted_llm_calls": 0,
+      "provider_usage": {
+        "total_tokens": 15298,
+        "prompt_tokens": 14273,
+        "cached_prompt_tokens": 5504,
+        "completion_tokens": 1025,
+        "reasoning_tokens": 0,
+        "cache_creation_tokens": 0,
+        "successful_requests": 6
+      },
+      "estimated_cost_usd": null,
+      "review_stages": [
+        {
+          "stage": "engineer",
+          "role": "Contract and feature engineer",
+          "tool_calls": 1,
+          "checked_claims": 5
+        },
+        {
+          "stage": "train_compare",
+          "role": "Predictive model scientist",
+          "tool_calls": 1,
+          "checked_claims": 8
+        },
+        {
+          "stage": "card",
+          "role": "Model evaluation and ethics reviewer",
+          "tool_calls": 1,
+          "checked_claims": 8
+        }
+      ],
+      "grounded_notes": 3,
+      "semantic_review_required": true,
+      "mode": "live_llm"
+    },
+    {
+      "utc": "2026-11-03T18:24:00.139835+00:00",
+      "stage": "completed"
+    }
+  ],
+  "contract_sha256": "b05152654102431b7a07b0dce490eaaf0c4127302f75a4883273227acea53165",
+  "required_outputs": [
+    "clean_data.csv",
+    "eda_report.html",
+    "insights.md",
+    "dataset_contract.json",
+    "features.csv",
+    "model.joblib",
+    "evaluation_report.md",
+    "model_card.md"
+  ],
+  "artifacts_sha256": {
+    "analyst_review.json": "f2b153bde825ab5848863d913c79b5a8f5968379e54fdf07fb8bbd533806c07a",
+    "clean_data.csv": "73c240fc6a00e4b0eb838da0dc950f58dc3c22455ac38ccade9c0fd50e2b4815",
+    "dataset_contract.json": "b05152654102431b7a07b0dce490eaaf0c4127302f75a4883273227acea53165",
+    "data_profile.json": "5e4215b97a552a9707a7a3d6f611d61870e3fd1716833afc1e7c406699f57f3f",
+    "eda_charts.png": "209693b807973604afc47a3d90c72ae8ea91066f6b03314452b9d9920adb0c35",
+    "eda_report.html": "e55f9f426999414f09cfdd0c40f93033f41f76b28950ec44328928eb8176e513",
+    "evaluation_report.md": "672844edf82b378c224e6122ba194364abdf2b8da0e5b026a59594017f7d2c15",
+    "execution_log.jsonl": "b6af87d3f376fe51f92014d63e5afa28d809bf02f683608fd88dc77243dd034e",
+    "features.csv": "c7d817b5a034176de01117548900726ceb1d8b1b92bfe77c59c682b6c4b19889",
+    "feature_metadata.json": "141658ed893cf2a98aff1399a16960e68f4fdd3855d8ae1ad0622d5020997f2a",
+    "feature_validation.json": "1c4b9b443b852d2814a25cae90f65ac4d3609317ab7219c8c2818d6a1223b625",
+    "insights.md": "d279d1945da2a494d6715c787bd105ee2a5b1b2990e0f78e319a37d748bc2592",
+    "metrics.json": "081ce292255c3f3bccb239b67316690b11f5ee870e5eb99da9d6f878a958ceb5",
+    "model.joblib": "4d30e501619120610b28340aa947cc561b328533eeee47ee5874b159534eef06",
+    "model_card.md": "a3ba90a875494b1b810bb97dfbb43c3d1bab1a06a7ee522e5a22d4b6648f45b2",
+    "provenance.json": "0ff64e1ff70ee676cd1bbe67ba9543333820c608e506343dc287df276383a54c",
+    "review_validation.jsonl": "451e4bb8cc3769571208bfafc62c43754f727da9346c788e18160b56fd0f7ab7",
+    "scientist_review.json": "4c915c79d0cc05cff4e49c19300c87b7818086f3e4582c191f0fd03411ed7170"
+  },
+  "python": "3.12.14",
+  "versions": {
+    "crewai": "1.15.28",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "streamlit": "1.66.0"
+  },
+  "requirements_reviewed": true,
+  "fully_submission_ready": false,
+  "remaining": [
+    "independent semantic review remains",
+    "public release and human PR review pending",
+    "publish only licensed outputs with attribution; the prior dataset stays private"
+  ]
+}

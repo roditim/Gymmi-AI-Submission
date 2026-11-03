@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "rows": 389,
+  "model_feature_count": 4,
+  "contract_sha256": "b05152654102431b7a07b0dce490eaaf0c4127302f75a4883273227acea53165",
+  "clean_sha256": "73c240fc6a00e4b0eb838da0dc950f58dc3c22455ac38ccade9c0fd50e2b4815",
+  "features_sha256": "c7d817b5a034176de01117548900726ceb1d8b1b92bfe77c59c682b6c4b19889",
+  "metadata_sha256": "141658ed893cf2a98aff1399a16960e68f4fdd3855d8ae1ad0622d5020997f2a",
+  "numeric_absolute_tolerance": 1e-12,
+  "preprocessing_fit": "train_only",
+  "checks": [
+    "schema",
+    "row_identity",
+    "target",
+    "split",
+    "finite_values",
+    "derived_values",
+    "metadata"
+  ]
+}

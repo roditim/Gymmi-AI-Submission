@@ -1,0 +1,163 @@
+{
+  "mode": "live_llm",
+  "semantic_review_required": true,
+  "notes": [
+    {
+      "receipt": {
+        "run_id": "67952e70-6a1a-43a4-8487-d12fd470fde4",
+        "crew": "analyst",
+        "stage": "ingest",
+        "status": "done",
+        "artifacts": [
+          "clean_data.csv"
+        ]
+      },
+      "summary": "The ingest completed and produced a cleaned dataset artifact. The evidence indicates a binary target with a near-balanced split, no missingness in the listed cleaned fields, and no duplicate identifiers. There is also substantial duplication across non-identifier, non-target features, so downstream handling should account for repeated feature patterns rather than assuming fully unique rows.",
+      "findings": [
+        "The cleaned fields listed in evidence show no missingness.",
+        "The identifier field shows no duplicates.",
+        "The binary target is close to balanced.",
+        "Repeated feature patterns remain after excluding identifier and target fields."
+      ],
+      "cautions": [
+        "Do not assume the repeated feature patterns are harmless; they may affect downstream modeling or grouping logic.",
+        "Overfitting cannot be assessed from validation/test similarity alone."
+      ],
+      "claims": [
+        {
+          "evidence_key": "rows",
+          "value": 389
+        },
+        {
+          "evidence_key": "attendance_rate",
+          "value": 0.46786632390745503
+        },
+        {
+          "evidence_key": "target_counts.0",
+          "value": 207
+        },
+        {
+          "evidence_key": "target_counts.1",
+          "value": 182
+        },
+        {
+          "evidence_key": "missing_clean.record_id",
+          "value": 0
+        },
+        {
+          "evidence_key": "missing_clean.prewk1",
+          "value": 0
+        },
+        {
+          "evidence_key": "record_id_duplicates",
+          "value": 0
+        },
+        {
+          "evidence_key": "feature_duplicates_excluding_id_and_target",
+          "value": 241
+        }
+      ]
+    },
+    {
+      "receipt": {
+        "run_id": "67952e70-6a1a-43a4-8487-d12fd470fde4",
+        "crew": "analyst",
+        "stage": "explore",
+        "status": "done",
+        "artifacts": [
+          "eda_report.html",
+          "insights.md"
+        ]
+      },
+      "summary": "The explore stage completed and produced the expected report artifacts. The evidence points to a binary target with a near-balanced split, no missingness in the listed cleaned fields, and no duplicate identifiers. Repeated feature patterns remain after excluding identifier and target fields, so downstream handling should account for non-unique feature combinations rather than assuming fully distinct rows.",
+      "findings": [
+        "The cleaned fields listed in evidence show no missingness.",
+        "The identifier field shows no duplicates.",
+        "The binary target is close to balanced.",
+        "Repeated feature patterns remain after excluding identifier and target fields."
+      ],
+      "cautions": [
+        "Do not assume the repeated feature patterns are harmless; they may affect downstream modeling or grouping logic.",
+        "Overfitting cannot be assessed from validation/test similarity alone."
+      ],
+      "claims": [
+        {
+          "evidence_key": "rows",
+          "value": 389
+        },
+        {
+          "evidence_key": "attendance_rate",
+          "value": 0.46786632390745503
+        },
+        {
+          "evidence_key": "target_counts.0",
+          "value": 207
+        },
+        {
+          "evidence_key": "target_counts.1",
+          "value": 182
+        },
+        {
+          "evidence_key": "missing_clean.record_id",
+          "value": 0
+        },
+        {
+          "evidence_key": "missing_clean.prewk1",
+          "value": 0
+        },
+        {
+          "evidence_key": "missing_clean.prewk2",
+          "value": 0
+        },
+        {
+          "evidence_key": "missing_clean.prewk3",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "receipt": {
+        "run_id": "67952e70-6a1a-43a4-8487-d12fd470fde4",
+        "crew": "analyst",
+        "stage": "publish",
+        "status": "done",
+        "artifacts": [
+          "dataset_contract.json"
+        ]
+      },
+      "summary": "The publish step completed and produced the contract artifact. The evidence indicates a binary target, a selected validation metric, and approval for public distribution. The dataset size is fixed, but the tool evidence is limited to a small set of publish-time fields, so deeper data quality or leakage assessment is not available from this step alone.",
+      "findings": [
+        "The selected target is binary.",
+        "The selected metric is validation-based.",
+        "Public distribution is approved.",
+        "The license status is permissive."
+      ],
+      "cautions": [
+        "This step does not expose row-level quality checks, so missingness, duplication, and leakage cannot be re-evaluated here.",
+        "Overfitting cannot be assessed from validation/test similarity alone."
+      ],
+      "claims": [
+        {
+          "evidence_key": "rows",
+          "value": 389
+        },
+        {
+          "evidence_key": "license_status",
+          "value": "CC-BY-4.0"
+        },
+        {
+          "evidence_key": "public_distribution_approved",
+          "value": true
+        },
+        {
+          "evidence_key": "target",
+          "value": "attended_next_week"
+        },
+        {
+          "evidence_key": "selection_metric",
+          "value": "validation_average_precision"
+        }
+      ]
+    }
+  ]
+}

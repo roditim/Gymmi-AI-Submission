@@ -1,0 +1,26 @@
+{
+  "run_id": "67952e70-6a1a-43a4-8487-d12fd470fde4",
+  "run_folder": "runs/weekly-live-final-20261103",
+  "live_llm_completed": true,
+  "live_crews_completed": [
+    "analyst",
+    "scientist"
+  ],
+  "sealed_files": 19,
+  "provider_usage_successful_run_only": {
+    "total_tokens": 28865,
+    "prompt_tokens": 26806,
+    "cached_prompt_tokens": 11136,
+    "completion_tokens": 2059,
+    "reasoning_tokens": 0,
+    "cache_creation_tokens": 0,
+    "successful_requests": 12
+  },
+  "billed_cost_usd": null,
+  "failed_attempts": [
+    "weekly-live-20261103",
+    "weekly-live-reviewed-20261103"
+  ],
+  "semantic_review": "docs/SEMANTIC_REVIEW.md; contains qualifications, not independent human approval",
+  "source_columns_rechecked": 71
+}

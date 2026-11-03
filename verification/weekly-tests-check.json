@@ -1,0 +1,15 @@
+{
+  "command": "python -m pytest -q",
+  "result": "112 passed, 155 warnings",
+  "seconds": 104.08,
+  "warnings": "CrewAI deprecation warnings; not suppressed or represented as errors",
+  "coverage": [
+    "schema and feature gates",
+    "partial/stale artifact scoring blocks",
+    "source/target policy",
+    "semantic regressions",
+    "Streamlit prediction and deliberate failure demo"
+  ],
+  "live_test": "Both crews completed; see weekly-live-check.json",
+  "limitations": "No independent human review or external population validation"
+}

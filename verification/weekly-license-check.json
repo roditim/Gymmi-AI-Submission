@@ -1,0 +1,23 @@
+{
+  "checked_utc": "2026-11-03T18:24:01.970442+00:00",
+  "official_metadata_url": "https://zenodo.org/api/records/18866086",
+  "metadata_response_sha256": "f457a002d9d5ecb80e79dd9cec8889b3cc57262c44c5f1ff6f8059c1566519dd",
+  "title": "Gym Use Behavioral Economics Experiment",
+  "doi": "10.5281/zenodo.18866086",
+  "license_id": "cc-by-4.0",
+  "creators": [
+    "Condliffe, Simon",
+    "Isgin, Ebru",
+    "Saboe, Matt"
+  ],
+  "files": [
+    {
+      "key": "fitness_clean_deid.csv",
+      "size": 70678,
+      "checksum": "md5:2e3ca2ece50fae9c61772e3dabcd03dd"
+    }
+  ],
+  "source_sha256": "50d92eff3943937ff841a76c6609768263e545b38198be62ead47e6fa20d6bbb",
+  "scope": "Zenodo v1 only; no grant established for legacy DataCamp source",
+  "changes_notice": "DATA_ATTRIBUTION.md"
+}

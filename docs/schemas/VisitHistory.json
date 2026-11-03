@@ -1,0 +1,37 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "prewk1": {
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Prewk1",
+      "type": "integer"
+    },
+    "prewk2": {
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Prewk2",
+      "type": "integer"
+    },
+    "prewk3": {
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Prewk3",
+      "type": "integer"
+    },
+    "week1": {
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Week1",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "prewk1",
+    "prewk2",
+    "prewk3",
+    "week1"
+  ],
+  "title": "VisitHistory",
+  "type": "object"
+}

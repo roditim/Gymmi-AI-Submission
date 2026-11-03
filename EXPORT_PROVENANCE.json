@@ -1,0 +1,19 @@
+{
+  "exported_from_source_commit": "7b02b83c28ae2c71cc59bfe8c0d7da43da2769fe",
+  "history": "New public repository from an allowlisted export; earlier private history is not included.",
+  "excluded": [
+    "private course files/inventories/links",
+    "private Git history",
+    "local credentials",
+    "virtual environment",
+    "raw source downloads",
+    "legacy dataset and runs"
+  ],
+  "unchanged_runtime_code": [
+    "gymmi/",
+    "app.py",
+    "run.py",
+    "tests/"
+  ],
+  "disclosure": "Developed by the student with coding-assistant support; no independent peer review or instructor approval claimed."
+}

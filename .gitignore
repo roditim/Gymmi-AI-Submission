@@ -1,0 +1,10 @@
+.venv/
+.env
+.env.*
+!.env.example
+data/
+runs/
+__pycache__/
+.pytest_cache/
+verification/*.xml
+verification/*.txt

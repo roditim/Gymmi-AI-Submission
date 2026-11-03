@@ -1,0 +1,131 @@
+{
+  "schema_version": "3.0",
+  "run_id": "1c0c7c25-6226-4100-9059-7e37249c043f",
+  "producer": "Data Analyst Crew",
+  "dataset_file": "clean_data.csv",
+  "dataset_sha256": "73c240fc6a00e4b0eb838da0dc950f58dc3c22455ac38ccade9c0fd50e2b4815",
+  "rows": 389,
+  "columns": [
+    {
+      "name": "record_id",
+      "dtype": "string",
+      "unit": "row_key",
+      "nullable": false,
+      "minimum": null,
+      "maximum": null,
+      "allowed_values": null,
+      "unique": true
+    },
+    {
+      "name": "prewk1",
+      "dtype": "integer",
+      "unit": "visits_per_recorded_week",
+      "nullable": false,
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "allowed_values": null,
+      "unique": false
+    },
+    {
+      "name": "prewk2",
+      "dtype": "integer",
+      "unit": "visits_per_recorded_week",
+      "nullable": false,
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "allowed_values": null,
+      "unique": false
+    },
+    {
+      "name": "prewk3",
+      "dtype": "integer",
+      "unit": "visits_per_recorded_week",
+      "nullable": false,
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "allowed_values": null,
+      "unique": false
+    },
+    {
+      "name": "week1",
+      "dtype": "integer",
+      "unit": "visits_per_recorded_week",
+      "nullable": false,
+      "minimum": 0.0,
+      "maximum": 100.0,
+      "allowed_values": null,
+      "unique": false
+    },
+    {
+      "name": "attended_next_week",
+      "dtype": "integer",
+      "unit": "binary_week2_any_visit",
+      "nullable": false,
+      "minimum": null,
+      "maximum": null,
+      "allowed_values": [
+        0,
+        1
+      ],
+      "unique": false
+    }
+  ],
+  "features": {
+    "numeric": [
+      "prewk1",
+      "prewk2",
+      "prewk3",
+      "week1"
+    ],
+    "categorical": [],
+    "excluded": {
+      "record_id": "Generated row key, not a participant ID.",
+      "attended_next_week": "Outcome only; never a model input."
+    },
+    "numeric_imputation": "train_median",
+    "numeric_scaling": "train_standard_scaler",
+    "categorical_encoding": "train_one_hot_error_on_unknown"
+  },
+  "split": {
+    "method": "stratified_group_5_outer_4_inner",
+    "seed": 42,
+    "group_columns": [
+      "prewk1",
+      "prewk2",
+      "prewk3",
+      "week1"
+    ],
+    "target": "attended_next_week",
+    "id_column": "record_id",
+    "positive_class": 1,
+    "selection_metric": "validation_average_precision",
+    "threshold_metric": "validation_f1"
+  },
+  "source": {
+    "url": "https://zenodo.org/api/records/18866086/files/fitness_clean_deid.csv/content",
+    "doi": "10.5281/zenodo.18866086",
+    "version": "1",
+    "raw_sha256": "50d92eff3943937ff841a76c6609768263e545b38198be62ead47e6fa20d6bbb",
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "authors": "Simon Condliffe; Ebru Isgin; Matt Saboe"
+  },
+  "assumptions": [
+    "CC BY 4.0 requires attribution and identification of changes; see DATA_ATTRIBUTION.md.",
+    "The source description says 245 participants but the file has 389 rows; no unique-person count is claimed.",
+    "No participant identifiers or exact dates are available; equal-history groups do not prove person independence.",
+    "Relative week ordering and availability of prewk1-prewk3 before week1/week2 are assumptions based on source names.",
+    "The target is any week2 visit, not a booked-class no-show or a causal incentive effect.",
+    "The grouped split is a conservative history-pattern stress test, not a temporal or participant-held-out evaluation.",
+    "This small university experiment does not establish performance in a new gym.",
+    "The test is descriptive after validation selection, not an independent external evaluation."
+  ],
+  "constraints": [
+    "The Scientist receives only clean_data.csv and the contract.",
+    "Fit preprocessing on train; select models and thresholds on validation only.",
+    "Never use week2, later visits, totals, rewards, demographics or academic fields as inputs.",
+    "Redistribute with attribution and a description of modifications."
+  ],
+  "license_status": "CC-BY-4.0",
+  "public_distribution_approved": true
+}

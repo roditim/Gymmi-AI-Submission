@@ -1,0 +1,5 @@
+---
+description: Gymmi student-project rules
+alwaysApply: true
+---
+Read AGENTS.md and README.md. Keep the code explainable at course level. Do not weaken the contract/feature gates or invent results. Keep .env out of Git. Use docs/SUBMISSION_CHECKLIST.md for submission checks.

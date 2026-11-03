@@ -1,0 +1,11 @@
+{
+  "source_url": "https://zenodo.org/api/records/18866086/files/fitness_clean_deid.csv/content",
+  "doi": "10.5281/zenodo.18866086",
+  "version": "1",
+  "source_sha256": "50d92eff3943937ff841a76c6609768263e545b38198be62ead47e6fa20d6bbb",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "authors": "Simon Condliffe; Ebru Isgin; Matt Saboe",
+  "changes": "Keep four history counts; add row key; derive week2>0; drop all other source fields.",
+  "source_record": "https://zenodo.org/records/18866086"
+}

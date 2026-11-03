@@ -1,0 +1,293 @@
+{
+  "$defs": {
+    "Column": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "dtype": {
+          "enum": [
+            "string",
+            "integer",
+            "number"
+          ],
+          "title": "Dtype",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "nullable": {
+          "default": false,
+          "title": "Nullable",
+          "type": "boolean"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        },
+        "allowed_values": {
+          "anyOf": [
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Allowed Values"
+        },
+        "unique": {
+          "default": false,
+          "title": "Unique",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "dtype",
+        "unit"
+      ],
+      "title": "Column",
+      "type": "object"
+    },
+    "FeatureSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "numeric": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Numeric",
+          "type": "array"
+        },
+        "categorical": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Categorical",
+          "type": "array"
+        },
+        "excluded": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Excluded",
+          "type": "object"
+        },
+        "numeric_imputation": {
+          "const": "train_median",
+          "default": "train_median",
+          "title": "Numeric Imputation",
+          "type": "string"
+        },
+        "numeric_scaling": {
+          "const": "train_standard_scaler",
+          "default": "train_standard_scaler",
+          "title": "Numeric Scaling",
+          "type": "string"
+        },
+        "categorical_encoding": {
+          "const": "train_one_hot_error_on_unknown",
+          "default": "train_one_hot_error_on_unknown",
+          "title": "Categorical Encoding",
+          "type": "string"
+        }
+      },
+      "required": [
+        "numeric",
+        "excluded"
+      ],
+      "title": "FeatureSpec",
+      "type": "object"
+    },
+    "SplitSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "const": "stratified_group_5_outer_4_inner",
+          "default": "stratified_group_5_outer_4_inner",
+          "title": "Method",
+          "type": "string"
+        },
+        "seed": {
+          "default": 42,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "group_columns": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Group Columns",
+          "type": "array"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "id_column": {
+          "title": "Id Column",
+          "type": "string"
+        },
+        "positive_class": {
+          "default": 1,
+          "title": "Positive Class",
+          "type": "integer"
+        },
+        "selection_metric": {
+          "const": "validation_average_precision",
+          "default": "validation_average_precision",
+          "title": "Selection Metric",
+          "type": "string"
+        },
+        "threshold_metric": {
+          "const": "validation_f1",
+          "default": "validation_f1",
+          "title": "Threshold Metric",
+          "type": "string"
+        }
+      },
+      "required": [
+        "group_columns",
+        "target",
+        "id_column"
+      ],
+      "title": "SplitSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "3.0",
+      "default": "3.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "producer": {
+      "const": "Data Analyst Crew",
+      "default": "Data Analyst Crew",
+      "title": "Producer",
+      "type": "string"
+    },
+    "dataset_file": {
+      "const": "clean_data.csv",
+      "default": "clean_data.csv",
+      "title": "Dataset File",
+      "type": "string"
+    },
+    "dataset_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Dataset Sha256",
+      "type": "string"
+    },
+    "rows": {
+      "exclusiveMinimum": 0,
+      "title": "Rows",
+      "type": "integer"
+    },
+    "columns": {
+      "items": {
+        "$ref": "#/$defs/Column"
+      },
+      "minItems": 2,
+      "title": "Columns",
+      "type": "array"
+    },
+    "features": {
+      "$ref": "#/$defs/FeatureSpec"
+    },
+    "split": {
+      "$ref": "#/$defs/SplitSpec"
+    },
+    "source": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Source",
+      "type": "object"
+    },
+    "assumptions": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 3,
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "constraints": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 3,
+      "title": "Constraints",
+      "type": "array"
+    },
+    "license_status": {
+      "const": "CC-BY-4.0",
+      "default": "CC-BY-4.0",
+      "title": "License Status",
+      "type": "string"
+    },
+    "public_distribution_approved": {
+      "const": true,
+      "default": true,
+      "title": "Public Distribution Approved",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "run_id",
+    "dataset_sha256",
+    "rows",
+    "columns",
+    "features",
+    "split",
+    "source",
+    "assumptions",
+    "constraints"
+  ],
+  "title": "DatasetContract",
+  "type": "object"
+}

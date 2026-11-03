@@ -1,0 +1,22 @@
+name: Validate Gymmi Flow
+on:
+  workflow_dispatch:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Generate local evaluation artifacts without publishing them
+        run: python run.py --download --output runs/verified
+      - run: python -m pytest -q
+        env:
+          CREWAI_TELEMETRY_DISABLED: 'true'
+          OTEL_SDK_DISABLED: 'true'

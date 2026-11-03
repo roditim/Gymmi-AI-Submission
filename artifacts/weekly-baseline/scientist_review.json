@@ -1,0 +1,94 @@
+{
+  "mode": "offline_author_written_fixture",
+  "semantic_review_required": true,
+  "notes": [
+    {
+      "receipt": {
+        "run_id": "1c0c7c25-6226-4100-9059-7e37249c043f",
+        "crew": "scientist",
+        "stage": "engineer",
+        "status": "done",
+        "artifacts": [
+          "features.csv"
+        ]
+      },
+      "summary": "Offline author-written analysis fixture grounded in the scoped tool evidence; no live reasoning is claimed.",
+      "findings": [
+        "Training-only preprocessing limits information transfer from evaluation rows.",
+        "Grouping identical inputs does not establish independence between people."
+      ],
+      "cautions": [
+        "CC BY attribution is required; future generalization and person independence remain unproven."
+      ],
+      "claims": [
+        {
+          "evidence_key": "fit_rows",
+          "value": 182
+        },
+        {
+          "evidence_key": "target",
+          "value": "attended_next_week"
+        }
+      ]
+    },
+    {
+      "receipt": {
+        "run_id": "1c0c7c25-6226-4100-9059-7e37249c043f",
+        "crew": "scientist",
+        "stage": "train_compare",
+        "status": "done",
+        "artifacts": [
+          "model.joblib",
+          "evaluation_report.md"
+        ]
+      },
+      "summary": "Offline author-written analysis fixture grounded in the scoped tool evidence; no live reasoning is claimed.",
+      "findings": [
+        "Model selection uses validation evidence rather than the final test ranking.",
+        "The majority reference makes accuracy alone inadequate for comparison."
+      ],
+      "cautions": [
+        "CC BY attribution is required; future generalization and person independence remain unproven."
+      ],
+      "claims": [
+        {
+          "evidence_key": "selected_model",
+          "value": "logistic"
+        },
+        {
+          "evidence_key": "selection_metric",
+          "value": "validation_average_precision"
+        }
+      ]
+    },
+    {
+      "receipt": {
+        "run_id": "1c0c7c25-6226-4100-9059-7e37249c043f",
+        "crew": "scientist",
+        "stage": "card",
+        "status": "done",
+        "artifacts": [
+          "model_card.md"
+        ]
+      },
+      "summary": "Offline author-written analysis fixture grounded in the scoped tool evidence; no live reasoning is claimed.",
+      "findings": [
+        "Predictions support an educational demonstration rather than operational cancellation.",
+        "Saved holdout results are descriptive because earlier development exposed the holdout."
+      ],
+      "cautions": [
+        "CC BY attribution is required; future generalization and person independence remain unproven."
+      ],
+      "claims": [
+        {
+          "evidence_key": "selected_model",
+          "value": "logistic"
+        },
+        {
+          "evidence_key": "selection_metric",
+          "value": "validation_average_precision"
+        }
+      ]
+    }
+  ]
+}
