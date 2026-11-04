@@ -1,0 +1,43 @@
+{
+  "checked_at_utc": "2026-11-04T08:09:08.835315+00:00",
+  "project_name": "Gymmi",
+  "project_ref": "yvzfkaswrohpniheubpn",
+  "region": "eu-central-1",
+  "organization_plan_verified": "free",
+  "paid_addons_enabled": false,
+  "production_app": "https://roditim.github.io/Gymmi-AI-Submission/app/",
+  "local_guest_scenario_groups_passed": 8,
+  "local_cloud_scenario_groups_passed": 10,
+  "cloud_checks": [
+    "sign-in keeps local guest diary separate; no automatic upload",
+    "cloud add/completion persist after reload and on a separate browser device",
+    "real API RLS blocks cross-account read/update/insert/reassignment and anonymous reads",
+    "stale device write rejected; explicit reload obtains newest journal",
+    "network failure preserves saved state and editable draft without claiming success",
+    "failed cloud load blocks editing and successful reload restores it",
+    "explicit guest upload, sign-out restores guest data, account switch has no data bleed",
+    "validated backup replacement is a single cloud write",
+    "a backup file still being read cannot replace the diary after an account switch",
+    "no browser runtime errors; mobile layout has no horizontal overflow"
+  ],
+  "public_cloud_scenario_groups_passed": null,
+  "public_guest_scenario_groups_passed": null,
+  "rls_cross_account_requests_tested": true,
+  "security_and_performance_advisors_warn_or_error": 0,
+  "qa_accounts_deleted_in_finally": true,
+  "email_confirmation_enabled": true,
+  "custom_smtp_configured": false,
+  "email_delivery_tested": false,
+  "public_signup_delivery_complete": false,
+  "active_ml": false,
+  "active_llm": false,
+  "schema_applied_via": "Supabase CLI db query; migration file captured, no db push replay or local Docker run",
+  "limitations": [
+    "Public signup email delivery awaits custom SMTP; not claimed complete",
+    "Password recovery UI is absent",
+    "Free projects may pause after low activity",
+    "Cross-device refresh is explicit, not realtime; stale writes are rejected",
+    "QA used admin-confirmed disposable accounts, not delivered verification email",
+    "No hosted test CI; local checks against real service"
+  ]
+}

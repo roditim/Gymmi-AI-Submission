@@ -1,11 +1,61 @@
 "use strict";
 
-// Browser-local MVP. No API, shared database or account is involved.
+// Guest data stays local. A signed-in account uses its own cloud journal.
 const STORAGE_KEY = "gymmi-workouts-v1";
 const statusNames = { planned: "מתוכנן", completed: "הושלם", skipped: "דילגתי" };
 const byId = id => document.getElementById(id);
 let state = { version: 1, workouts: [] };
 let storageProblem = false;
+let activeUser = null;
+let revision = 0;
+let busy = false;
+let accountLoading = false;
+let accountGeneration = 0;
+let authClient;
+let authReady = false;
+
+function setBusy(value) {
+  busy = value || accountLoading;
+  for (const el of document.querySelectorAll("#workout-form input, #workout-form textarea, #workout-form button, #auth-form input, #auth-form button, #account-actions button, #import-data, #reset-data, #example-plan")) el.disabled = busy;
+  byId("save-workout").disabled = busy || storageProblem;
+  byId("example-plan").disabled = busy || storageProblem;
+  byId("sign-in").disabled = busy || !authReady;
+  byId("sign-up").disabled = busy || !authReady;
+  render();
+}
+function readGuest() {
+  state = { version: 1, workouts: [] }; storageProblem = false;
+  byId("storage-error").hidden = true;
+  try { const saved = localStorage.getItem(STORAGE_KEY); if (saved) state = validate(JSON.parse(saved)); }
+  catch (error) {
+    storageProblem = true; byId("storage-error").textContent = "לא ניתן לקרוא את היומן המקומי. הנתונים לא הוחלפו. אפשר להוריד גיבוי ולשחזר קובץ תקין במסך גיבוי ונתונים.";
+    byId("storage-error").hidden = false;
+  }
+}
+async function changeAccount(user) {
+  const generation = ++accountGeneration;
+  accountLoading = true;
+  activeUser = user; revision = 0; cancelEdit();
+  state = { version: 1, workouts: [] }; storageProblem = !!user;
+  byId("storage-error").hidden = true;
+  byId("auth-form").hidden = !!user; byId("account-actions").hidden = !user;
+  byId("reset-data").textContent = user ? "מחק את האימונים בחשבון" : "מחק את הנתונים בדפדפן הזה";
+  byId("account-status").textContent = user ? "טוען את היומן מהענן…" : "מצב אורח — היומן נשמר בדפדפן הזה.";
+  setBusy(true);
+  try {
+    if (user) {
+      const journal = await cloud.load(user.id);
+      if (generation !== accountGeneration) return;
+      state = validate({ version: 1, workouts: journal.workouts }); revision = journal.revision; storageProblem = false;
+      byId("account-status").textContent = "מחובר: " + user.email + " · שמירה בענן";
+    } else readGuest();
+  } catch (error) {
+    if (generation === accountGeneration) {
+      notice("היומן לא נטען. העריכה חסומה כדי לשמור על הנתונים בענן. נסה לטעון מחדש. " + error.message, true);
+      byId("account-status").textContent = "מחובר · טעינת הענן נכשלה";
+    }
+  } finally { if (generation === accountGeneration) { accountLoading = false; setBusy(false); } }
+}
 
 function isoDate(value) {
   return value.getFullYear() + "-" + String(value.getMonth() + 1).padStart(2, "0") + "-" + String(value.getDate()).padStart(2, "0");
@@ -43,27 +93,39 @@ function validate(payload) {
   }
   return payload;
 }
-function save(next) {
-  if (storageProblem) { notice("השמירה חסומה עד לטיפול בבעיה בנתוני הדפדפן.", true); return false; }
-  try { validate(next); localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); state = next; render(); return true; }
+async function save(next, recover = false) {
+  if (busy) return false;
+  const generation = accountGeneration;
+  if (storageProblem && !(recover && !activeUser)) { notice("השמירה חסומה עד לטיפול בטעינת הנתונים.", true); return false; }
+  setBusy(true);
+  try {
+    validate(next);
+    if (activeUser) {
+      const nextRevision = await cloud.save(activeUser.id, next.workouts, revision);
+      if (generation !== accountGeneration) return false;
+      revision = nextRevision;
+    } else localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    state = next; storageProblem = false; byId("storage-error").hidden = true; render(); return true;
+  }
   catch (error) { notice("השינוי לא נשמר: " + error.message, true); return false; }
+  finally { if (generation === accountGeneration) setBusy(false); }
 }
 function update(id, changes) {
   const next = { version: 1, workouts: state.workouts.map(row => row.id === id ? { ...row, ...changes } : row) };
   return save(next);
 }
-function mark(id, status) {
+async function mark(id, status) {
   const row = state.workouts.find(w => w.id === id);
   if (!row || row.status === status) return;
   if (status !== "planned" && row.date > today()) { notice("אפשר לסמן רק אימון של היום או של יום קודם.", true); return; }
-  if (update(id, { status, resolvedAt: status === "planned" ? null : new Date().toISOString() })) notice("סטטוס האימון נשמר.");
+  if (await update(id, { status, resolvedAt: status === "planned" ? null : new Date().toISOString() })) notice("סטטוס האימון נשמר.");
 }
 function element(tag, text, className) {
   const el = document.createElement(tag); if (text !== undefined) el.textContent = text;
   if (className) el.className = className; return el;
 }
 function action(text, callback, disabled = false, className = "secondary") {
-  const button = element("button", text, className); button.type = "button"; button.disabled = disabled;
+  const button = element("button", text, className); button.type = "button"; button.disabled = disabled || busy;
   button.addEventListener("click", callback); return button;
 }
 function editWorkout(row) {
@@ -89,8 +151,8 @@ function workoutCard(row, history = false) {
     buttons.append(action("דילגתי", () => mark(row.id, "skipped"), storageProblem || row.date > today() || row.status === "skipped"));
     buttons.append(action("בטל סימון", () => mark(row.id, "planned"), storageProblem || row.status === "planned"));
     buttons.append(action("ערוך", () => editWorkout(row), storageProblem));
-    buttons.append(action("מחק", () => { if (confirm("למחוק את האימון הזה מהיומן?")) {
-      if (save({ version: 1, workouts: state.workouts.filter(w => w.id !== row.id) })) { cancelEdit(); notice("האימון נמחק."); }
+    buttons.append(action("מחק", async () => { if (confirm("למחוק את האימון הזה מהיומן?")) {
+      if (await save({ version: 1, workouts: state.workouts.filter(w => w.id !== row.id) })) { cancelEdit(); notice("האימון נמחק."); }
     } }, storageProblem, "danger")); card.append(buttons);
   }
   return card;
@@ -111,24 +173,24 @@ function render() {
   if (!past.length) history.append(element("p", "אימונים שהושלמו או שסומנו כדילוג יופיעו כאן.", "empty"));
   for (const row of past) history.append(workoutCard(row, true));
 }
-byId("workout-form").addEventListener("submit", event => {
+byId("workout-form").addEventListener("submit", async event => {
   event.preventDefault(); const id = byId("editing-id").value;
   const fields = { title: byId("workout-title").value.trim(), date: byId("workout-date").value,
     minutes: Number(byId("workout-minutes").value), exercises: byId("workout-exercises").value.trim() };
   let saved;
-  if (id) saved = update(id, fields);
-  else saved = save({ version: 1, workouts: [...state.workouts, { id: crypto.randomUUID(), ...fields, status: "planned", resolvedAt: null }] });
+  if (id) saved = await update(id, fields);
+  else saved = await save({ version: 1, workouts: [...state.workouts, { id: crypto.randomUUID(), ...fields, status: "planned", resolvedAt: null }] });
   if (saved) { byId("week-start").value = monday(fields.date); cancelEdit(); render(); notice("האימון נשמר בתוכנית."); }
 });
 byId("cancel-edit").addEventListener("click", cancelEdit);
-byId("example-plan").addEventListener("click", () => {
+byId("example-plan").addEventListener("click", async () => {
   const start = byId("week-start").value; const end = shiftDate(start, 7);
   if (state.workouts.some(w => w.date >= start && w.date < end)) { notice("כבר קיימים אימונים בשבוע הזה. אפשר להוסיף או לערוך אימון בנפרד."); return; }
   const templates = [[0, "הליכה", "הליכה במסלול לבחירתך. אפשר לערוך את פרטי האימון."],
     [2, "אימון כוח", "הוסף כאן את התרגילים מתוך התוכנית שלך או מהתוכנית שקיבלת ממאמן."],
     [4, "תנועתיות", "הוסף כאן את תרגילי התנועתיות מתוך התוכנית שלך."]];
   const added = templates.map(([offset, title, exercises]) => ({ id: crypto.randomUUID(), date: shiftDate(start, offset), title, exercises, minutes: 30, status: "planned", resolvedAt: null }));
-  if (save({ version: 1, workouts: [...state.workouts, ...added] })) notice("נוספו שלושה אימונים לדוגמה. אפשר לערוך אותם.");
+  if (await save({ version: 1, workouts: [...state.workouts, ...added] })) notice("נוספו שלושה אימונים לדוגמה. אפשר לערוך אותם.");
 });
 byId("week-start").addEventListener("change", () => { try { byId("week-start").value = monday(byId("week-start").value); render(); } catch (error) { notice(error.message, true); } });
 byId("previous-week").addEventListener("click", () => { byId("week-start").value = shiftDate(byId("week-start").value, -7); render(); });
@@ -139,6 +201,7 @@ for (const button of document.querySelectorAll("[data-view]")) button.addEventLi
 });
 byId("export-data").addEventListener("click", () => {
   try {
+  if (activeUser && storageProblem) throw new Error("יש לטעון את היומן בענן לפני ייצוא.");
   const raw = storageProblem ? localStorage.getItem(STORAGE_KEY) : JSON.stringify(state, null, 2);
   const url = URL.createObjectURL(new Blob([raw || "{}"], { type: "application/json" }));
   const link = element("a"); link.href = url; link.download = "gymmi-backup-" + today() + ".json";
@@ -147,28 +210,74 @@ byId("export-data").addEventListener("click", () => {
 });
 byId("import-data").addEventListener("change", async event => {
   const file = event.target.files[0]; if (!file) return;
+  const generation = accountGeneration;
   try {
     if (file.size > 1000000) throw new Error("קובץ הגיבוי גדול מדי");
     const imported = validate(JSON.parse(await file.text()));
+    if (generation !== accountGeneration) throw new Error("החשבון השתנה בזמן קריאת הקובץ. בחר שוב את הגיבוי עבור היומן הרצוי.");
     if (confirm("נמצאו " + imported.workouts.length + " אימונים בגיבוי. להחליף את היומן הנוכחי?")) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(imported)); state = imported; storageProblem = false;
-      byId("storage-error").hidden = true; byId("save-workout").disabled = false; byId("example-plan").disabled = false;
-      cancelEdit(); render(); notice("הגיבוי שוחזר.");
+      if (await save(imported, true)) { cancelEdit(); render(); notice("הגיבוי שוחזר."); }
     }
   } catch (error) { notice("הגיבוי לא שוחזר: " + error.message, true); }
   event.target.value = "";
 });
-byId("reset-data").addEventListener("click", () => {
-  if (!confirm("למחוק את כל אימוני Gymmi בדפדפן הזה? כדאי להוריד גיבוי קודם.")) return;
-  try { localStorage.removeItem(STORAGE_KEY); state = { version: 1, workouts: [] }; storageProblem = false;
-    byId("storage-error").hidden = true; byId("save-workout").disabled = false; byId("example-plan").disabled = false;
-    cancelEdit(); render(); notice("היומן המקומי אופס.");
-  } catch (error) { notice("לא ניתן למחוק את הנתונים: " + error.message, true); }
+byId("reset-data").addEventListener("click", async () => {
+  if (!confirm(activeUser ? "למחוק את כל האימונים בחשבון בענן? כדאי להוריד גיבוי קודם." : "למחוק את כל אימוני Gymmi בדפדפן הזה? כדאי להוריד גיבוי קודם.")) return;
+  if (await save({ version: 1, workouts: [] }, true)) { cancelEdit(); notice("היומן אופס."); }
 });
 byId("week-start").value = monday(today()); byId("workout-date").value = today();
-try { const saved = localStorage.getItem(STORAGE_KEY); if (saved) state = validate(JSON.parse(saved)); }
-catch (error) {
-  storageProblem = true; const alert = byId("storage-error"); alert.textContent = "לא ניתן לקרוא את היומן המקומי. הנתונים לא הוחלפו. אפשר להוריד גיבוי ולשחזר קובץ תקין במסך גיבוי ונתונים."; alert.hidden = false;
-  byId("save-workout").disabled = true; byId("example-plan").disabled = true;
+readGuest(); setBusy(false);
+
+async function authenticate(signUp) {
+  if (busy || !authClient || !byId("auth-form").reportValidity()) return;
+  setBusy(true);
+  try {
+    const credentials = { email: byId("auth-email").value.trim(), password: byId("auth-password").value };
+    const result = signUp ? await authClient.auth.signUp(credentials) : await authClient.auth.signInWithPassword(credentials);
+    if (result.error) throw result.error;
+    byId("auth-password").value = "";
+    notice(signUp && !result.data.session ? "ההרשמה התקבלה. אם החשבון חדש, יש לאשר את הקישור במייל לפני כניסה." : "הכניסה הצליחה.");
+  } catch (error) { notice("הפעולה לא הושלמה: " + error.message, true); }
+  finally { setBusy(false); }
 }
-render();
+byId("auth-form").addEventListener("submit", event => { event.preventDefault(); authenticate(false); });
+byId("sign-up").addEventListener("click", () => authenticate(true));
+byId("reload-cloud").addEventListener("click", () => { if (confirm("לטעון את הגרסה האחרונה מהענן? טיוטת עריכה בטופס תיסגר.")) changeAccount(activeUser); });
+byId("upload-local").addEventListener("click", async () => {
+  try {
+    const local = validate(JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"version":1,"workouts":[]}'));
+    if (!local.workouts.length) { notice("אין אימונים ביומן המקומי להעברה."); return; }
+    if (confirm("להחליף את יומן החשבון ב־" + local.workouts.length + " אימונים מהדפדפן הזה? היומן המקומי יישאר כגיבוי.")) {
+      if (await save(local)) { cancelEdit(); notice("היומן הועבר לחשבון. העותק המקומי נשאר בדפדפן."); }
+    }
+  } catch (error) { notice("היומן המקומי לא הועבר: " + error.message, true); }
+});
+byId("sign-out").addEventListener("click", async () => {
+  if (busy) return;
+  setBusy(true);
+  try { const { error } = await authClient.auth.signOut({ scope: "local" }); if (error) throw error; notice("יצאת מהחשבון במכשיר הזה."); }
+  catch (error) { notice("היציאה נכשלה: " + error.message, true); }
+  finally { setBusy(false); }
+});
+(async () => {
+  try {
+    // The auth SDK also needs storage. Avoid starting it when access is denied.
+    localStorage.getItem(STORAGE_KEY);
+    await new Promise((resolve, reject) => {
+      const script = document.createElement("script"); script.src = "vendor/supabase.js";
+      script.onload = resolve; script.onerror = () => reject(new Error("טעינת חיבור הענן נכשלה"));
+      document.head.append(script);
+    });
+    authClient = cloud.connect();
+    // Do not await Supabase queries inside its synchronous auth callback.
+    authClient.auth.onAuthStateChange((event, session) => {
+      const user = session?.user || null;
+      if (user?.id !== activeUser?.id || event === "INITIAL_SESSION" && user) setTimeout(() => changeAccount(user), 0);
+    });
+    const { error } = await authClient.auth.getSession(); if (error) throw error;
+    authReady = true; setBusy(false);
+  } catch (error) {
+    byId("account-status").textContent = "חיבור החשבון אינו זמין. אפשר להמשיך במצב אורח.";
+    byId("sign-in").disabled = true; byId("sign-up").disabled = true;
+  }
+})();
