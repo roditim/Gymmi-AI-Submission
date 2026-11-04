@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-11-04T21:55:38.631359+00:00",
+  "checked_at_utc": "2026-11-04T22:07:05.451569+00:00",
   "model": "gpt-5.4-mini",
   "provider": "OpenAI Responses API",
   "supabase_project": "Gymmi",
@@ -32,7 +32,7 @@
   "provider_failures_consume_attempt": true,
   "provider_store": false,
   "server_never_saves_journal": true,
-  "public_frontend_verified": false,
+  "public_frontend_verified": true,
   "known_model_failure_and_fix": "An earlier live test observed a requested weekday mismatch. Model now returns weekday names; server deterministically maps to dates. Human review remains required.",
   "limits": [
     "AI may misinterpret availability; review before applying",
@@ -44,5 +44,25 @@
   "real_availability_languages_tested": [
     "English",
     "Hebrew"
-  ]
+  ],
+  "public_url": "https://roditim.github.io/Gymmi-AI-Submission/app/",
+  "tested_runtime_commit": "b5868d40a7daa7b3a63109b8afa8e013f4fec1d3",
+  "github_pages_deployment_run": 41921457429,
+  "public_source_matches": [
+    "app/index.html",
+    "app/ai.js",
+    "app/cloud.js",
+    "app/app.js",
+    "index.html"
+  ],
+  "public_ai_scenario_groups_passed": 8,
+  "public_ai_real_provider_calls": 2,
+  "public_existing_guest_cloud_signup_groups_passed": 24,
+  "public_regression_breakdown": {
+    "guest": 8,
+    "cloud": 10,
+    "signup": 6
+  },
+  "runner": "Local browser runner against public HTTPS site; not hosted CI",
+  "qa_accounts": "Disposable accounts removed by each suite in finally"
 }
