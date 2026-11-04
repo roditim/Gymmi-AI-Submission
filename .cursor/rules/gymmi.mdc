@@ -1,5 +1,5 @@
 ---
-description: Gymmi student-project rules
+description: Gymmi public student MVP
 alwaysApply: true
 ---
-Read AGENTS.md and README.md. Keep the code explainable at course level. Do not weaken the contract/feature gates or invent results. Keep .env out of Git. Use docs/SUBMISSION_CHECKLIST.md for submission checks.
+Read AGENTS.md and README.md. Production is docs/app. Public deployment is required; CrewAI and ML are optional under the updated instructor clarification. Keep plain, explainable code. Do not claim proxy or synthetic results predict real workout completion. Preserve user data and keep credentials/private material out of Git.
