@@ -4,13 +4,25 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Gymmi — תוכנית אימונים שבועית, סימון השלמה ומעקב התקדמות בסיסי.">
 <title>Gymmi · התוכנית שלי</title>
-<link rel="stylesheet" href="style.css"><script src="app.js" defer></script>
+<link rel="stylesheet" href="style.css">
+<script src="config.js" defer></script>
+<script src="cloud.js" defer></script><script src="app.js" defer></script>
 </head>
 <body>
 <header class="wrap"><div><p class="brand">GYMMI</p><h1>התוכנית שלי. ההתקדמות שלי.</h1><p>מתכננים את השבוע, מסמנים אימון שהושלם ורואים התקדמות.</p></div><a href="../">מצגת הפרויקט ↗</a></header>
 <main class="wrap">
 <p id="message" role="status" aria-live="polite" hidden></p>
 <p id="storage-error" role="alert" hidden></p>
+<section class="account" aria-label="החשבון שלי">
+<h2>החשבון שלי</h2><p id="account-status">מצב אורח — היומן נשמר בדפדפן הזה.</p>
+<form id="auth-form"><div class="form-grid">
+<label>מייל<input id="auth-email" type="email" autocomplete="username" required maxlength="254" dir="ltr"></label>
+<label>סיסמה (לפחות 10 תווים)<input id="auth-password" type="password" minlength="10" maxlength="128" autocomplete="current-password" required dir="ltr"></label>
+</div><div class="actions"><button id="sign-in" type="submit">כניסה</button><button id="sign-up" type="button" class="secondary">הרשמה</button></div>
+<p class="muted">בהרשמה נדרש אישור מייל. שליחת מיילים לציבור עדיין ממתינה לחיבור ספק מייל; אפשר בינתיים להשתמש במצב אורח. אין כרגע שחזור סיסמה באתר.</p></form>
+<div id="account-actions" class="actions" hidden><button id="reload-cloud" class="secondary" type="button">טען מחדש מהענן</button><button id="upload-local" class="secondary" type="button">העבר יומן מקומי לחשבון</button><button id="sign-out" class="secondary" type="button">יציאה</button></div>
+<p class="muted">בחשבון מחובר האימונים נשמרים ב־Supabase. היומן המקומי נפרד ואינו עולה לענן אוטומטית. לרענון שינויים ממכשיר אחר לחץ ״טען מחדש מהענן״.</p>
+</section>
 <section aria-label="בחירת שבוע" class="week-picker">
 <button type="button" id="previous-week" class="secondary">השבוע הקודם</button>
 <label>שבוע שמתחיל ביום שני<input type="date" id="week-start" required></label>
@@ -38,7 +50,7 @@
 </form></details>
 </section>
 <section id="view-history" hidden><h2>היסטוריית אימונים</h2><p class="muted">אימון שלא סומן נשאר מתוכנן. המערכת אינה מניחה שדילגת עליו.</p><div id="history-list"></div></section>
-<section id="view-backup" hidden><h2>הנתונים נשארים אצלך</h2><p>האימונים נשמרים בדפדפן ובמכשיר הזה. אין חשבון משתמש או סנכרון בין מכשירים. מחיקת נתוני הדפדפן תמחק גם את היומן המקומי.</p><div class="actions"><button type="button" id="export-data">הורד גיבוי JSON</button><label class="file-label">שחזר מגיבוי<input type="file" id="import-data" accept=".json,application/json"></label></div><p class="muted">בשחזור תופיע בקשת אישור לפני החלפת הנתונים הקיימים.</p><button type="button" id="reset-data" class="danger">מחק את הנתונים בדפדפן הזה</button></section>
+<section id="view-backup" hidden><h2>גיבוי ונתונים</h2><p>הגיבוי שייך ליומן המוצג: לחשבון בענן כאשר מחוברים, ולדפדפן במצב אורח. שחזור או איפוס בחשבון ישנו גם את היומן בענן. היומן המקומי נשאר נפרד.</p><div class="actions"><button type="button" id="export-data">הורד גיבוי JSON</button><label class="file-label">שחזר מגיבוי<input type="file" id="import-data" accept=".json,application/json"></label></div><p class="muted">בשחזור תופיע בקשת אישור לפני החלפת הנתונים הקיימים. אין להזין מידע רפואי רגיש. אפשר למחוק את אימוני החשבון באמצעות האיפוס; מחיקת חשבון מלאה נעשית כרגע דרך מנהל הפרויקט.</p><button type="button" id="reset-data" class="danger">מחק את הנתונים בדפדפן הזה</button></section>
 </main>
 <footer class="wrap"><p>Gymmi · MVP לימודי לתוכנית ולמעקב אימונים. הגרסה הזו אינה מפעילה מודל חיזוי או סוכן AI.</p><a href="https://github.com/roditim/Gymmi-AI-Submission">קוד הפרויקט ב־GitHub</a></footer>
 <noscript>יש להפעיל JavaScript בדפדפן כדי להשתמש בתוכנית ובמעקב.</noscript>
