@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Gymmi — תוכנית אימונים שבועית, סימון השלמה ומעקב התקדמות בסיסי.">
+<title>Gymmi · התוכנית שלי</title>
+<link rel="stylesheet" href="style.css"><script src="app.js" defer></script>
+</head>
+<body>
+<header class="wrap"><div><p class="brand">GYMMI</p><h1>התוכנית שלי. ההתקדמות שלי.</h1><p>מתכננים את השבוע, מסמנים אימון שהושלם ורואים התקדמות.</p></div><a href="../">מצגת הפרויקט ↗</a></header>
+<main class="wrap">
+<p id="message" role="status" aria-live="polite" hidden></p>
+<p id="storage-error" role="alert" hidden></p>
+<section aria-label="בחירת שבוע" class="week-picker">
+<button type="button" id="previous-week" class="secondary">השבוע הקודם</button>
+<label>שבוע שמתחיל ביום שני<input type="date" id="week-start" required></label>
+<button type="button" id="next-week" class="secondary">השבוע הבא</button>
+<button type="button" id="current-week" class="secondary">השבוע הנוכחי</button>
+</section>
+<section class="summary" aria-label="התקדמות השבוע">
+<div><strong id="planned-count">0</strong><span>אימונים מתוכננים</span></div>
+<div><strong id="completed-count">0</strong><span>הושלמו</span></div>
+<div><strong id="skipped-count">0</strong><span>סומנו כדילוג</span></div>
+</section>
+<label class="progress-label" for="week-progress" id="progress-text">עוד לא נוספו אימונים לשבוע הזה</label>
+<progress id="week-progress" max="1" value="0"></progress>
+<nav aria-label="מסכי האפליקציה"><button type="button" data-view="plan" aria-pressed="true">התוכנית השבועית</button><button type="button" data-view="history" aria-pressed="false">היסטוריה</button><button type="button" data-view="backup" aria-pressed="false">גיבוי ונתונים</button></nav>
+<section id="view-plan">
+<div class="section-title"><h2>האימונים שלי</h2><button type="button" id="example-plan" class="secondary">הוסף תוכנית לדוגמה</button></div>
+<p class="muted">תוכנית הדוגמה היא תבנית ארגון. את התרגילים והפרטים אפשר להתאים לתוכנית שלך.</p>
+<div id="workout-list"></div>
+<details id="workout-editor" open><summary id="editor-heading">הוספת אימון</summary>
+<form id="workout-form">
+<input type="hidden" id="editing-id">
+<div class="form-grid"><label>שם האימון<input id="workout-title" maxlength="100" required placeholder="למשל: אימון כוח"></label><label>תאריך<input id="workout-date" type="date" required></label><label>משך מתוכנן בדקות<input id="workout-minutes" type="number" min="5" max="180" step="5" value="30" required></label></div>
+<label>תרגילים ופרטים<textarea id="workout-exercises" maxlength="2000" rows="3" required placeholder="התרגילים מתוך התוכנית שלך"></textarea></label>
+<div class="actions"><button type="submit" id="save-workout">הוסף אימון</button><button type="button" id="cancel-edit" class="secondary" hidden>בטל עריכה</button></div>
+</form></details>
+</section>
+<section id="view-history" hidden><h2>היסטוריית אימונים</h2><p class="muted">אימון שלא סומן נשאר מתוכנן. המערכת אינה מניחה שדילגת עליו.</p><div id="history-list"></div></section>
+<section id="view-backup" hidden><h2>הנתונים נשארים אצלך</h2><p>האימונים נשמרים בדפדפן ובמכשיר הזה. אין חשבון משתמש או סנכרון בין מכשירים. מחיקת נתוני הדפדפן תמחק גם את היומן המקומי.</p><div class="actions"><button type="button" id="export-data">הורד גיבוי JSON</button><label class="file-label">שחזר מגיבוי<input type="file" id="import-data" accept=".json,application/json"></label></div><p class="muted">בשחזור תופיע בקשת אישור לפני החלפת הנתונים הקיימים.</p><button type="button" id="reset-data" class="danger">מחק את הנתונים בדפדפן הזה</button></section>
+</main>
+<footer class="wrap"><p>Gymmi · MVP לימודי לתוכנית ולמעקב אימונים. הגרסה הזו אינה מפעילה מודל חיזוי או סוכן AI.</p><a href="https://github.com/roditim/Gymmi-AI-Submission">קוד הפרויקט ב־GitHub</a></footer>
+<noscript>יש להפעיל JavaScript בדפדפן כדי להשתמש בתוכנית ובמעקב.</noscript>
+</body></html>

@@ -1,0 +1,31 @@
+{
+  "scope_date": "2026-11-04",
+  "production_app": "https://roditim.github.io/Gymmi-AI-Submission/app/",
+  "instructor_clarification": "Public production required; CrewAI recommended; trained ML optional. Supplied by the user.",
+  "local_browser_scenario_groups_passed": 8,
+  "checks": [
+    "add/complete/reload",
+    "edit and undo",
+    "future status blocked and no duplicate example",
+    "backup/restore and invalid import rejection",
+    "separate visitor storage",
+    "corrupt/unavailable storage",
+    "safe user text display",
+    "mobile fit and no runtime errors"
+  ],
+  "runtime": "Buildless HTML/CSS/JavaScript, browser-local storage; GitHub Pages HTTPS.",
+  "active_ml": false,
+  "active_llm_api_calls": false,
+  "server_side_user_database": false,
+  "limitations": [
+    "No accounts or automatic cloud sync",
+    "Browser data deletion removes local journal; backup available",
+    "Example plan is an editable organizer, not AI or medical personalization"
+  ],
+  "verification_stage": "Local application checked; production URL is verified after publication.",
+  "optional_historical_lab_regression": {
+    "result": "112 passed, 155 warnings",
+    "seconds": 49.3,
+    "scope": "Earlier Python/CrewAI research, not the production browser app"
+  }
+}
