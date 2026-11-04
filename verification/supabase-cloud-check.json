@@ -20,8 +20,8 @@
     "a backup file still being read cannot replace the diary after an account switch",
     "no browser runtime errors; mobile layout has no horizontal overflow"
   ],
-  "public_cloud_scenario_groups_passed": null,
-  "public_guest_scenario_groups_passed": null,
+  "public_cloud_scenario_groups_passed": 10,
+  "public_guest_scenario_groups_passed": 8,
   "rls_cross_account_requests_tested": true,
   "security_and_performance_advisors_warn_or_error": 0,
   "qa_accounts_deleted_in_finally": true,
@@ -39,5 +39,10 @@
     "Cross-device refresh is explicit, not realtime; stale writes are rejected",
     "QA used admin-confirmed disposable accounts, not delivered verification email",
     "No hosted test CI; local checks against real service"
-  ]
+  ],
+  "anonymous_http_status": 200,
+  "public_runtime_files_match_source": true,
+  "checked_runtime_commit": "bd18eb67a176b93a66c025786a1e478f7e41216b",
+  "pages_deployment_run": 41797856901,
+  "public_checked_at_utc": "2026-11-04T08:16:34.484070+00:00"
 }
