@@ -1,3 +1,5 @@
+> Historical / optional research. The production app is docs/app and does not use a dataset, ML model or LLM API. The 2026-11-04 instructor clarification makes public deployment required and CrewAI/ML optional.
+
 # Versioned educational artifacts
 
 weekly-baseline is the actual offline run generated on 2026-11-03. It contains all eight required deliverables and completion evidence. Offline notes are author-written fixtures, not provider reasoning. Data provenance and modifications: DATA_ATTRIBUTION.md. Only selected visit counts are in clean_data.csv; raw personal/demographic columns are absent. This directory is reproducible evidence, not proof of external validity. Load only the trusted project model; joblib uses Python pickle semantics.

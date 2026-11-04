@@ -1,3 +1,5 @@
+> Historical / optional research. The production app is docs/app and does not use a dataset, ML model or LLM API. The 2026-11-04 instructor clarification makes public deployment required and CrewAI/ML optional.
+
 # הרצה עם LLM אמיתי
 
 העתיקו `.env.example` ל־`.env` והגדירו `GYMMI_MODEL` בפורמט provider/model ואת מפתח הספק המתאים. אל תשתפו את המפתח. `python run.py --check-live` בודק רק שקיימת הגדרה; הוא אינו מתקשר לספק או מוכיח יתרה.
