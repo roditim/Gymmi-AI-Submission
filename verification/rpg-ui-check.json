@@ -12,5 +12,15 @@
   "database_changes": false,
   "deck_language": "English",
   "speaker_notes_language": "Hebrew",
-  "public_deployment_check_pending": true
+  "public_deployment_check_pending": false,
+  "public_guest_groups_passed": 8,
+  "public_cloud_groups_passed": 10,
+  "public_signup_groups_passed": 6,
+  "public_checked_at_utc": "2026-11-04T15:33:54.402942+00:00",
+  "checked_runtime_commit": "135d68b08615a236b496cfb6dea13f4f038f2f83",
+  "pages_deployment_run": 41858449280,
+  "anonymous_http_status": 200,
+  "public_source_matches": true,
+  "qa_accounts_cleaned_up": true,
+  "hosted_test_ci": false
 }
