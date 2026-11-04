@@ -1,0 +1,16 @@
+{
+  "checked_at_utc": "2026-11-04T15:28:42.710639+00:00",
+  "local_guest_groups_passed": 8,
+  "local_cloud_groups_passed": 10,
+  "local_signup_groups_passed": 6,
+  "visual_review": [
+    "Desktop RPG theme reviewed",
+    "390px mobile layout reviewed",
+    "Eight native English slides rendered and reviewed"
+  ],
+  "rpg_scope": "Visual theme only. No XP, avatars, levels or new data fields.",
+  "database_changes": false,
+  "deck_language": "English",
+  "speaker_notes_language": "Hebrew",
+  "public_deployment_check_pending": true
+}
