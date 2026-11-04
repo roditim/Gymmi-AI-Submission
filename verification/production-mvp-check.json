@@ -22,10 +22,16 @@
     "Browser data deletion removes local journal; backup available",
     "Example plan is an editable organizer, not AI or medical personalization"
   ],
-  "verification_stage": "Local application checked; production URL is verified after publication.",
+  "verification_stage": "Public production verified anonymously after deployment.",
   "optional_historical_lab_regression": {
     "result": "112 passed, 155 warnings",
     "seconds": 49.3,
     "scope": "Earlier Python/CrewAI research, not the production browser app"
-  }
+  },
+  "public_browser_scenario_groups_passed": 8,
+  "anonymous_http_status": 200,
+  "public_app_and_presentation_match_reviewed_source": true,
+  "checked_source_commit": "f117709ca1de65bd57b424a2f7cd142858381a9e",
+  "github_pages_deployment_run": 41791305101,
+  "checked_utc": "2026-11-04T07:21:16.079487+00:00"
 }
