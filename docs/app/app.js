@@ -16,7 +16,7 @@ let authReady = false;
 
 function setBusy(value) {
   busy = value || accountLoading;
-  for (const el of document.querySelectorAll("#workout-form input, #workout-form textarea, #workout-form button, #auth-form input, #auth-form button, #account-actions button, #import-data, #reset-data, #example-plan")) el.disabled = busy;
+  for (const el of document.querySelectorAll("#workout-form input, #workout-form textarea, #workout-form button, #auth-form input, #auth-form button, #account-actions button, #ai-form textarea, #ai-form button, #import-data, #reset-data, #example-plan")) el.disabled = busy;
   byId("save-workout").disabled = busy || storageProblem;
   byId("example-plan").disabled = busy || storageProblem;
   byId("sign-in").disabled = busy || !authReady;
@@ -160,6 +160,7 @@ function workoutCard(row, history = false) {
   return card;
 }
 function render() {
+  refreshAI();
   const start = byId("week-start").value; const end = shiftDate(start, 7);
   const rows = state.workouts.filter(w => w.date >= start && w.date < end).sort((a, b) => a.date.localeCompare(b.date));
   const completed = rows.filter(w => w.status === "completed").length;
@@ -261,6 +262,7 @@ byId("sign-out").addEventListener("click", async () => {
   catch (error) { notice("היציאה נכשלה: " + error.message, true); }
   finally { setBusy(false); }
 });
+setupAI();
 (async () => {
   try {
     // The auth SDK also needs storage. Avoid starting it when access is denied.

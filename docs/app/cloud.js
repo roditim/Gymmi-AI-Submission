@@ -7,7 +7,7 @@ const cloud = (() => {
   function connect() {
     client = supabase.createClient(GYMMI_CONFIG.url, GYMMI_CONFIG.publishableKey, {
       global: { fetch: (url, options = {}) => fetch(url, { ...options,
-        signal: AbortSignal.any([...(options.signal ? [options.signal] : []), AbortSignal.timeout(15000)]) }) }
+        signal: AbortSignal.any([...(options.signal ? [options.signal] : []), AbortSignal.timeout(String(url).includes('/functions/v1/') ? 40000 : 15000)]) }) }
     });
     return client;
   }
@@ -27,5 +27,14 @@ const cloud = (() => {
     if (error) throw error;
     return data.revision;
   }
-  return { connect, load, save };
+  async function plan(body) {
+    const { data, error } = await client.functions.invoke('ai-week-plan', {body});
+    if (error) {
+      let message = 'לא ניתן לקבל הצעת AI כרגע. היומן לא השתנה.';
+      try { const details = await error.context.json(); if (typeof details.error === 'string') message = details.error; } catch {}
+      throw new Error(message);
+    }
+    return data;
+  }
+  return { connect, load, save, plan };
 })();
