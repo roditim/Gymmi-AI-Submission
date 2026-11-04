@@ -210,9 +210,11 @@ byId("export-data").addEventListener("click", () => {
 });
 byId("import-data").addEventListener("change", async event => {
   const file = event.target.files[0]; if (!file) return;
+  const generation = accountGeneration;
   try {
     if (file.size > 1000000) throw new Error("קובץ הגיבוי גדול מדי");
     const imported = validate(JSON.parse(await file.text()));
+    if (generation !== accountGeneration) throw new Error("החשבון השתנה בזמן קריאת הקובץ. בחר שוב את הגיבוי עבור היומן הרצוי.");
     if (confirm("נמצאו " + imported.workouts.length + " אימונים בגיבוי. להחליף את היומן הנוכחי?")) {
       if (await save(imported, true)) { cancelEdit(); render(); notice("הגיבוי שוחזר."); }
     }
