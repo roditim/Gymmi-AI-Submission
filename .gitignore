@@ -10,3 +10,5 @@ verification/*.xml
 verification/*.txt
 
 user_data/
+supabase/.temp/
+supabase/.branches/
