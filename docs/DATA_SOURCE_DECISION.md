@@ -1,3 +1,5 @@
+> Historical / optional research. The production app is docs/app and does not use a dataset, ML model or LLM API. The 2026-11-04 instructor clarification makes public deployment required and CrewAI/ML optional.
+
 # Dataset decision — 2026-11-03
 
 The active task changes explicitly from booked-class no-show prediction to **any recorded gym visit in week2 from prior visit counts**. The course allows choosing a dataset; changing the business question is preferable to asserting unverified redistribution rights.
