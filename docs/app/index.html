@@ -9,11 +9,20 @@
 <script src="cloud.js" defer></script><script src="app.js" defer></script>
 </head>
 <body>
-<header class="wrap"><div><p class="brand">GYMMI</p><h1>התוכנית שלי. ההתקדמות שלי.</h1><p>מתכננים את השבוע, מסמנים אימון שהושלם ורואים התקדמות.</p></div><a href="../">מצגת הפרויקט ↗</a></header>
+<header class="wrap"><a class="brand" href="./" aria-label="Gymmi — הבית"><span class="brand-mark" aria-hidden="true">G</span>GYMMI<span class="brand-sub">TRAINING JOURNAL</span></a><a class="deck-link" href="../">מצגת הפרויקט ↗</a></header>
 <main class="wrap">
 <p id="message" role="status" aria-live="polite" hidden></p>
 <p id="storage-error" role="alert" hidden></p>
-<section class="account" aria-label="החשבון שלי">
+<section class="journey" aria-label="מסע האימונים שלי">
+<div class="journey-copy"><p class="eyebrow">YOUR NEXT CHAPTER</p><h1>כל אימון הוא צעד<br>במסע שלך.</h1><p>בונים את השבוע, משלימים משימות ורואים את הדרך שעשינו.</p><span class="journey-tag">מסע אישי · התקדמות אמיתית</span></div>
+<div class="journey-progress"><div class="journey-emblem" aria-hidden="true"><svg viewBox="0 0 80 90" fill="none"><path d="M40 4 72 17v27c0 20-16 33-32 42C24 77 8 64 8 44V17L40 4Z" stroke="currentColor" stroke-width="2"/><path d="m23 44 11 11 24-25" stroke="currentColor" stroke-width="4"/></svg></div>
+<p class="eyebrow">WEEKLY JOURNEY</p><label class="progress-label" for="week-progress" id="progress-text">עוד לא נוספו אימונים לשבוע הזה</label>
+<progress id="week-progress" max="1" value="0"></progress>
+<section class="summary" aria-label="התקדמות השבוע"><div><strong id="planned-count">0</strong><span>אימונים בתוכנית</span></div><div><strong id="completed-count">0</strong><span>הושלמו</span></div><div><strong id="skipped-count">0</strong><span>סומנו כדילוג</span></div></section>
+</div></section>
+<div class="dashboard">
+<aside class="account" aria-label="החשבון שלי">
+<p class="eyebrow">YOUR JOURNAL</p>
 <h2>החשבון שלי</h2><p id="account-status">מצב אורח — היומן נשמר בדפדפן הזה.</p>
 <form id="auth-form"><div class="form-grid">
 <label>מייל<input id="auth-email" type="email" autocomplete="username" required maxlength="254" dir="ltr"></label>
@@ -22,23 +31,17 @@
 <p class="muted">ב־MVP הלימודי נכנסים מיד אחרי ההרשמה, ללא אישור מייל. הבעלות על כתובת המייל אינה מאומתת. אין כרגע שחזור סיסמה באתר.</p></form>
 <div id="account-actions" class="actions" hidden><button id="reload-cloud" class="secondary" type="button">טען מחדש מהענן</button><button id="upload-local" class="secondary" type="button">העבר יומן מקומי לחשבון</button><button id="sign-out" class="secondary" type="button">יציאה</button></div>
 <p class="muted">בחשבון מחובר האימונים נשמרים ב־Supabase. היומן המקומי נפרד ואינו עולה לענן אוטומטית. לרענון שינויים ממכשיר אחר לחץ ״טען מחדש מהענן״.</p>
-</section>
+</aside>
+<div class="planner">
 <section aria-label="בחירת שבוע" class="week-picker">
 <button type="button" id="previous-week" class="secondary">השבוע הקודם</button>
 <label>שבוע שמתחיל ביום שני<input type="date" id="week-start" required></label>
 <button type="button" id="next-week" class="secondary">השבוע הבא</button>
 <button type="button" id="current-week" class="secondary">השבוע הנוכחי</button>
 </section>
-<section class="summary" aria-label="התקדמות השבוע">
-<div><strong id="planned-count">0</strong><span>אימונים מתוכננים</span></div>
-<div><strong id="completed-count">0</strong><span>הושלמו</span></div>
-<div><strong id="skipped-count">0</strong><span>סומנו כדילוג</span></div>
-</section>
-<label class="progress-label" for="week-progress" id="progress-text">עוד לא נוספו אימונים לשבוע הזה</label>
-<progress id="week-progress" max="1" value="0"></progress>
 <nav aria-label="מסכי האפליקציה"><button type="button" data-view="plan" aria-pressed="true">התוכנית השבועית</button><button type="button" data-view="history" aria-pressed="false">היסטוריה</button><button type="button" data-view="backup" aria-pressed="false">גיבוי ונתונים</button></nav>
 <section id="view-plan">
-<div class="section-title"><h2>האימונים שלי</h2><button type="button" id="example-plan" class="secondary">הוסף תוכנית לדוגמה</button></div>
+<div class="section-title"><div><p class="eyebrow">QUEST BOARD</p><h2>המשימות השבועיות שלי</h2></div><button type="button" id="example-plan" class="secondary">הוסף תוכנית לדוגמה</button></div>
 <p class="muted">תוכנית הדוגמה היא תבנית ארגון. את התרגילים והפרטים אפשר להתאים לתוכנית שלך.</p>
 <div id="workout-list"></div>
 <details id="workout-editor" open><summary id="editor-heading">הוספת אימון</summary>
@@ -51,7 +54,7 @@
 </section>
 <section id="view-history" hidden><h2>היסטוריית אימונים</h2><p class="muted">אימון שלא סומן נשאר מתוכנן. המערכת אינה מניחה שדילגת עליו.</p><div id="history-list"></div></section>
 <section id="view-backup" hidden><h2>גיבוי ונתונים</h2><p>הגיבוי שייך ליומן המוצג: לחשבון בענן כאשר מחוברים, ולדפדפן במצב אורח. שחזור או איפוס בחשבון ישנו גם את היומן בענן. היומן המקומי נשאר נפרד.</p><div class="actions"><button type="button" id="export-data">הורד גיבוי JSON</button><label class="file-label">שחזר מגיבוי<input type="file" id="import-data" accept=".json,application/json"></label></div><p class="muted">בשחזור תופיע בקשת אישור לפני החלפת הנתונים הקיימים. אין להזין מידע רפואי רגיש. אפשר למחוק את אימוני החשבון באמצעות האיפוס; מחיקת חשבון מלאה נעשית כרגע דרך מנהל הפרויקט.</p><button type="button" id="reset-data" class="danger">מחק את הנתונים בדפדפן הזה</button></section>
-</main>
+</div></div></main>
 <footer class="wrap"><p>Gymmi · MVP לימודי לתוכנית ולמעקב אימונים. הגרסה הזו אינה מפעילה מודל חיזוי או סוכן AI.</p><a href="https://github.com/roditim/Gymmi-AI-Submission">קוד הפרויקט ב־GitHub</a></footer>
 <noscript>יש להפעיל JavaScript בדפדפן כדי להשתמש בתוכנית ובמעקב.</noscript>
 </body></html>

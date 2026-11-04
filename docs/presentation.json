@@ -1,111 +1,119 @@
 [
   {
-    "title": "Gymmi",
+    "title": "Gymmi AI",
     "lines": [
-      "תוכנית אימונים שבועית והתקדמות בסיסית",
-      "מתכננים אימון, מסמנים השלמה ורואים התקדמות",
-      "אפליקציית MVP שזמינה באינטרנט בקישור ציבורי"
+      "Workout planning and progress tracking",
+      "A public student MVP with Supabase accounts",
+      "Matan Roditi\nAI Development final project"
     ],
-    "note": "פתיחה: Gymmi הוא מוצר למתאמן שרוצה לארגן את השבוע ולראות מה השלים. לפי הבהרת המרצה מ־4.11.2026 פריסה ציבורית היא חובה, CrewAI הוא המלצה ומודל מאומן אינו חובה. גרסת ההגשה מתמקדת במוצר עובד."
+    "kind": "cover",
+    "note": "פתיחה: Gymmi הוא יומן אימונים למתאמן. אפשר לתכנן שבוע, לסמן השלמה ולפתוח את אותו יומן במכשיר אחר. עיצוב RPG קל מחזיר את אופי הרעיון המקורי, אך המוצר הנוכחי אינו מפעיל AI."
   },
   {
-    "title": "המשתמש והתהליך",
+    "title": "A weekly plan becomes visible progress",
     "lines": [
-      "נכנסים לאפליקציה ובוחרים שבוע",
-      "מוסיפים אימון עם תאריך, משך ופרטי התוכנית",
-      "מסמנים הושלם או דילגתי אחרי האימון",
-      "רואים כמה מתוך התוכנית השבועית הושלם",
-      "נכנסים לחשבון ופותחים את אותה תוכנית במכשיר אחר"
+      "01  Plan the week with dates, duration and routine details.",
+      "02  Complete a workout and record its actual status.",
+      "03  See the completed share of your weekly plan.",
+      "04  Sign in on another device to load the same journal.",
+      "Example: one completed workout out of three planned."
     ],
-    "note": "דוגמה: מתאמן מתכנן שלושה אימונים. לאחר האימון הראשון הוא מסמן הושלם ורואה התקדמות של אחד מתוך שלושה. אין כאן ניסיון להסיק מצב בריאותי או לחזות התנהגות. ערך המוצר הוא ארגון ומעקב פשוטים במקום אחד. בחשבון מחובר היומן נשמר בענן. באישור מפורש עבור ה־MVP הלימודי, ההרשמה מכניסה מיד לחשבון ללא אישור מייל; אין אימות בעלות על הכתובת."
+    "kind": "steps",
+    "note": "דוגמה פשוטה: תכננתי שלושה אימונים, השלמתי אחד והמערכת מציגה אחד מתוך שלושה. זו ספירה של נתונים שהמשתמש סימן, לא תחזית ולא המלצה רפואית. שינוי השבוע משנה את האימונים ואת ההתקדמות המוצגים."
   },
   {
-    "title": "מה יש ב־MVP",
+    "title": "A small product works end to end",
     "lines": [
-      "תוכנית שבועית: הוספה, עריכה ומחיקת אימונים",
-      "סימון השלמה או דילוג, עם אפשרות לתקן",
-      "היסטוריה והתקדמות לפי שבוע",
-      "חשבון בענן לצד מצב אורח וגיבוי קובץ"
+      "Weekly planning\nAdd, edit and delete your workouts.",
+      "Progress and history\nComplete, skip or undo a status.",
+      "Private cloud journal\nSign up, sign in and load another device.",
+      "RPG-inspired interface\nA journey panel, quest cards and clear status badges."
     ],
-    "note": "תוכנית הדוגמה כוללת שלושה שמות אימון וניתנת לעריכה. המשתמש יכול להכניס תרגילים מהתוכנית שלו או מזו שקיבל ממאמן. אין יצירת תוכנית באמצעות AI או התאמה רפואית. אימון עתידי אינו ניתן לסימון כהושלם; אימון שלא סומן אינו כישלון אוטומטי."
+    "kind": "features",
+    "note": "הממשק החדש הוא CSS ו-HTML עם תגיות סטטוס קטנות ב-JavaScript. אין עדיין דמות, XP, רמות או מערכת משימות נפרדת. משימה היא אותו אימון ברשימה, כך שאפשר להסביר את כל המוצר בפשטות."
   },
   {
-    "title": "הקוד והפריסה",
+    "title": "Simple code connects to managed services",
     "lines": [
-      "דפי האתר מגדירים את המסכים והעיצוב",
-      "קוד פשוט מגיב לפעולות ומחשב התקדמות",
-      "שירות הענן מספק התחברות ומסד נתונים",
-      "הממשק מתפרסם באינטרנט דרך GitHub Pages"
+      "Browser\nHTML and CSS display the app.\napp.js handles actions and state.",
+      "Supabase Auth\nEmail and password create a session.\nThe session identifies the user.",
+      "Postgres with RLS\nOne JSON journal per account.\nDatabase rules enforce ownership.",
+      "GitHub Pages serves the public HTTPS app. cloud.js reads and writes Supabase."
     ],
-    "note": "הממשק הוא HTML, CSS ו-JavaScript, ללא framework או build. app.js מנהל מסך ופעולות, cloud.js קורא וכותב ב-Supabase. השירות מספק Auth ו-Postgres; לא כתבנו שרת Python עבור המוצר הציבורי. בפרויקט יש SDK חיצוני רשמי עם רישיון, ולא מציגים אותו כקוד שכתבנו."
+    "kind": "architecture",
+    "note": "הדפדפן הוא המסך והלוגיקה. Supabase Auth בודק סיסמה ומחזיר Session. cloud.js שולח בקשה עם ה-Session למסד, ו-RLS בודקת שה-user_id בשורה תואם למשתמש. GitHub Pages מאחסן את קבצי האתר; הוא אינו מסד הנתונים. במצב אורח היומן נשמר רק ב-localStorage."
   },
   {
-    "title": "שמירת נתונים",
+    "title": "A save needs a server acknowledgment",
     "lines": [
-      "אורח שומר בדפדפן; חשבון שומר בענן",
-      "הרשאות במסד מפרידות בין המשתמשים",
-      "גרסה ישנה אינה דורסת עדכון ממכשיר אחר",
-      "שמירה שנכשלה אינה מוצגת כהצלחה"
+      "01  Validate dates, required fields and the backup format.",
+      "02  Send the journal with the revision that the browser loaded.",
+      "03  Update the visible journal only after the server accepts it.",
+      "04  Reject stale writes and preserve the form draft on network failure."
     ],
-    "note": "טבלת workout_journals מכילה יומן JSON ומספר revision לכל user_id. RLS בודקת שהמשתמש הוא הבעלים. עדכון מותנה במספר הגרסה שנקרא; במקרה התנגשות טוענים מחדש. אין Realtime. העברת היומן המקומי לענן נעשית רק באישור המשתמש, והוא נשאר כגיבוי מקומי."
+    "kind": "steps",
+    "note": "save ב-app.js בודקת מידע ואז ממתינה לשמירה. cloud.js מעדכנת רק שורה עם אותה גרסה שקראנו. אם מכשיר אחר כבר שמר, העדכון נדחה ומבקשים לטעון מחדש. זו מניעת דריסה, לא מיזוג בזמן אמת. import בודקת גם שהחשבון לא התחלף בזמן קריאת הקובץ."
   },
   {
-    "title": "בדיקות משתמש",
+    "title": "24 scenario groups cover the user journey",
     "lines": [
-      "נבדקו מצב אורח ושמירה בענן מול השירות האמיתי",
-      "נבדקו בידוד חשבונות, גרסה ישנה וכשל רשת"
+      "Browser checks use real Supabase and disposable QA accounts.",
+      "The results describe executed checks. Hosted test CI is not configured."
     ],
+    "kind": "tests",
     "table": [
       [
-        "Scenario",
-        "Action",
-        "Expected",
-        "Scope",
+        "Area",
+        "Groups",
+        "Examples",
+        "Environment",
         "Result"
       ],
       [
-        "Cloud diary",
-        "Reload / device",
-        "Same diary",
-        "Real service",
+        "Guest diary",
+        "8",
+        "Edit, backup, errors",
+        "Browser",
         "Passed"
       ],
       [
-        "Account isolation",
-        "Read / update",
-        "Blocked",
-        "User API",
+        "Cloud journal",
+        "10",
+        "RLS, stale writes",
+        "Real Supabase",
         "Passed"
       ],
       [
-        "Stale write",
-        "Save old copy",
-        "No overwrite",
-        "Revision",
+        "Public signup",
+        "6",
+        "Register, reload, login",
+        "Real Supabase",
         "Passed"
       ]
     ],
-    "note": "בדיקות הענן משתמשות בשני חשבונות QA זמניים שאומתו בניהול ונמחקו בסוף. נבדקות גם בקשות API ישירות. אין כאן בדיקת מסירת מייל לציבור. תוצאות ב-verification/supabase-cloud-check.json; בדיקות האורח נפרדות ממעבדת ה-ML הישנה. אין hosted test CI פעיל. בדיקת signup_mvp.cjs מפעילה בנוסף הרשמה אמיתית דרך הטופס ללא אישור מנהל ובודקת שמירה וכניסה מחדש. תוצאותיה נרשמות ב-verification/signup-check.json."
+    "note": "נבדקו שמונה קבוצות מצב אורח, עשר ענן ושש הרשמה. בדיקות הרשמה משתמשות בטופס הרגיל ללא אישור מנהל. בדיקות RLS כוללות פנייה ישירה ל-API מחשבון אחר. חשבונות QA הם זמניים ונמחקים. לא להגיד שאלה 24 משתמשים, 24 בדיקות יחידה או CI אוטומטי; אלה קבוצות תרחישים בדפדפן."
   },
   {
-    "title": "הדגמה באינטרנט",
+    "title": "A five-minute demo tells the story",
     "lines": [
-      "פותחים את הקישור הציבורי לאפליקציה",
-      "מוסיפים תוכנית ומסמנים אימון שהושלם",
-      "בחשבון קיים: טוענים את היומן במכשיר אחר",
-      "מראים היסטוריה, גיבוי ומגבלות אמיתיות"
+      "Open the public app and register a new account.",
+      "Add three workouts, then complete one dated today or earlier.",
+      "Show the progress, history and persistence after reload.",
+      "Sign in with a separate browser to load the same cloud journal."
     ],
-    "note": "אפשר להירשם דרך הקישור הציבורי עם סיסמה בת 10 תווים לפחות ולהדגים שמירה וכניסה מחדש. אין שליחת מייל: לפי אישור מפורש, הבעלות על הכתובת אינה מאומתת ב-MVP הלימודי. אין חשבון דמו משותף ואין להזין מידע רפואי רגיש. קיימת גם אפשרות להשתמש במצב אורח."
+    "kind": "steps",
+    "note": "תרגל מראש עם אימוני דוגמה ולא עם מידע רפואי. בחר שבוע נוכחי ואימון היום או בעבר, כי לא ניתן לסמן אימון עתידי. הצג יציאה וכניסה מחדש. בחלון נפרד התחבר לאותו חשבון, ואז לחץ טעינה מחדש מהענן אם כבר פתחת אותו קודם. סיים בשני קבצי קוד ובמדיניות SQL אחת."
   },
   {
-    "title": "היקף והמשך אפשרי",
+    "title": "A focused MVP follows the clarified brief",
     "lines": [
-      "המוצר: תוכנית, השלמה והתקדמות בסיסית",
-      "הרשמה מיידית ללא אימות מייל; אין שחזור סיסמה",
-      "הבהרת המרצה: אתר ציבורי חובה; סוכנים ומודל אופציונליים",
-      "ניסויי המחקר הקודמים אינם מופעלים במוצר",
-      "נעזרתי בעוזר קוד ואני נדרש להסביר את המימוש"
+      "Production: a public HTTPS app and a public GitHub repository.",
+      "Core product: workout planning, completion and weekly progress.",
+      "RPG today: visual style. Avatars, XP and levels remain future work.",
+      "AI and ML: earlier optional research, inactive in the public app.",
+      "Known limits: unverified emails, no password recovery and manual refresh."
     ],
-    "note": "ההבהרה המאוחרת של המרצה קודמת להצעה המקורית. אין AI פעיל, חיזוי השלמה או RPG במוצר הציבורי. Supabase נוסף לבקשת המשתמש ואינו דרישה של המרצה. Free עשוי להשהות פרויקט אחרי פעילות נמוכה במשך שבוע. אין טענה לציון מובטח או לכך שההגשה נשלחה. ב־4.11.2026 המשתמש אישר במפורש הרשמה ללא אימות מייל עבור ה־MVP. כתובות אינן הוכחה לבעלות ואין לתאר את החשבונות כחשבונות בעלי כתובת מאומתת."
+    "kind": "scope",
+    "note": "ההבהרה האחרונה של יונתן היא הקובעת: אתר ציבורי חובה, CrewAI ו-ML אינם חובה. היו ניסויי מחקר קודמים, אך אין לקרוא למודל הביקורים ההיסטורי חיזוי השלמת אימון. המשתמש אישר במפורש שאין אימות מייל ב-MVP הלימודי. Free עשוי להשהות פרויקט בתקופה של פעילות נמוכה. נעזרתי בעוזר קוד, ואני צריך לדעת להסביר את ההגשה בעצמי."
   }
 ]
