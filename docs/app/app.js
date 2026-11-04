@@ -142,9 +142,11 @@ function cancelEdit() {
 }
 function workoutCard(row, history = false) {
   const card = element("article", undefined, "workout " + row.status); card.dataset.id = row.id;
-  card.append(element("p", new Intl.DateTimeFormat("he-IL", { weekday: "long", day: "numeric", month: "long" }).format(parseDate(row.date)), "date"));
+  const heading = element("div", undefined, "quest-header");
+  heading.append(element("p", new Intl.DateTimeFormat("he-IL", { weekday: "long", day: "numeric", month: "long" }).format(parseDate(row.date)), "date"));
+  heading.append(element("span", statusNames[row.status], "status-badge")); card.append(heading);
   card.append(element("h3", row.title), element("p", row.exercises));
-  card.append(element("p", row.minutes + " דקות מתוכננות · " + statusNames[row.status], "muted"));
+  card.append(element("p", row.minutes + " דקות מתוכננות", "muted"));
   if (!history) {
     const buttons = element("div", undefined, "actions");
     buttons.append(action("סמן הושלם", () => mark(row.id, "completed"), storageProblem || row.date > today() || row.status === "completed", ""));
