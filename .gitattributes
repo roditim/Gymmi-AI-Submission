@@ -1,3 +1,5 @@
 
 # Preserve sealed artifact bytes across Windows/Linux checkouts.
 artifacts/** -text whitespace=cr-at-eol
+# Keep the official vendored distribution byte-for-byte, including its strings.
+docs/app/vendor/supabase.js -text -whitespace
