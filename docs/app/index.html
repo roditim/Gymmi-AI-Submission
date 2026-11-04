@@ -6,7 +6,7 @@
 <title>Gymmi · התוכנית שלי</title>
 <link rel="stylesheet" href="style.css">
 <script src="config.js" defer></script>
-<script src="cloud.js" defer></script><script src="app.js" defer></script>
+<script src="cloud.js" defer></script><script src="ai.js" defer></script><script src="app.js" defer></script>
 </head>
 <body>
 <header class="wrap"><a class="brand" href="./" aria-label="Gymmi — הבית"><span class="brand-mark" aria-hidden="true">G</span>GYMMI<span class="brand-sub">TRAINING JOURNAL</span></a><a class="deck-link" href="../">מצגת הפרויקט ↗</a></header>
@@ -40,6 +40,14 @@
 <button type="button" id="current-week" class="secondary">השבוע הנוכחי</button>
 </section>
 <nav aria-label="מסכי האפליקציה"><button type="button" data-view="plan" aria-pressed="true">התוכנית השבועית</button><button type="button" data-view="history" aria-pressed="false">היסטוריה</button><button type="button" data-view="backup" aria-pressed="false">גיבוי ונתונים</button></nav>
+<section class="ai-planner" aria-labelledby="ai-heading">
+<p class="eyebrow">AI WEEK PLANNER</p><h2 id="ai-heading">מתי נוח לך להתאמן?</h2>
+<p class="muted" id="ai-status">התחבר לחשבון כדי לקבל הצעת שיבוץ לאימונים שלך.</p>
+<form id="ai-form"><label for="ai-preferences">ימים פנויים ומגבלות זמן</label><textarea id="ai-preferences" minlength="5" maxlength="500" rows="2" required placeholder="למשל: פנוי ביום שני וחמישי, עד 30 דקות בכל יום"></textarea>
+<p class="muted">בלחיצה יישלחו ל־OpenAI הזמינות שכתבת, שמות ומשך האימונים המתוכננים בשבוע הנבחר (עד 7). פרטי התרגילים והיסטוריית ההשלמות לא נשלחים. זו הצעת לוח זמנים לבדיקה, ולא תוכנית אימון או המלצה רפואית. אל תזין מידע רפואי.</p>
+<button id="ai-generate" type="submit" disabled>הצע שיבוץ עם AI</button></form>
+<div id="ai-proposal" hidden><h3>הצעה לבדיקה — עדיין לא נשמרה</h3><p id="ai-summary"></p><ul id="ai-assignments"></ul><ul id="ai-warnings"></ul><p class="muted">אימונים שלא מופיעים בהצעה יישארו בתאריכים המקוריים. בדוק שהתאריכים מתאימים לך לפני אישור.</p><div class="actions"><button id="ai-apply" type="button">אשר ושמור את השיבוץ</button><button id="ai-dismiss" type="button" class="secondary">בטל הצעה</button></div></div>
+</section>
 <section id="view-plan">
 <div class="section-title"><div><p class="eyebrow">QUEST BOARD</p><h2>המשימות השבועיות שלי</h2></div><button type="button" id="example-plan" class="secondary">הוסף תוכנית לדוגמה</button></div>
 <p class="muted">תוכנית הדוגמה היא תבנית ארגון. את התרגילים והפרטים אפשר להתאים לתוכנית שלך.</p>
@@ -55,6 +63,6 @@
 <section id="view-history" hidden><h2>היסטוריית אימונים</h2><p class="muted">אימון שלא סומן נשאר מתוכנן. המערכת אינה מניחה שדילגת עליו.</p><div id="history-list"></div></section>
 <section id="view-backup" hidden><h2>גיבוי ונתונים</h2><p>הגיבוי שייך ליומן המוצג: לחשבון בענן כאשר מחוברים, ולדפדפן במצב אורח. שחזור או איפוס בחשבון ישנו גם את היומן בענן. היומן המקומי נשאר נפרד.</p><div class="actions"><button type="button" id="export-data">הורד גיבוי JSON</button><label class="file-label">שחזר מגיבוי<input type="file" id="import-data" accept=".json,application/json"></label></div><p class="muted">בשחזור תופיע בקשת אישור לפני החלפת הנתונים הקיימים. אין להזין מידע רפואי רגיש. אפשר למחוק את אימוני החשבון באמצעות האיפוס; מחיקת חשבון מלאה נעשית כרגע דרך מנהל הפרויקט.</p><button type="button" id="reset-data" class="danger">מחק את הנתונים בדפדפן הזה</button></section>
 </div></div></main>
-<footer class="wrap"><p>Gymmi · MVP לימודי לתוכנית ולמעקב אימונים. הגרסה הזו אינה מפעילה מודל חיזוי או סוכן AI.</p><a href="https://github.com/roditim/Gymmi-AI-Submission">קוד הפרויקט ב־GitHub</a></footer>
+<footer class="wrap"><p>Gymmi · יומן אימונים עם עוזר AI לשיבוץ שבועי באישור המשתמש. אין חיזוי השלמה או התאמה רפואית.</p><a href="https://github.com/roditim/Gymmi-AI-Submission">קוד הפרויקט ב־GitHub</a></footer>
 <noscript>יש להפעיל JavaScript בדפדפן כדי להשתמש בתוכנית ובמעקב.</noscript>
 </body></html>

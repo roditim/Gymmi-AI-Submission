@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {weekDates, requestData, candidates, providerRequest, validateProposal, modelProposal} from '../supabase/functions/ai-week-plan/planner.mjs';
+const body={weekStart:'2026-11-09',preferences:'Monday and Thursday only',workoutIds:['a','b']};
+const rows=[{id:'a',date:'2026-11-09',status:'planned',title:'Walk',minutes:30,exercises:'PRIVATE_DETAILS'}, {id:'b',date:'2026-11-10',status:'planned',title:'Strength',minutes:30}];
+const input=candidates(requestData(body),rows,'2026-11-09');
+const good={summary:'הצעה',assignments:[{workoutId:'a',date:'2026-11-09',reason:'זמינות'}],warnings:[]};
+test('valid week and partial proposals allow unscheduled workouts to remain unchanged',()=>assert.equal(validateProposal(good,input),good));
+test('invalid, impossible and non-Monday dates fail',()=>{for(const d of ['bad','2026-02-30','2026-11-10'])assert.throws(()=>weekDates(d));});
+test('request bounds and duplicate workout ids fail',()=>{assert.throws(()=>requestData({...body,preferences:'x'.repeat(501)}));assert.throws(()=>requestData({...body,workoutIds:['a','a']}));});
+test('foreign, completed and out-of-week workouts fail',()=>{assert.throws(()=>candidates(requestData(body),[], '2026-11-09'));for(const changes of [{status:'completed'},{date:'2026-12-01'}])assert.throws(()=>candidates(requestData(body),[{...rows[0],...changes},rows[1]],'2026-11-09'));});
+test('past dates never reach the model',()=>{const i=candidates(requestData(body),rows,'2026-11-12');assert.ok(i.dates.every(d=>d>='2026-11-12'));assert.throws(()=>candidates(requestData(body),rows,'2026-11-16'));});
+test('provider receives minimal data and a strict structured schema',()=>{const r=providerRequest(body.preferences,input),raw=JSON.stringify(r);assert.equal(r.store,false);assert.equal(r.text.format.strict,true);assert.ok(!raw.includes('PRIVATE_DETAILS'));assert.ok(JSON.parse(r.input).workouts.every(w=>!Object.hasOwn(w,'exercises')));assert.equal(r.model,'gpt-5.4-mini');});
+test('model cannot invent workout ids or dates',()=>{for(const row of [{...good.assignments[0],workoutId:'foreign'},{...good.assignments[0],date:'2026-12-01'}])assert.throws(()=>validateProposal({...good,assignments:[row]},input));});
+test('duplicate ids, duplicate dates and oversized explanations fail',()=>{assert.throws(()=>validateProposal({...good,assignments:[good.assignments[0],good.assignments[0]]},input));assert.throws(()=>validateProposal({...good,assignments:[good.assignments[0],{...good.assignments[0],workoutId:'b'}]},input));assert.throws(()=>validateProposal({...good,summary:'x'.repeat(801)},input));});
+test('weekday-to-date conversion is deterministic; unknown weekdays fail',()=>{assert.equal(modelProposal({...good,assignments:[{workoutId:'a',weekday:'Wednesday',reason:'ok'}]},input).assignments[0].date,'2026-11-11');assert.throws(()=>modelProposal({...good,assignments:[{workoutId:'a',weekday:'Unknown',reason:'bad'}]},input));});

@@ -2,7 +2,7 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "Workout planning and progress tracking",
+      "Workout tracking with an AI weekly planner",
       "A public student MVP with Supabase accounts",
       "Matan Roditi\nAI Development final project"
     ],
@@ -12,7 +12,7 @@
     "title": "A weekly plan becomes visible progress",
     "lines": [
       "01  Plan the week with dates, duration and routine details.",
-      "02  Complete a workout and record its actual status.",
+      "02  Describe your availability and review an AI scheduling proposal.",
       "03  See the completed share of your weekly plan.",
       "04  Sign in on another device to load the same journal.",
       "Example: one completed workout out of three planned."
@@ -23,66 +23,66 @@
     "title": "A small product works end to end",
     "lines": [
       "Weekly planning\nAdd, edit and delete your workouts.",
-      "Progress and history\nComplete, skip or undo a status.",
+      "AI weekly planner\nDescribe availability, review a proposal and approve dates.",
       "Private cloud journal\nSign up, sign in and load another device.",
-      "RPG-inspired interface\nA journey panel, quest cards and clear status badges."
+      "Progress and RPG-inspired UI\nWeekly completion, history and quest-style workout cards."
     ],
     "kind": "features"
   },
   {
     "title": "Simple code connects to managed services",
     "lines": [
-      "Browser\nHTML and CSS display the app.\napp.js handles actions and state.",
-      "Supabase Auth\nEmail and password create a session.\nThe session identifies the user.",
-      "Postgres with RLS\nOne JSON journal per account.\nDatabase rules enforce ownership.",
-      "GitHub Pages serves the public HTTPS app. cloud.js reads and writes Supabase."
+      "Browser app\nForms, journal state and proposal review.\nApproval uses the existing save flow.",
+      "Supabase\nAuth and owner-only journal access.\nEdge Function validates AI requests.",
+      "OpenAI\nGPT-5.4 Mini interprets availability.\nReturns a structured weekday proposal.",
+      "The API key stays in Supabase Secrets. The server checks ownership, quotas and output."
     ],
     "kind": "architecture"
   },
   {
-    "title": "A save needs a server acknowledgment",
+    "title": "The user approves every AI change",
     "lines": [
-      "01  Validate dates, required fields and the backup format.",
-      "02  Send the journal with the revision that the browser loaded.",
-      "03  Update the visible journal only after the server accepts it.",
-      "04  Reject stale writes and preserve the form draft on network failure."
+      "01  Read availability and existing workout metadata.",
+      "02  Ask the model for a structured weekday proposal.",
+      "03  Validate ids and dates, then show a preview.",
+      "04  Save the approved dates with revision checks."
     ],
     "kind": "steps"
   },
   {
-    "title": "24 scenario groups cover the user journey",
+    "title": "AI proposals have their own validation checks",
     "lines": [
-      "Browser checks use real Supabase and disposable QA accounts.",
-      "The results describe executed checks. Hosted test CI is not configured."
+      "Two real model calls per AI browser run. Invalid and stale output cases use labelled mocks.",
+      "Daily and global limits were checked. Hosted test CI is not configured."
     ],
     "kind": "tests",
     "table": [
       [
         "Area",
-        "Groups",
+        "Count",
         "Examples",
-        "Environment",
+        "Scope",
         "Result"
       ],
       [
-        "Guest diary",
-        "8",
-        "Edit, backup, errors",
+        "Journal flows",
+        "24",
+        "Guest, cloud, signup",
         "Browser",
         "Passed"
       ],
       [
-        "Cloud journal",
-        "10",
-        "RLS, stale writes",
-        "Real Supabase",
+        "AI planner",
+        "8",
+        "Real model + mocks",
+        "Browser",
         "Passed"
       ],
       [
-        "Public signup",
-        "6",
-        "Register, reload, login",
-        "Real Supabase",
+        "Output rules",
+        "9",
+        "IDs, dates, privacy",
+        "Unit checks",
         "Passed"
       ]
     ]
@@ -90,10 +90,10 @@
   {
     "title": "A five-minute demo tells the story",
     "lines": [
-      "Open the public app and register a new account.",
-      "Add three workouts, then complete one dated today or earlier.",
-      "Show the progress, history and persistence after reload.",
-      "Sign in with a separate browser to load the same cloud journal."
+      "Register, mark a current workout complete and reload the journal.",
+      "Open next week and add a small set of planned workouts.",
+      "Describe available days, request AI help and inspect the proposal.",
+      "Approve the schedule, reload and show the saved dates."
     ],
     "kind": "steps"
   },
@@ -103,8 +103,8 @@
       "Production: a public HTTPS app and a public GitHub repository.",
       "Core product: workout planning, completion and weekly progress.",
       "RPG today: visual style. Avatars, XP and levels remain future work.",
-      "AI and ML: earlier optional research, inactive in the public app.",
-      "Known limits: unverified emails, no password recovery and manual refresh."
+      "AI today: a server-backed scheduler. Trained ML and CrewAI remain optional.",
+      "Limits: AI suggestions need review. Emails are unverified and recovery is unavailable."
     ],
     "kind": "scope"
   }
