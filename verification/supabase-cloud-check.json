@@ -7,7 +7,7 @@
   "paid_addons_enabled": false,
   "production_app": "https://roditim.github.io/Gymmi-AI-Submission/app/",
   "local_guest_scenario_groups_passed": 8,
-  "local_cloud_scenario_groups_passed": 9,
+  "local_cloud_scenario_groups_passed": 10,
   "cloud_checks": [
     "sign-in keeps local guest diary separate; no automatic upload",
     "cloud add/completion persist after reload and on a separate browser device",
@@ -17,6 +17,7 @@
     "failed cloud load blocks editing and successful reload restores it",
     "explicit guest upload, sign-out restores guest data, account switch has no data bleed",
     "validated backup replacement is a single cloud write",
+    "a backup file still being read cannot replace the diary after an account switch",
     "no browser runtime errors; mobile layout has no horizontal overflow"
   ],
   "public_cloud_scenario_groups_passed": null,
