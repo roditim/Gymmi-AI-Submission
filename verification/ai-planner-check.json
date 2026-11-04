@@ -10,7 +10,7 @@
     "server rejects foreign/completed workouts; users cannot alter AI quota",
     "real OpenAI proposal respects specified days and does not auto-save",
     "explicit approval persists dates; completed workout and exercise details remain unchanged",
-    "cancelling a second real proposal leaves the journal unchanged",
+    "Hebrew availability works with a second real proposal; cancellation leaves the journal unchanged",
     "invalid model-shaped output is blocked in the browser without saving",
     "fourth daily attempt is rejected before a model call",
     "changing preferences or editing the diary invalidates a stale AI preview (mocked response)"
@@ -40,5 +40,9 @@
     "OpenAI usage may be billed separately; Supabase organization remains Free",
     "At most 7 workouts and 500 preference characters",
     "100 demo attempts do not reset automatically"
+  ],
+  "real_availability_languages_tested": [
+    "English",
+    "Hebrew"
   ]
 }
