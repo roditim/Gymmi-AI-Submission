@@ -1,103 +1,111 @@
 [
   {
-    "title": "Gymmi",
+    "title": "Gymmi AI",
     "lines": [
-      "תוכנית אימונים שבועית והתקדמות בסיסית",
-      "מתכננים אימון, מסמנים השלמה ורואים התקדמות",
-      "אפליקציית MVP שזמינה באינטרנט בקישור ציבורי"
-    ]
-  },
-  {
-    "title": "המשתמש והתהליך",
-    "lines": [
-      "נכנסים לאפליקציה ובוחרים שבוע",
-      "מוסיפים אימון עם תאריך, משך ופרטי התוכנית",
-      "מסמנים הושלם או דילגתי אחרי האימון",
-      "רואים כמה מתוך התוכנית השבועית הושלם",
-      "נכנסים לחשבון ופותחים את אותה תוכנית במכשיר אחר"
-    ]
-  },
-  {
-    "title": "מה יש ב־MVP",
-    "lines": [
-      "תוכנית שבועית: הוספה, עריכה ומחיקת אימונים",
-      "סימון השלמה או דילוג, עם אפשרות לתקן",
-      "היסטוריה והתקדמות לפי שבוע",
-      "חשבון בענן לצד מצב אורח וגיבוי קובץ"
-    ]
-  },
-  {
-    "title": "הקוד והפריסה",
-    "lines": [
-      "דפי האתר מגדירים את המסכים והעיצוב",
-      "קוד פשוט מגיב לפעולות ומחשב התקדמות",
-      "שירות הענן מספק התחברות ומסד נתונים",
-      "הממשק מתפרסם באינטרנט דרך GitHub Pages"
-    ]
-  },
-  {
-    "title": "שמירת נתונים",
-    "lines": [
-      "אורח שומר בדפדפן; חשבון שומר בענן",
-      "הרשאות במסד מפרידות בין המשתמשים",
-      "גרסה ישנה אינה דורסת עדכון ממכשיר אחר",
-      "שמירה שנכשלה אינה מוצגת כהצלחה"
-    ]
-  },
-  {
-    "title": "בדיקות משתמש",
-    "lines": [
-      "נבדקו מצב אורח ושמירה בענן מול השירות האמיתי",
-      "נבדקו בידוד חשבונות, גרסה ישנה וכשל רשת"
+      "Workout planning and progress tracking",
+      "A public student MVP with Supabase accounts",
+      "Matan Roditi\nAI Development final project"
     ],
+    "kind": "cover"
+  },
+  {
+    "title": "A weekly plan becomes visible progress",
+    "lines": [
+      "01  Plan the week with dates, duration and routine details.",
+      "02  Complete a workout and record its actual status.",
+      "03  See the completed share of your weekly plan.",
+      "04  Sign in on another device to load the same journal.",
+      "Example: one completed workout out of three planned."
+    ],
+    "kind": "steps"
+  },
+  {
+    "title": "A small product works end to end",
+    "lines": [
+      "Weekly planning\nAdd, edit and delete your workouts.",
+      "Progress and history\nComplete, skip or undo a status.",
+      "Private cloud journal\nSign up, sign in and load another device.",
+      "RPG-inspired interface\nA journey panel, quest cards and clear status badges."
+    ],
+    "kind": "features"
+  },
+  {
+    "title": "Simple code connects to managed services",
+    "lines": [
+      "Browser\nHTML and CSS display the app.\napp.js handles actions and state.",
+      "Supabase Auth\nEmail and password create a session.\nThe session identifies the user.",
+      "Postgres with RLS\nOne JSON journal per account.\nDatabase rules enforce ownership.",
+      "GitHub Pages serves the public HTTPS app. cloud.js reads and writes Supabase."
+    ],
+    "kind": "architecture"
+  },
+  {
+    "title": "A save needs a server acknowledgment",
+    "lines": [
+      "01  Validate dates, required fields and the backup format.",
+      "02  Send the journal with the revision that the browser loaded.",
+      "03  Update the visible journal only after the server accepts it.",
+      "04  Reject stale writes and preserve the form draft on network failure."
+    ],
+    "kind": "steps"
+  },
+  {
+    "title": "24 scenario groups cover the user journey",
+    "lines": [
+      "Browser checks use real Supabase and disposable QA accounts.",
+      "The results describe executed checks. Hosted test CI is not configured."
+    ],
+    "kind": "tests",
     "table": [
       [
-        "Scenario",
-        "Action",
-        "Expected",
-        "Scope",
+        "Area",
+        "Groups",
+        "Examples",
+        "Environment",
         "Result"
       ],
       [
-        "Cloud diary",
-        "Reload / device",
-        "Same diary",
-        "Real service",
+        "Guest diary",
+        "8",
+        "Edit, backup, errors",
+        "Browser",
         "Passed"
       ],
       [
-        "Account isolation",
-        "Read / update",
-        "Blocked",
-        "User API",
+        "Cloud journal",
+        "10",
+        "RLS, stale writes",
+        "Real Supabase",
         "Passed"
       ],
       [
-        "Stale write",
-        "Save old copy",
-        "No overwrite",
-        "Revision",
+        "Public signup",
+        "6",
+        "Register, reload, login",
+        "Real Supabase",
         "Passed"
       ]
     ]
   },
   {
-    "title": "הדגמה באינטרנט",
+    "title": "A five-minute demo tells the story",
     "lines": [
-      "פותחים את הקישור הציבורי לאפליקציה",
-      "מוסיפים תוכנית ומסמנים אימון שהושלם",
-      "בחשבון קיים: טוענים את היומן במכשיר אחר",
-      "מראים היסטוריה, גיבוי ומגבלות אמיתיות"
-    ]
+      "Open the public app and register a new account.",
+      "Add three workouts, then complete one dated today or earlier.",
+      "Show the progress, history and persistence after reload.",
+      "Sign in with a separate browser to load the same cloud journal."
+    ],
+    "kind": "steps"
   },
   {
-    "title": "היקף והמשך אפשרי",
+    "title": "A focused MVP follows the clarified brief",
     "lines": [
-      "המוצר: תוכנית, השלמה והתקדמות בסיסית",
-      "הרשמה מיידית ללא אימות מייל; אין שחזור סיסמה",
-      "הבהרת המרצה: אתר ציבורי חובה; סוכנים ומודל אופציונליים",
-      "ניסויי המחקר הקודמים אינם מופעלים במוצר",
-      "נעזרתי בעוזר קוד ואני נדרש להסביר את המימוש"
-    ]
+      "Production: a public HTTPS app and a public GitHub repository.",
+      "Core product: workout planning, completion and weekly progress.",
+      "RPG today: visual style. Avatars, XP and levels remain future work.",
+      "AI and ML: earlier optional research, inactive in the public app.",
+      "Known limits: unverified emails, no password recovery and manual refresh."
+    ],
+    "kind": "scope"
   }
 ]
