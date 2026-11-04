@@ -236,7 +236,7 @@ async function authenticate(signUp) {
     const result = signUp ? await authClient.auth.signUp(credentials) : await authClient.auth.signInWithPassword(credentials);
     if (result.error) throw result.error;
     byId("auth-password").value = "";
-    notice(signUp && !result.data.session ? "ההרשמה התקבלה. אם החשבון חדש, יש לאשר את הקישור במייל לפני כניסה." : "הכניסה הצליחה.");
+    notice(signUp ? (result.data.session ? "החשבון נוצר ונכנסת בהצלחה. כתובת המייל אינה מאומתת ב־MVP הלימודי." : "לא התקבלה כניסה אוטומטית. נסה להיכנס או בדוק את הגדרות ההרשמה.") : "הכניסה הצליחה.");
   } catch (error) { notice("הפעולה לא הושלמה: " + error.message, true); }
   finally { setBusy(false); }
 }

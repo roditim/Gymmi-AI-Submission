@@ -1,0 +1,29 @@
+{
+  "checked_at_utc": "2026-11-04T13:44:18.087169+00:00",
+  "project_ref": "yvzfkaswrohpniheubpn",
+  "organization_plan_verified": "free",
+  "educational_mvp": true,
+  "user_explicitly_approved_no_email_verification_on": "2026-11-04",
+  "email_confirmation_required": false,
+  "email_ownership_verified": false,
+  "password_min_length": 10,
+  "local_signup_scenario_groups_passed": 6,
+  "public_signup_scenario_groups_passed": 6,
+  "public_url": "https://roditim.github.io/Gymmi-AI-Submission/app/",
+  "checks": [
+    "real browser signup returns a session without email or admin confirmation",
+    "newly registered account saves a workout and completion across reload",
+    "sign-out and password sign-in restore the same cloud diary",
+    "independent browser device loads the registered account and completion",
+    "wrong password leaves guest mode and cloud data inaccessible",
+    "duplicate signup does not create a replacement account or sign in"
+  ],
+  "public_signup_used_admin_confirmation": false,
+  "admin_key_used_only_for_disposable_qa_cleanup": true,
+  "qa_account_deleted": true,
+  "smtp_configured": false,
+  "email_delivery_required": false,
+  "password_recovery_available": false,
+  "public_check_phase": "Auth configuration enabled; updated UI wording verified locally before its deployment",
+  "historical_cloud_receipt": "supabase-cloud-check.json reflects its earlier email-confirmation-enabled capture"
+}
