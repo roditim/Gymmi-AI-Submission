@@ -122,6 +122,16 @@ async function snapshot(token) {
     await a.waitForFunction(()=>document.querySelector('#message').textContent.includes('הגיבוי שוחזר'));
     assert.equal((await snapshot(users[1].token))[0].workouts.length,0);
     checks.push('validated backup replacement is a single cloud write');
+    // Hold a file read open while the account changes: it must not target the next diary.
+    await a.evaluate(() => { File.prototype.text = function () { return new Promise(resolve => { window.finishQAFile = () => resolve('{"version":1,"workouts":[]}'); }); }; });
+    await a.locator('#import-data').setInputFiles({name:'delayed.json',mimeType:'application/json',buffer:Buffer.from('{}')});
+    await a.waitForFunction(()=>typeof window.finishQAFile==='function');
+    await a.locator('#sign-out').click();
+    await a.waitForFunction(()=>document.querySelector('#account-status').textContent.includes('מצב אורח'));
+    await a.evaluate(()=>window.finishQAFile());
+    await a.waitForFunction(()=>document.querySelector('#message').textContent.includes('החשבון השתנה'));
+    assert.equal(await a.locator('#planned-count').innerText(),'1');
+    checks.push('a backup file still being read cannot replace the diary after an account switch');
     assert.deepEqual(errors,[]);
     if(process.env.GYMMI_QA_DIR) {
       await fs.mkdir(process.env.GYMMI_QA_DIR,{recursive:true});
