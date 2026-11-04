@@ -1,0 +1,44 @@
+{
+  "checked_at_utc": "2026-11-04T21:55:38.631359+00:00",
+  "model": "gpt-5.4-mini",
+  "provider": "OpenAI Responses API",
+  "supabase_project": "Gymmi",
+  "project_ref": "yvzfkaswrohpniheubpn",
+  "local_ai_scenario_groups_passed": 8,
+  "ai_checks": [
+    "guest UI and server reject unauthenticated AI access",
+    "server rejects foreign/completed workouts; users cannot alter AI quota",
+    "real OpenAI proposal respects specified days and does not auto-save",
+    "explicit approval persists dates; completed workout and exercise details remain unchanged",
+    "cancelling a second real proposal leaves the journal unchanged",
+    "invalid model-shaped output is blocked in the browser without saving",
+    "fourth daily attempt is rejected before a model call",
+    "changing preferences or editing the diary invalidates a stale AI preview (mocked response)"
+  ],
+  "real_provider_calls_in_successful_ai_suite": 2,
+  "mocked_cases": [
+    "invalid proposal",
+    "stale preview invalidation"
+  ],
+  "pure_validator_tests_passed": 9,
+  "local_existing_guest_cloud_signup_groups_passed": 24,
+  "global_budget_boundary_test": "100th succeeds, 101st fails, rolled back transaction",
+  "advisors_warn_or_error": 0,
+  "gateway_jwt_verification": true,
+  "user_auth_verified_again_in_handler": true,
+  "provider_key_location": "Supabase Secrets, never public source",
+  "quota_per_user_per_utc_day": 3,
+  "quota_project_lifetime": 100,
+  "provider_failures_consume_attempt": true,
+  "provider_store": false,
+  "server_never_saves_journal": true,
+  "public_frontend_verified": false,
+  "known_model_failure_and_fix": "An earlier live test observed a requested weekday mismatch. Model now returns weekday names; server deterministically maps to dates. Human review remains required.",
+  "limits": [
+    "AI may misinterpret availability; review before applying",
+    "Existing workouts only, no exercise prescription or completion prediction",
+    "OpenAI usage may be billed separately; Supabase organization remains Free",
+    "At most 7 workouts and 500 preference characters",
+    "100 demo attempts do not reset automatically"
+  ]
+}

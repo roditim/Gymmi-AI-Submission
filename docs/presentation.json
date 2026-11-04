@@ -2,32 +2,32 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "Workout planning and progress tracking",
+      "Workout tracking with an AI weekly planner",
       "A public student MVP with Supabase accounts",
       "Matan Roditi\nAI Development final project"
     ],
     "kind": "cover",
-    "note": "פתיחה: Gymmi הוא יומן אימונים למתאמן. אפשר לתכנן שבוע, לסמן השלמה ולפתוח את אותו יומן במכשיר אחר. עיצוב RPG קל מחזיר את אופי הרעיון המקורי, אך המוצר הנוכחי אינו מפעיל AI."
+    "note": "פתיחה: Gymmi הוא יומן אימונים עם עוזר AI פעיל. המשתמש כותב מתי הוא פנוי, המודל מציע שיבוץ לאימונים שהוגדרו, והמשתמש מאשר לפני שמירה. אין חיזוי השלמה או יצירת תרגילים."
   },
   {
     "title": "A weekly plan becomes visible progress",
     "lines": [
       "01  Plan the week with dates, duration and routine details.",
-      "02  Complete a workout and record its actual status.",
+      "02  Describe your availability and review an AI scheduling proposal.",
       "03  See the completed share of your weekly plan.",
       "04  Sign in on another device to load the same journal.",
       "Example: one completed workout out of three planned."
     ],
     "kind": "steps",
-    "note": "דוגמה פשוטה: תכננתי שלושה אימונים, השלמתי אחד והמערכת מציגה אחד מתוך שלושה. זו ספירה של נתונים שהמשתמש סימן, לא תחזית ולא המלצה רפואית. שינוי השבוע משנה את האימונים ואת ההתקדמות המוצגים."
+    "note": "דוגמה פשוטה: תכננתי שלושה אימונים, השלמתי אחד והמערכת מציגה אחד מתוך שלושה. זו ספירה של נתונים שהמשתמש סימן, לא תחזית ולא המלצה רפואית. שינוי השבוע משנה את האימונים ואת ההתקדמות המוצגים. ה־AI מציע ימים, והקוד מחשב את התאריכים. זו הצעה שדורשת בדיקה ואישור, לא שינוי אוטומטי."
   },
   {
     "title": "A small product works end to end",
     "lines": [
       "Weekly planning\nAdd, edit and delete your workouts.",
-      "Progress and history\nComplete, skip or undo a status.",
+      "AI weekly planner\nDescribe availability, review a proposal and approve dates.",
       "Private cloud journal\nSign up, sign in and load another device.",
-      "RPG-inspired interface\nA journey panel, quest cards and clear status badges."
+      "Progress and RPG-inspired UI\nWeekly completion, history and quest-style workout cards."
     ],
     "kind": "features",
     "note": "הממשק החדש הוא CSS ו-HTML עם תגיות סטטוס קטנות ב-JavaScript. אין עדיין דמות, XP, רמות או מערכת משימות נפרדת. משימה היא אותו אימון ברשימה, כך שאפשר להסביר את כל המוצר בפשטות."
@@ -35,74 +35,74 @@
   {
     "title": "Simple code connects to managed services",
     "lines": [
-      "Browser\nHTML and CSS display the app.\napp.js handles actions and state.",
-      "Supabase Auth\nEmail and password create a session.\nThe session identifies the user.",
-      "Postgres with RLS\nOne JSON journal per account.\nDatabase rules enforce ownership.",
-      "GitHub Pages serves the public HTTPS app. cloud.js reads and writes Supabase."
+      "Browser app\nForms, journal state and proposal review.\nApproval uses the existing save flow.",
+      "Supabase\nAuth and owner-only journal access.\nEdge Function validates AI requests.",
+      "OpenAI\nGPT-5.4 Mini interprets availability.\nReturns a structured weekday proposal.",
+      "The API key stays in Supabase Secrets. The server checks ownership, quotas and output."
     ],
     "kind": "architecture",
-    "note": "הדפדפן הוא המסך והלוגיקה. Supabase Auth בודק סיסמה ומחזיר Session. cloud.js שולח בקשה עם ה-Session למסד, ו-RLS בודקת שה-user_id בשורה תואם למשתמש. GitHub Pages מאחסן את קבצי האתר; הוא אינו מסד הנתונים. במצב אורח היומן נשמר רק ב-localStorage."
+    "note": "הדפדפן פונה ל־Supabase Edge Function עם Session. השרת מאמת את המשתמש וקורא את היומן בהרשאותיו. ל־OpenAI נשלחים רק הזמינות, שמות ומשך האימונים, והימים המותרים. המפתח נשאר ב־Secrets. המודל מחזיר יום בשבוע, הקוד ממיר לתאריך ומאמת. רק אישור המשתמש מפעיל שמירה רגילה עם revision."
   },
   {
-    "title": "A save needs a server acknowledgment",
+    "title": "The user approves every AI change",
     "lines": [
-      "01  Validate dates, required fields and the backup format.",
-      "02  Send the journal with the revision that the browser loaded.",
-      "03  Update the visible journal only after the server accepts it.",
-      "04  Reject stale writes and preserve the form draft on network failure."
+      "01  Read availability and existing workout metadata.",
+      "02  Ask the model for a structured weekday proposal.",
+      "03  Validate ids and dates, then show a preview.",
+      "04  Save the approved dates with revision checks."
     ],
     "kind": "steps",
-    "note": "save ב-app.js בודקת מידע ואז ממתינה לשמירה. cloud.js מעדכנת רק שורה עם אותה גרסה שקראנו. אם מכשיר אחר כבר שמר, העדכון נדחה ומבקשים לטעון מחדש. זו מניעת דריסה, לא מיזוג בזמן אמת. import בודקת גם שהחשבון לא התחלף בזמן קריאת הקובץ."
+    "note": "צילום ההצעה מגיע מבדיקת מודל אמיתית עם נתוני QA לדוגמה. לא נשמר שינוי עד האישור. הפלט מוגבל למזהי אימונים ולימים מותרים. שינוי יומן או זמינות מבטל הצעה קודמת. הניסוי תפס פעם טעות ביום; העברנו את המרת ימי השבוע לתאריכים לקוד. עדיין ייתכנו טעויות בפירוש הבקשה, ולכן נדרשת בדיקה אנושית."
   },
   {
-    "title": "24 scenario groups cover the user journey",
+    "title": "AI proposals have their own validation checks",
     "lines": [
-      "Browser checks use real Supabase and disposable QA accounts.",
-      "The results describe executed checks. Hosted test CI is not configured."
+      "Two real model calls per AI browser run. Invalid and stale output cases use labelled mocks.",
+      "Daily and global limits were checked. Hosted test CI is not configured."
     ],
     "kind": "tests",
     "table": [
       [
         "Area",
-        "Groups",
+        "Count",
         "Examples",
-        "Environment",
+        "Scope",
         "Result"
       ],
       [
-        "Guest diary",
-        "8",
-        "Edit, backup, errors",
+        "Journal flows",
+        "24",
+        "Guest, cloud, signup",
         "Browser",
         "Passed"
       ],
       [
-        "Cloud journal",
-        "10",
-        "RLS, stale writes",
-        "Real Supabase",
+        "AI planner",
+        "8",
+        "Real model + mocks",
+        "Browser",
         "Passed"
       ],
       [
-        "Public signup",
-        "6",
-        "Register, reload, login",
-        "Real Supabase",
+        "Output rules",
+        "9",
+        "IDs, dates, privacy",
+        "Unit checks",
         "Passed"
       ]
     ],
-    "note": "נבדקו שמונה קבוצות מצב אורח, עשר ענן ושש הרשמה. בדיקות הרשמה משתמשות בטופס הרגיל ללא אישור מנהל. בדיקות RLS כוללות פנייה ישירה ל-API מחשבון אחר. חשבונות QA הם זמניים ונמחקים. לא להגיד שאלה 24 משתמשים, 24 בדיקות יחידה או CI אוטומטי; אלה קבוצות תרחישים בדפדפן."
+    "note": "24 קבוצות דפדפן קודמות נבדקו לצד 8 קבוצות AI ו־9 בדיקות אימות לוגיקה. לכל ריצת AI בדפדפן שתי קריאות ספק אמיתיות; פלט שגוי והצעה ישנה מדומים במפורש. גבול מכסה גלובלי נבדק בטרנזקציה שבוטלה. לא מציגים את כל הבדיקות כקריאות מודל אמיתיות. תוצאות ב־verification/ai-planner-check.json."
   },
   {
     "title": "A five-minute demo tells the story",
     "lines": [
-      "Open the public app and register a new account.",
-      "Add three workouts, then complete one dated today or earlier.",
-      "Show the progress, history and persistence after reload.",
-      "Sign in with a separate browser to load the same cloud journal."
+      "Register, mark a current workout complete and reload the journal.",
+      "Open next week and add a small set of planned workouts.",
+      "Describe available days, request AI help and inspect the proposal.",
+      "Approve the schedule, reload and show the saved dates."
     ],
     "kind": "steps",
-    "note": "תרגל מראש עם אימוני דוגמה ולא עם מידע רפואי. בחר שבוע נוכחי ואימון היום או בעבר, כי לא ניתן לסמן אימון עתידי. הצג יציאה וכניסה מחדש. בחלון נפרד התחבר לאותו חשבון, ואז לחץ טעינה מחדש מהענן אם כבר פתחת אותו קודם. סיים בשני קבצי קוד ובמדיניות SQL אחת."
+    "note": "בחר שבוע הבא כדי להשאיר את כל הימים זמינים. אפשר להכניס שני אימונים של 30 דקות ולכתוב בעברית שפנויים רק ברביעי ובשישי. הראה את ההצעה לפני שמירה, ואז אשר. בקשה נוספת יכולה להדגים ביטול אם נשארה מכסה. יש עד 3 ניסיונות ביום לחשבון ומכסה כוללת של 100 ניסיונות להדגמה."
   },
   {
     "title": "A focused MVP follows the clarified brief",
@@ -110,10 +110,10 @@
       "Production: a public HTTPS app and a public GitHub repository.",
       "Core product: workout planning, completion and weekly progress.",
       "RPG today: visual style. Avatars, XP and levels remain future work.",
-      "AI and ML: earlier optional research, inactive in the public app.",
-      "Known limits: unverified emails, no password recovery and manual refresh."
+      "AI today: a server-backed scheduler. Trained ML and CrewAI remain optional.",
+      "Limits: AI suggestions need review. Emails are unverified and recovery is unavailable."
     ],
     "kind": "scope",
-    "note": "ההבהרה האחרונה של יונתן היא הקובעת: אתר ציבורי חובה, CrewAI ו-ML אינם חובה. היו ניסויי מחקר קודמים, אך אין לקרוא למודל הביקורים ההיסטורי חיזוי השלמת אימון. המשתמש אישר במפורש שאין אימות מייל ב-MVP הלימודי. Free עשוי להשהות פרויקט בתקופה של פעילות נמוכה. נעזרתי בעוזר קוד, ואני צריך לדעת להסביר את ההגשה בעצמי."
+    "note": "ההבהרה האחרונה של יונתן היא הקובעת: אתר ציבורי חובה, CrewAI ו-ML אינם חובה. היו ניסויי מחקר קודמים, אך אין לקרוא למודל הביקורים ההיסטורי חיזוי השלמת אימון. המשתמש אישר במפורש שאין אימות מייל ב-MVP הלימודי. Free עשוי להשהות פרויקט בתקופה של פעילות נמוכה. נעזרתי בעוזר קוד, ואני צריך לדעת להסביר את ההגשה בעצמי. כעת יש AI פעיל, אך הוא משתמש במודל שפה קיים ולא מאמן מודל חדש. למודל יש חיוב ספק נפרד ממסלול Supabase החינמי. יש מכסת 3 ניסיונות לחשבון ביום UTC ו־100 לפרויקט, כולל כשלי ספק. פרטי תרגילים והיסטוריית השלמות אינם נשלחים."
   }
 ]
