@@ -98,6 +98,25 @@ footer.wrap { display: flex; justify-content: space-between; gap: 25px; border-t
 #ai-assignments, #ai-warnings { padding-right: 20px; overflow-wrap: anywhere; }
 #ai-assignments li { margin: 12px 0; }
 #ai-warnings { color: var(--gold); }
+.calendar-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: end; margin: 18px 0; }
+.calendar-toolbar label { flex: 1; min-width: 150px; }
+.calendar-toolbar button { font-size: 12px; padding: 10px; }
+input[type=month] { direction: ltr; }
+.calendar-weekdays, .calendar-grid { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 5px; }
+.calendar-weekdays { color: var(--muted); text-align: center; padding-bottom: 10px; }
+.calendar-day { min-height: 92px; min-width: 0; padding: 7px; text-align: right; background: var(--panel); color: var(--text); border-color: var(--line); font-weight: normal; }
+.calendar-day[aria-current=date] .day-number { background: var(--gold); color: var(--bg); border-radius: 50%; padding: 2px 6px; }
+.calendar-day[aria-pressed=true] { border: 2px solid var(--green); background: #213b32; }
+.calendar-day.outside-month { opacity: .45; }
+.day-number { display: inline-block; font-size: 14px; margin-bottom: 4px; }
+.calendar-event { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10px; color: var(--gold); border-right: 2px solid currentColor; padding-right: 4px; margin-top: 4px; }
+.calendar-event.completed { color: var(--green); }
+.calendar-event.skipped { color: var(--muted); text-decoration: line-through; }
+.calendar-more { display: block; font-size: 10px; color: var(--muted); }
+.calendar-legend { display: flex; gap: 18px; color: var(--gold); font-size: 12px; margin: 15px 0 26px; }
+.calendar-legend span:nth-child(2) { color: var(--green); }
+.calendar-legend span:nth-child(3) { color: var(--muted); }
+#calendar-day-heading { font-size: 19px; }
 @media (max-width: 1000px) {
  .dashboard { grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; }
  .journey { gap: 24px; padding: 30px; }
@@ -124,6 +143,10 @@ footer.wrap { display: flex; justify-content: space-between; gap: 25px; border-t
  .section-title button { padding: 8px; max-width: 135px; }
  .week-picker label { order: -1; min-width: 100%; }
  .workout { padding: 18px; }
+ .calendar-grid, .calendar-weekdays { gap: 3px; }
+ .calendar-day { padding: 5px 3px; min-height: 77px; }
+ .calendar-event { font-size: 9px; padding-right: 2px; }
+ .calendar-toolbar label { order: -1; min-width: 100%; }
  .workout .actions button { flex-grow: 1; }
  footer.wrap { flex-direction: column; gap: 6px; }
 }
