@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-05",
+  "feature": "Monthly workout calendar with manual Google draft and ICS export",
+  "local_calendar_browser_groups_passed": 7,
+  "calendar_unit_tests_passed": 7,
+  "existing_local_browser_groups_passed": {"guest": 8, "cloud": 10, "signup": 6},
+  "existing_ai_validator_tests_passed": 9,
+  "new_database_or_auth_changes": false,
+  "google_account_connected": false,
+  "google_event_created": false,
+  "google_open_in_browser_suite": "Mocked; URL and disclosure validated, no real Google write",
+  "local_screenshots_reviewed": ["desktop", "mobile 390px"],
+  "public_frontend_verified": false,
+  "limits": [
+    "Manual Google drafts and ICS snapshots; no automatic or two-way sync",
+    "All-day events; workout start times are not stored",
+    "Only planned workouts in the displayed month are exported",
+    "Exercise details are excluded from external event data",
+    "Re-imports may duplicate events; later journal edits do not update external copies"
+  ]
+}

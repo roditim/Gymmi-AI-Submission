@@ -129,6 +129,7 @@ function action(text, callback, disabled = false, className = "secondary") {
   button.addEventListener("click", callback); return button;
 }
 function editWorkout(row) {
+  showView('plan');
   byId("editing-id").value = row.id; byId("workout-title").value = row.title;
   byId("workout-date").value = row.date; byId("workout-minutes").value = row.minutes;
   byId("workout-exercises").value = row.exercises; byId("save-workout").textContent = "שמור שינויים";
@@ -175,6 +176,7 @@ function render() {
   const past = state.workouts.filter(w => w.status !== "planned").sort((a, b) => b.date.localeCompare(a.date));
   if (!past.length) history.append(element("p", "אימונים שהושלמו או שסומנו כדילוג יופיעו כאן.", "empty"));
   for (const row of past) history.append(workoutCard(row, true));
+  renderCalendar();
 }
 byId("workout-form").addEventListener("submit", async event => {
   event.preventDefault(); const id = byId("editing-id").value;
@@ -199,9 +201,7 @@ byId("week-start").addEventListener("change", () => { try { byId("week-start").v
 byId("previous-week").addEventListener("click", () => { byId("week-start").value = shiftDate(byId("week-start").value, -7); render(); });
 byId("next-week").addEventListener("click", () => { byId("week-start").value = shiftDate(byId("week-start").value, 7); render(); });
 byId("current-week").addEventListener("click", () => { byId("week-start").value = monday(today()); render(); });
-for (const button of document.querySelectorAll("[data-view]")) button.addEventListener("click", () => {
-  for (const tab of document.querySelectorAll("[data-view]")) { const active = tab === button; tab.setAttribute("aria-pressed", active); byId("view-" + tab.dataset.view).hidden = !active; }
-});
+for (const button of document.querySelectorAll("[data-view]")) button.addEventListener("click", () => showView(button.dataset.view));
 byId("export-data").addEventListener("click", () => {
   try {
   if (activeUser && storageProblem) throw new Error("יש לטעון את היומן בענן לפני ייצוא.");
@@ -263,6 +263,7 @@ byId("sign-out").addEventListener("click", async () => {
   finally { setBusy(false); }
 });
 setupAI();
+setupCalendar();
 (async () => {
   try {
     // The auth SDK also needs storage. Avoid starting it when access is denied.
