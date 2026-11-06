@@ -68,7 +68,7 @@ function setupCalendar() {
     if(busy||storageProblem) return;
     if(byId('workout-title').value.trim()||byId('workout-exercises').value.trim()) {notice('סיים או בטל את טיוטת האימון לפני הוספת אימון מהיומן.',true);return;}
     cancelEdit(); byId('workout-date').value=calendarDay; byId('week-start').value=monday(calendarDay);
-    showView('plan'); render(); byId('workout-editor').open=true;byId('workout-title').focus();
+    showView('plan'); render(); presentWorkoutEditor();
   });
   byId('calendar-export').addEventListener('click',()=>{
     if(busy||storageProblem) return;

@@ -13,6 +13,7 @@ let accountLoading = false;
 let accountGeneration = 0;
 let authClient;
 let authReady = false;
+let noticeTimer;
 
 function setBusy(value) {
   busy = value || accountLoading;
@@ -48,6 +49,7 @@ async function changeAccount(user) {
       if (generation !== accountGeneration) return;
       state = validate({ version: 1, workouts: journal.workouts }); revision = journal.revision; storageProblem = false;
       byId("account-status").textContent = "מחובר: " + user.email + " · שמירה בענן";
+      byId('account-dialog').close();
     } else readGuest();
   } catch (error) {
     if (generation === accountGeneration) {
@@ -75,8 +77,13 @@ function monday(text) {
   const value = parseDate(text); return shiftDate(text, -((value.getDay() + 6) % 7));
 }
 function notice(text, isError = false) {
-  const el = byId("message"); el.textContent = text; el.hidden = false;
+  const el = byId("message");el.replaceChildren(element('span',text));el.hidden=false;
+  const close=element('button','×','notice-close');close.type='button';close.setAttribute('aria-label','סגור הודעה');close.addEventListener('click',()=>{el.hidden=true;});el.append(close);
+  clearTimeout(noticeTimer);if(!isError)noticeTimer=setTimeout(()=>{el.hidden=true;},7000);
   el.setAttribute("role", isError ? "alert" : "status");
+  for (const [dialogId, feedbackId] of [['workout-dialog','editor-feedback'],['account-dialog','account-feedback']]) {
+    if(byId(dialogId).open){const feedback=byId(feedbackId);feedback.textContent=text;feedback.hidden=false;feedback.setAttribute('role',isError?'alert':'status');}
+  }
 }
 function validate(payload) {
   if (!payload || payload.version !== 1 || !Array.isArray(payload.workouts) || payload.workouts.length > 1000) throw new Error("פורמט גיבוי לא נתמך");
@@ -134,29 +141,33 @@ function editWorkout(row) {
   byId("workout-date").value = row.date; byId("workout-minutes").value = row.minutes;
   byId("workout-exercises").value = row.exercises; byId("save-workout").textContent = "שמור שינויים";
   byId("editor-heading").textContent = "עריכת אימון"; byId("cancel-edit").hidden = false;
-  byId("workout-editor").open = true; byId("workout-title").focus();
+  presentWorkoutEditor();
 }
 function cancelEdit() {
   byId("workout-form").reset(); byId("editing-id").value = ""; byId("workout-date").value = today();
   byId("save-workout").textContent = "הוסף אימון"; byId("editor-heading").textContent = "הוספת אימון";
   byId("cancel-edit").hidden = true;
+  byId('workout-dialog').close();
 }
 function workoutCard(row, history = false) {
-  const card = element("article", undefined, "workout " + row.status); card.dataset.id = row.id;
+  const card = element("article", undefined, "workout " + row.status); card.dataset.id = row.id; card.dataset.date=row.date;card.tabIndex=-1;
   const heading = element("div", undefined, "quest-header");
   heading.append(element("p", new Intl.DateTimeFormat("he-IL", { weekday: "long", day: "numeric", month: "long" }).format(parseDate(row.date)), "date"));
   heading.append(element("span", statusNames[row.status], "status-badge")); card.append(heading);
-  card.append(element("h3", row.title), element("p", row.exercises));
-  card.append(element("p", row.minutes + " דקות מתוכננות", "muted"));
+  card.append(element("h3", row.title));
+  card.append(element("p", row.minutes + " דקות מתוכננות", "duration"));
+  const routine=element('details',undefined,'routine-details');routine.append(element('summary','פרטי האימון'),element('p',row.exercises));card.append(routine);
   if (!history) {
     const buttons = element("div", undefined, "actions");
     buttons.append(action("סמן הושלם", () => mark(row.id, "completed"), storageProblem || row.date > today() || row.status === "completed", ""));
-    buttons.append(action("דילגתי", () => mark(row.id, "skipped"), storageProblem || row.date > today() || row.status === "skipped"));
-    buttons.append(action("בטל סימון", () => mark(row.id, "planned"), storageProblem || row.status === "planned"));
     buttons.append(action("ערוך", () => editWorkout(row), storageProblem));
-    buttons.append(action("מחק", async () => { if (confirm("למחוק את האימון הזה מהיומן?")) {
+    const menu=element('details',undefined,'card-menu'),menuSummary=element('summary','•••');menuSummary.setAttribute('aria-label','אפשרויות לאימון '+row.title);menu.append(menuSummary);
+    const options=element('div',undefined,'card-menu-options');
+    options.append(action("דילגתי", () => mark(row.id, "skipped"), storageProblem || row.date > today() || row.status === "skipped"));
+    options.append(action("בטל סימון", () => mark(row.id, "planned"), storageProblem || row.status === "planned"));
+    options.append(action("מחק", async () => { if (confirm("למחוק את האימון הזה מהיומן?")) {
       if (await save({ version: 1, workouts: state.workouts.filter(w => w.id !== row.id) })) { cancelEdit(); notice("האימון נמחק."); }
-    } }, storageProblem, "danger")); card.append(buttons);
+    } }, storageProblem, "danger"));menu.append(options);buttons.append(menu);card.append(buttons);
   }
   return card;
 }
@@ -170,7 +181,7 @@ function render() {
   byId("week-progress").value = rows.length ? completed / rows.length : 0;
   byId("progress-text").textContent = rows.length ? "הושלמו " + completed + " מתוך " + rows.length + " אימונים השבוע" : "עוד לא נוספו אימונים לשבוע הזה";
   const list = byId("workout-list"); list.replaceChildren();
-  if (!rows.length) list.append(element("p", "עוד אין אימונים בשבוע הזה. התוכנית הבאה שלך מתחילה כאן.", "empty"));
+  if (!rows.length) {const empty=element('div',undefined,'empty');empty.append(element('span','＋','empty-mark'),element('h3','מקום לאימון הראשון שלך'),element('p','בחר אימון אחד לשבוע הזה. את השאר אפשר לבנות בהמשך.'),action('לתכנן אימון',()=>openWorkoutEditor(),storageProblem));list.append(empty);}
   for (const row of rows) list.append(workoutCard(row));
   const history = byId("history-list"); history.replaceChildren();
   const past = state.workouts.filter(w => w.status !== "planned").sort((a, b) => b.date.localeCompare(a.date));
