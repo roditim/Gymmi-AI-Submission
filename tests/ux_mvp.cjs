@@ -50,6 +50,7 @@ const {chromium}=require('playwright');
   for(const width of [320,360,390,768,1365]){
    const p=await browser.newPage({viewport:{width,height:900},timezoneId:'Asia/Jerusalem'});p.on('pageerror',e=>errors.push(e.message));
    await p.goto(url);assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'overflow at '+width);
+   if(width===768){assert.ok((await p.locator('#workout-date').boundingBox()).width>=110);assert.ok((await p.locator('.account').boundingBox()).y>(await p.locator('.planner').boundingBox()).y);}
    await p.screenshot({path:path.join(dir,'first-visit-'+width+'.png'),fullPage:true});
    await p.locator('#onboarding-skip').click();
    await p.getByRole('button',{name:'יומן חודשי',exact:true}).click();assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'calendar overflow at '+width);

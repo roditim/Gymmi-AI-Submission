@@ -201,6 +201,13 @@ header.wrap { padding-top: 18px; }
 #message, #storage-error { position: sticky; top: 8px; z-index: 40; box-shadow: 0 6px 20px #0004; }
 #planner-start:focus, h2[tabindex="-1"]:focus { outline: none; }
 .calendar-day[aria-pressed=true] { outline: 1px solid var(--green); outline-offset: 0; }
+@media (min-width: 741px) and (max-width: 1000px) {
+ .dashboard { grid-template-columns: minmax(0,1fr); }
+ .planner { grid-column: 1; grid-row: 1; }
+ .account { grid-column: 1; grid-row: 2; }
+ .account .form-grid { grid-template-columns: 1fr 1fr; }
+ .account .actions { display: flex; }
+}
 @media (max-width: 740px) {
  body { padding-bottom: calc(82px + env(safe-area-inset-bottom)); }
  html { scroll-padding-bottom: 90px; }
