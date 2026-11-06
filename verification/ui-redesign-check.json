@@ -3,22 +3,91 @@
   "feature": "Fitness dashboard redesign informed by public Hevy, Fitbod and Freeletics screens",
   "local_redesign_browser_groups_passed": 6,
   "local_onboarding_browser_groups_passed": 8,
-  "local_regression_groups_passed": {"guest": 8, "calendar": 7, "cloud": 10, "signup_mobile": 6, "ai": 8},
-  "unit_tests_passed": {"ai_rules": 9, "calendar": 7},
+  "local_regression_groups_passed": {
+    "guest": 8,
+    "calendar": 7,
+    "cloud": 10,
+    "signup_mobile": 6,
+    "ai": 8
+  },
+  "unit_tests_passed": {
+    "ai_rules": 9,
+    "calendar": 7
+  },
   "ai_regression_real_model_calls": 2,
   "pure_ui_suites_real_model_calls": 0,
-  "mocked_cases": ["invalid AI output", "stale AI preview", "Google draft opening"],
-  "viewports_tested": [320, 360, 390, 768, 1365],
+  "mocked_cases": [
+    "invalid AI output",
+    "stale AI preview",
+    "Google draft opening"
+  ],
+  "viewports_tested": [
+    320,
+    360,
+    390,
+    768,
+    1365
+  ],
   "real_device_testing": false,
   "user_research_experiment": false,
   "research_scope": "Public product/help pages and screenshots; not full installed-app testing",
   "competitor_images_copied_into_product": false,
-  "font": {"name": "Heebo", "local": true, "license": "SIL OFL 1.1", "sha256": "18f930b583fa8fe6b40b2f8263b7ac6afbac07adc91a12467874e7467d3ace30"},
+  "font": {
+    "name": "Heebo",
+    "local": true,
+    "license": "SIL OFL 1.1",
+    "sha256": "18f930b583fa8fe6b40b2f8263b7ac6afbac07adc91a12467874e7467d3ace30"
+  },
   "data_schema_or_backend_changed": false,
   "native_dialogs": true,
   "draft_preserved_on_close_and_escape": true,
   "explicit_ai_approval_preserved": true,
   "test_adaptation": "Explicit clicks open dialogs and secondary menus; data/auth assertions retained. Calendar export uses its visible label now that workout cards also contain details controls.",
-  "public_frontend_verified": false,
-  "runner": "Local browser runner, not hosted CI"
+  "public_frontend_verified": true,
+  "runner": "Local browser runner, not hosted CI",
+  "public_url": "https://roditim.github.io/Gymmi-AI-Submission/app/",
+  "runtime_commit": "ab67da770ca6d6a5bd770dec67312457d237c95a",
+  "pages_run": {
+    "id": 42262730062,
+    "conclusion": "success"
+  },
+  "public_redesign_browser_groups_passed": 6,
+  "public_onboarding_browser_groups_passed": 8,
+  "public_signup_mobile_groups_passed": 6,
+  "public_signup_viewport": "390x844",
+  "public_test_accounts_removed": true,
+  "public_browser_runtime_errors": [],
+  "public_source_comparison": [
+    {
+      "file": "index.html",
+      "matches": true,
+      "sha256": "04a251724ae85e873121ddf4913b7d253e07d98eb2cf90e76398f4216bb66f24"
+    },
+    {
+      "file": "style.css",
+      "matches": true,
+      "sha256": "bdd23a9d66093bdadfe610b684573b54f27c671cd1aadf40bcbbd68dcf75d19a"
+    },
+    {
+      "file": "app.js",
+      "matches": true,
+      "sha256": "ee1684890db5b200328edd37b7919f60edcc300e5fed5367e5f2356cecb7fc46"
+    },
+    {
+      "file": "ux.js",
+      "matches": true,
+      "sha256": "81f7e5b42da3a7c7eb361e685d8a27914c1982b2acf4c31ede9bb2409b8429a0"
+    },
+    {
+      "file": "calendar.js",
+      "matches": true,
+      "sha256": "d0b0858981fa9e6dea11cd68c85dee399cfc86c266e13d5bca802e1864f0b970"
+    },
+    {
+      "file": "fonts/Heebo.ttf",
+      "matches": true,
+      "sha256": "18f930b583fa8fe6b40b2f8263b7ac6afbac07adc91a12467874e7467d3ace30"
+    }
+  ],
+  "public_check_note": "An initial attempt while deployment was queued still saw the previous UI and failed. All reported public passes occurred after Pages deployment succeeded. Text source comparison normalizes CRLF; font bytes match exactly."
 }
