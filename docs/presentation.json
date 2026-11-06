@@ -2,42 +2,46 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "Workout tracking with an AI weekly planner",
+      "Workout planning with AI and a monthly calendar",
       "A public student MVP with Supabase accounts",
       "Matan Roditi\nAI Development final project"
     ],
-    "kind": "cover"
+    "kind": "cover",
+    "key": "cover"
   },
   {
-    "title": "A weekly plan becomes visible progress",
+    "title": "The workout planning journey",
     "lines": [
       "01  Plan the week with dates, duration and routine details.",
       "02  Describe your availability and review an AI scheduling proposal.",
       "03  See the completed share of your weekly plan.",
-      "04  Sign in on another device to load the same journal.",
+      "04  Review the monthly calendar and load your journal on another device.",
       "Example: one completed workout out of three planned."
     ],
-    "kind": "steps"
+    "kind": "steps",
+    "key": "journey"
   },
   {
-    "title": "A small product works end to end",
+    "title": "The MVP features",
     "lines": [
-      "Weekly planning\nAdd, edit and delete your workouts.",
+      "Weekly plan and monthly calendar\nAdd or edit workouts and select any day.",
       "AI weekly planner\nDescribe availability, review a proposal and approve dates.",
       "Private cloud journal\nSign up, sign in and load another device.",
       "Progress and RPG-inspired UI\nWeekly completion, history and quest-style workout cards."
     ],
-    "kind": "features"
+    "kind": "features",
+    "key": "features"
   },
   {
-    "title": "Simple code connects to managed services",
+    "title": "Browser, Supabase and OpenAI",
     "lines": [
-      "Browser app\nForms, journal state and proposal review.\nApproval uses the existing save flow.",
+      "Browser app\nWorkout forms, calendar and progress.\nReview and approve AI proposals.",
       "Supabase\nAuth and owner-only journal access.\nEdge Function validates AI requests.",
       "OpenAI\nGPT-5.4 Mini interprets availability.\nReturns a structured weekday proposal.",
       "The API key stays in Supabase Secrets. The server checks ownership, quotas and output."
     ],
-    "kind": "architecture"
+    "kind": "architecture",
+    "key": "architecture"
   },
   {
     "title": "The user approves every AI change",
@@ -47,13 +51,25 @@
       "03  Validate ids and dates, then show a preview.",
       "04  Save the approved dates with revision checks."
     ],
-    "kind": "steps"
+    "kind": "steps",
+    "key": "ai"
   },
   {
-    "title": "AI proposals have their own validation checks",
+    "key": "calendar",
+    "title": "Monthly calendar and manual export",
+    "kind": "calendar",
     "lines": [
-      "Two real model calls per AI browser run. Invalid and stale output cases use labelled mocks.",
-      "Daily and global limits were checked. Hosted test CI is not configured."
+      "Select a day to see, add or edit workouts.",
+      "AI-approved dates appear in the same journal.",
+      "Open a Google event draft or download planned workouts as ICS.",
+      "Manual export only. All-day events; no automatic or two-way sync."
+    ]
+  },
+  {
+    "title": "Verification results",
+    "lines": [
+      "The AI browser suite uses two real model calls; invalid and stale cases use labelled mocks.",
+      "Calendar checks mock Google opening. No personal calendar was connected."
     ],
     "kind": "tests",
     "table": [
@@ -84,28 +100,49 @@
         "IDs, dates, privacy",
         "Unit checks",
         "Passed"
+      ],
+      [
+        "Calendar",
+        "7 + 7",
+        "Browser + date/export rules",
+        "Browser / unit",
+        "Passed"
       ]
+    ],
+    "key": "tests"
+  },
+  {
+    "key": "git",
+    "title": "Git workflow and public deployment",
+    "kind": "git",
+    "lines": [
+      "Cursor edits the local project. Git records commits on a feature branch.",
+      "Push the branch to GitHub, open a PR, inspect the diff and merge into main.",
+      "GitHub Pages publishes docs/ from main; Supabase runs the server function.",
+      "Real examples: PR #9 adds AI scheduling; PR #11 adds the monthly calendar."
     ]
   },
   {
-    "title": "A five-minute demo tells the story",
+    "title": "Live demo",
     "lines": [
-      "Register, mark a current workout complete and reload the journal.",
-      "Open next week and add a small set of planned workouts.",
-      "Describe available days, request AI help and inspect the proposal.",
-      "Approve the schedule, reload and show the saved dates."
+      "Sign in, complete a current workout and reload.",
+      "Add two 30-minute workouts to next week and describe your available days.",
+      "Review the AI proposal, approve it and inspect the monthly calendar.",
+      "Download the month as ICS, then show the source code and a merged PR."
     ],
-    "kind": "steps"
+    "kind": "steps",
+    "key": "demo"
   },
   {
-    "title": "A focused MVP follows the clarified brief",
+    "title": "Scope and current limits",
     "lines": [
-      "Production: a public HTTPS app and a public GitHub repository.",
-      "Core product: workout planning, completion and weekly progress.",
-      "RPG today: visual style. Avatars, XP and levels remain future work.",
-      "AI today: a server-backed scheduler. Trained ML and CrewAI remain optional.",
-      "Limits: AI suggestions need review. Emails are unverified and recovery is unavailable."
+      "Production: public HTTPS app, GitHub source and cloud accounts.",
+      "AI: an existing language model proposes dates; the user reviews and approves.",
+      "Calendar: manual Google drafts or ICS export; all-day events with no automatic sync.",
+      "RPG is visual. Trained ML and CrewAI remain optional research.",
+      "MVP limits: unverified emails, no password recovery and capped AI requests."
     ],
-    "kind": "scope"
+    "kind": "scope",
+    "key": "scope"
   }
 ]
