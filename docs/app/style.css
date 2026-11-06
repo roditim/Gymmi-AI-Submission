@@ -153,3 +153,106 @@ input[type=month] { direction: ltr; }
 @media (prefers-reduced-motion: no-preference) {
  button { transition: background-color .15s, border-color .15s; }
 }
+
+/* The planner comes first; account and AI remain available without taking over mobile. */
+html { scroll-padding-top: 18px; }
+button, summary, .file-label { touch-action: manipulation; }
+button { min-height: 44px; }
+input:not([type=hidden]), textarea { font-size: 16px; }
+header.wrap { padding-top: 18px; }
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.header-actions button { font-size: 13px; padding: 8px 12px; }
+.skip-link { position: absolute; top: -80px; right: 16px; padding: 12px; background: var(--green); color: var(--bg); z-index: 60; }
+.skip-link:focus { top: 8px; }
+.journey { gap: 30px; padding: 26px 30px; margin-bottom: 20px; border-radius: 14px; }
+.journey h1 { font-size: clamp(30px,3.4vw,43px); margin: 8px 0 12px; }
+.journey-copy > p:not(.eyebrow) { max-width: 440px; }
+.journey-emblem { display: none; }
+.journey .actions { margin-top: 14px; }
+.journey .summary { margin-top: 14px; }
+.journey .summary strong { font-size: 24px; }
+#saving-mode { font-size: 12px; color: var(--green); margin-top: 12px; }
+.onboarding { border: 1px solid #4b7262; padding: 22px 26px; background: var(--panel); border-radius: 12px; margin-bottom: 24px; }
+.onboarding-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.onboarding .eyebrow { direction: rtl; letter-spacing: 0; font-size: 12px; }
+.onboarding h2 { margin: 5px 0; font-size: 22px; }
+.onboarding p:not(.eyebrow) { color: var(--muted); max-width: 800px; font-size: 15px; }
+.onboarding .actions { margin-top: 14px; }
+.text-button { background: transparent; color: var(--muted); border: 0; text-decoration: underline; font-size: 13px; }
+.account { padding: 0; background: transparent; border: 0; }
+.account > details { margin: 0; padding: 20px; background: var(--panel); }
+.account > details > summary { font-size: 16px; }
+.account #account-status { margin-top: 16px; }
+.app-nav { margin-bottom: 18px; }
+.week-picker { padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; gap: 8px; }
+.week-picker label { margin: 0; }
+#week-range { width: 100%; margin: 4px 0 0; font-size: 12px; }
+.next-action { border-right: 3px solid var(--green); padding: 8px 14px; margin: 18px 0; color: #d2e9dc; font-size: 14px; overflow-wrap: anywhere; }
+.empty { margin: 16px 0; padding: 26px 18px; }
+.workout h3 { overflow-wrap: anywhere; }
+.workout .actions button { min-height: 44px; }
+.workout .actions .danger { margin-inline-start: auto; }
+.ai-planner { margin-top: 24px; margin-bottom: 0; padding: 20px; }
+.ai-planner > summary { color: var(--green); }
+.ai-content { padding-top: 16px; }
+#ai-sign-in { margin-top: 4px; }
+#ai-assignments li { border-right: 2px solid var(--green); padding-right: 12px; }
+#ai-assignments p { font-size: 14px; }
+#message, #storage-error { position: sticky; top: 8px; z-index: 40; box-shadow: 0 6px 20px #0004; }
+#planner-start:focus, h2[tabindex="-1"]:focus { outline: none; }
+.calendar-day[aria-pressed=true] { outline: 1px solid var(--green); outline-offset: 0; }
+@media (min-width: 741px) and (max-width: 1000px) {
+ .dashboard { grid-template-columns: minmax(0,1fr); }
+ .planner { grid-column: 1; grid-row: 1; }
+ .account { grid-column: 1; grid-row: 2; }
+ .account .form-grid { grid-template-columns: 1fr 1fr; }
+ .account .actions { display: flex; }
+}
+@media (max-width: 740px) {
+ body { padding-bottom: calc(82px + env(safe-area-inset-bottom)); }
+ html { scroll-padding-bottom: 90px; }
+ .wrap { padding: 16px; }
+ header.wrap { align-items: center; gap: 8px; padding-top: 12px; padding-bottom: 8px; }
+ .brand { font-size: 16px; gap: 7px; letter-spacing: 1px; }
+ .brand-mark { width: 30px; height: 34px; }
+ .header-actions { gap: 2px; }
+ .header-actions button { font-size: 11px; padding: 8px; }
+ .journey { padding: 20px; gap: 18px; margin-bottom: 16px; }
+ .journey h1 { font-size: 32px; line-height: 1.2; }
+ .journey .eyebrow, .journey-progress > .eyebrow { display: none; }
+ .journey-copy > p:not(.eyebrow) { font-size: 14px; }
+ .journey .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+ .journey .actions button { padding: 10px 7px; font-size: 13px; }
+ .journey-progress .progress-label { font-size: 15px; margin: 0 0 8px; }
+ .journey .summary { gap: 6px; margin-top: 10px; }
+ .journey .summary span { font-size: 11px; }
+ .journey .summary strong { font-size: 22px; }
+ .dashboard { gap: 22px; }
+ .planner { order: 1; }
+ .account { order: 2; padding: 0; }
+ .account > details { padding: 18px; }
+ .onboarding { padding: 16px; margin-bottom: 20px; }
+ .onboarding h2 { font-size: 20px; }
+ .onboarding p:not(.eyebrow) { font-size: 14px; }
+ .onboarding .actions { gap: 6px; }
+ .onboarding .actions button { font-size: 13px; padding: 8px 10px; }
+ .onboarding-top .text-button { font-size: 11px; padding: 8px 0; }
+ .app-nav { position: fixed; inset-inline: 0; bottom: 0; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); margin: 0; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); gap: 4px; background: #101c25; border-top: 1px solid var(--line); border-bottom: 0; z-index: 30; box-shadow: 0 -8px 22px #0003; }
+ .app-nav button { padding: 8px 3px; min-height: 48px; font-size: 12px; line-height: 1.35; border-radius: 6px; }
+ .app-nav button[aria-pressed=true] { border-top: 2px solid var(--green); }
+ .week-picker { padding: 12px; gap: 6px; }
+ .week-picker button { flex: 1; padding: 8px 5px; font-size: 11px; }
+ .week-picker label { font-size: 13px; }
+ .section-title { flex-wrap: wrap; align-items: center; }
+ .section-title h2 { font-size: 21px; }
+ .section-title button { max-width: none; min-height: 44px; }
+ .workout { padding: 16px; }
+ .workout .actions { gap: 7px; }
+ .workout .actions button { padding: 10px; }
+ .calendar-day { min-height: 66px; }
+ .calendar-event { display: inline-block; width: 6px; height: 6px; margin: 6px 2px 0; border: 0; padding: 0; border-radius: 50%; background: currentColor; font-size: 0; vertical-align: top; }
+ .calendar-more { font-size: 10px; }
+ .ai-planner { padding: 16px; }
+ #message, #storage-error { padding: 12px; font-size: 14px; }
+ footer.wrap { margin-top: 20px; }
+}

@@ -10,7 +10,9 @@ const url=process.argv[2] || 'http://127.0.0.1:8530/';
 const email='gymmi-qa-'+crypto.randomUUID()+'@example.com';
 const password=crypto.randomBytes(24).toString('base64url');
 let browser, userId; const checks=[];
+const mobile=process.env.GYMMI_TEST_MOBILE==='1';
 async function authForm(page,pw=password) {
+  if(mobile) await page.locator('#account-open').click();
   await page.locator('#auth-email').fill(email);
   await page.locator('#auth-password').fill(pw);
 }
@@ -18,13 +20,15 @@ async function signedIn(page) {
   await page.waitForFunction(()=>document.querySelector('#account-status').textContent.includes('שמירה בענן'));
 }
 async function signOut(page) {
+  if(mobile) await page.locator('#account-open').click();
   await page.locator('#sign-out').click();
   await page.waitForFunction(()=>document.querySelector('#account-status').textContent.includes('מצב אורח'));
 }
 (async()=>{
  try {
   browser=await chromium.launch({headless:true,...(process.env.GYMMI_BROWSER_PATH?{executablePath:process.env.GYMMI_BROWSER_PATH}:{})});
-  const first=await browser.newContext({timezoneId:'Asia/Jerusalem'}), second=await browser.newContext({timezoneId:'Asia/Jerusalem'});
+  const options={timezoneId:'Asia/Jerusalem',...(mobile?{viewport:{width:390,height:844}}:{})};
+  const first=await browser.newContext(options), second=await browser.newContext(options);
   const page=await first.newPage(), device=await second.newPage(); const errors=[];
   for(const p of [page,device]) p.on('pageerror',e=>errors.push(e.message));
   await page.goto(url); await authForm(page);
@@ -70,7 +74,7 @@ async function signOut(page) {
     await page.screenshot({path:process.env.GYMMI_QA_DIR+'/signup-cloud.png',fullPage:true});
   }
   await signOut(page); // Revoke this test session before deleting the account.
-  console.log(JSON.stringify({passed:checks.length,checks,url,public_signup:true,admin_confirmation_used:false,email_delivery_required:false},null,2));
+  console.log(JSON.stringify({passed:checks.length,checks,url,viewport:mobile?'390x844':'desktop',public_signup:true,admin_confirmation_used:false,email_delivery_required:false},null,2));
  } finally {
   if(browser) await browser.close();
   if(userId) {

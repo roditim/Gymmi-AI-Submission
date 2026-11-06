@@ -7,6 +7,7 @@ function showView(name) {
     const active=tab.dataset.view===name;
     tab.setAttribute('aria-pressed',String(active)); byId('view-'+tab.dataset.view).hidden=!active;
   }
+  byId('week-picker').hidden=name!=='plan';
   renderCalendar();
 }
 function renderCalendar() {
