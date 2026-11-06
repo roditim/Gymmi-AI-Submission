@@ -1,5 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs/promises'),os=require('node:os'),path=require('node:path');
 const {chromium}=require('playwright');
+const ui=require('./ui_helpers.cjs');
 (async()=>{
  const url=process.argv[2]||'http://127.0.0.1:8530/';
  const browser=await chromium.launch({headless:true,...(process.env.GYMMI_BROWSER_PATH?{executablePath:process.env.GYMMI_BROWSER_PATH}:{})});
@@ -25,7 +26,7 @@ const {chromium}=require('playwright');
   await page.locator('#next-week').click();const week=await page.locator('#week-start').inputValue();
   await page.locator('#new-workout').click();assert.equal(await page.locator('#workout-date').inputValue(),week);
   await page.locator('#workout-title').fill('הליכה בפארק');await page.locator('#workout-exercises').fill('המסלול מהתוכנית שלי');
-  await page.locator('#new-workout').click();assert.equal(await page.locator('#workout-title').inputValue(),'הליכה בפארק');
+  await ui.closeEditor(page);await page.locator('#new-workout').click();assert.equal(await page.locator('#workout-title').inputValue(),'הליכה בפארק');
   await page.locator('#workout-date').fill(today);await page.locator('#save-workout').click();
   await page.reload();assert.equal((await page.evaluate(()=>JSON.parse(localStorage.getItem('gymmi-workouts-v1')))).workouts.length,1);
   assert.match(await page.locator('#next-action').innerText(),/הליכה בפארק/);
@@ -36,6 +37,7 @@ const {chromium}=require('playwright');
   assert.notEqual(await page.locator('#account-panel').getAttribute('open'),null);assert.equal(await page.locator('#auth-email').evaluate(el=>el===document.activeElement),true);
   assert.equal((await page.evaluate(()=>JSON.parse(localStorage.getItem('gymmi-workouts-v1')))).workouts.length,1);
   checks.push('guest AI shortcut explains sign-in and opens the account panel without uploading or changing the guest journal');
+  await ui.closeAccount(page);
 
   await page.getByRole('button',{name:'יומן חודשי',exact:true}).click();assert.equal(await page.locator('#view-calendar').isVisible(),true);
   assert.equal(await page.locator('#week-picker').isVisible(),false);
@@ -50,7 +52,7 @@ const {chromium}=require('playwright');
   for(const width of [320,360,390,768,1365]){
    const p=await browser.newPage({viewport:{width,height:900},timezoneId:'Asia/Jerusalem'});p.on('pageerror',e=>errors.push(e.message));
    await p.goto(url);assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'overflow at '+width);
-   if(width===768){assert.ok((await p.locator('#workout-date').boundingBox()).width>=110);assert.ok((await p.locator('.account').boundingBox()).y>(await p.locator('.planner').boundingBox()).y);}
+   if(width===768){await ui.editor(p);assert.ok((await p.locator('#workout-date').boundingBox()).width>=110);await ui.closeEditor(p);assert.equal(await p.locator('.app-nav').evaluate(el=>getComputedStyle(el).position),'static');}
    await p.screenshot({path:path.join(dir,'first-visit-'+width+'.png'),fullPage:true});
    await p.locator('#onboarding-skip').click();
    await p.getByRole('button',{name:'יומן חודשי',exact:true}).click();assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'calendar overflow at '+width);

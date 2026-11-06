@@ -12,20 +12,28 @@ function focusCurrentView() {
   const target=byId('view-'+view)?.querySelector('h2');
   if(target){target.tabIndex=-1;target.focus({preventScroll:true});target.scrollIntoView({block:'start'});}
 }
-function openWorkoutEditor() {
+function presentWorkoutEditor() {
+  byId('editor-feedback').hidden=true;
+  byId('workout-editor').open=true;
+  if(!byId('workout-dialog').open)byId('workout-dialog').showModal();
+  byId('workout-title').focus();
+}
+function openWorkoutEditor(chosenDate) {
   if(busy||storageProblem) return;
   showView('plan');byId('workout-editor').open=true;
   // Preserve an existing draft rather than silently replacing it.
   if(!byId('editing-id').value&&!byId('workout-title').value.trim()&&!byId('workout-exercises').value.trim()){
     const start=byId('week-start').value,end=shiftDate(start,7);
-    byId('workout-date').value=today()>=start&&today()<end?today():start;
+    byId('workout-date').value=typeof chosenDate==='string'?chosenDate:today()>=start&&today()<end?today():start;
   }
-  byId('workout-title').focus();
+  presentWorkoutEditor();
 }
 function openAccount() {
   byId('account-panel').open=true;
+  byId('account-feedback').hidden=true;
+  if(!byId('account-dialog').open)byId('account-dialog').showModal();
   const target=activeUser?byId('reload-cloud'):byId('auth-email');
-  target.focus({preventScroll:true});byId('account-panel').scrollIntoView({block:'start'});
+  target.focus();
 }
 function openAIPlanner() {
   if(busy||storageProblem) return;
@@ -61,6 +69,27 @@ function refreshUX() {
   byId('week-range').textContent=format(start)+' – '+format(shiftDate(start,6))+' · השבוע מתחיל ביום שני';
   const rows=state.workouts.filter(w=>w.date>=start&&w.date<end);
   const next=rows.filter(w=>w.status==='planned'&&w.date>=today()).sort((a,b)=>a.date.localeCompare(b.date))[0];
+  byId('focus-title').textContent=next?next.title:rows.length?'בונים את הצעד הבא.':'אימון אחד.\nצעד חדש.';
+  byId('focus-meta').textContent=next?format(next.date)+' · '+next.minutes+' דקות · מתוכנן':'תוכנית קטנה שמתאימה לחיים שלך. מתחילים מכאן.';
+  byId('focus-workout').hidden=!next;
+  byId('focus-workout').disabled=busy;
+  byId('progress-percent').textContent=Math.round(rows.length?rows.filter(w=>w.status==='completed').length/rows.length*100:0)+'%';
+  byId('progress-ring').style.setProperty('--progress',rows.length?rows.filter(w=>w.status==='completed').length/rows.length:0);
+  byId('saving-mode').dataset.state=storageProblem?'error':activeUser?'cloud':'guest';
+  const strip=byId('week-strip');strip.replaceChildren();
+  for(let i=0;i<7;i++){
+    const day=shiftDate(start,i),items=rows.filter(w=>w.date===day),dayButton=action('',()=>{
+      const card=[...byId('workout-list').children].find(el=>el.dataset.date===day);
+      if(card){card.focus();card.scrollIntoView({block:'center'});}else openWorkoutEditor(day);
+    },storageProblem,'week-day');
+    dayButton.dataset.date=day;
+    dayButton.append(element('span',new Intl.DateTimeFormat('he-IL',{weekday:'short'}).format(parseDate(day))),element('strong',String(Number(day.slice(-2)))));
+    const count=element('span',items.length?'●':'·','week-dot');dayButton.append(count);
+    dayButton.setAttribute('aria-label',format(day)+' · '+items.length+' אימונים');
+    if(day===today())dayButton.setAttribute('aria-current','date');
+    if(items.some(w=>w.status==='completed'))dayButton.classList.add('has-completed');
+    strip.append(dayButton);
+  }
   byId('next-action').textContent=storageProblem?'יש לטפל בטעינת היומן לפני שמוסיפים או עורכים אימונים.'
     :!rows.length?'מתחילים בקטן: הוסף אימון אחד, או בחר תוכנית לדוגמה.'
     :next?'הבא בתוכנית: '+next.title+' · '+format(next.date)+' · '+next.minutes+' דקות'
@@ -70,13 +99,22 @@ function refreshUX() {
 }
 function setupUX() {
   const mobile=matchMedia('(max-width: 740px)').matches;
-  byId('account-panel').open=!mobile;byId('ai-panel').open=!mobile;
+  byId('account-panel').open=!mobile;byId('ai-panel').open=false;
+  byId('today-label').textContent=new Intl.DateTimeFormat('he-IL',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
   try{byId('onboarding').hidden=localStorage.getItem(ONBOARDING_KEY)==='done';}
   catch{byId('onboarding').hidden=true;}
   drawOnboarding();refreshUX();
   byId('new-workout').addEventListener('click',openWorkoutEditor);
   byId('open-ai').addEventListener('click',openAIPlanner);
   byId('account-open').addEventListener('click',openAccount);
+  byId('close-editor').addEventListener('click',()=>byId('workout-dialog').close());
+  byId('close-account').addEventListener('click',()=>byId('account-dialog').close());
+  byId('focus-workout').addEventListener('click',()=>{
+    showView('plan');
+    const row=state.workouts.filter(w=>w.status==='planned'&&w.date>=today()&&w.date>=byId('week-start').value&&w.date<shiftDate(byId('week-start').value,7)).sort((a,b)=>a.date.localeCompare(b.date))[0];
+    const card=[...byId('workout-list').children].find(el=>el.dataset.id===row?.id);
+    if(card){card.querySelector('.routine-details').open=true;card.focus();card.scrollIntoView({block:'center'});}
+  });
   byId('ai-sign-in').addEventListener('click',openAccount);
   byId('help-open').addEventListener('click',()=>{
     onboardingStep=0;drawOnboarding();byId('onboarding').hidden=false;refreshUX();
@@ -89,5 +127,12 @@ function setupUX() {
     if(onboardingStep===2){closeOnboarding();return;}
     onboardingStep++;drawOnboarding();byId('onboarding-title').focus({preventScroll:true});
   });
-  for(const tab of document.querySelectorAll('[data-view]'))tab.setAttribute('aria-controls','view-'+tab.dataset.view);
+  const labels={plan:'התוכנית',calendar:'יומן',history:'היסטוריה',backup:'נתונים'};
+  const icons={plan:'M4 5h16v15H4z M8 2v6 M16 2v6 M4 10h16',calendar:'M4 5h16v15H4z M8 2v6 M16 2v6 M8 13h2 M14 13h2 M8 17h2',history:'M4 4v6h6 M4 10a8 8 0 1 1 0 5 M12 7v5l3 2',backup:'M5 3h12l3 3v15H4V3z M8 3v6h8V3 M8 21v-7h8v7'};
+  for(const tab of document.querySelectorAll('[data-view]')){
+    tab.setAttribute('aria-controls','view-'+tab.dataset.view);tab.setAttribute('aria-label',tab.textContent);
+    tab.textContent=labels[tab.dataset.view];
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.7');svg.setAttribute('aria-hidden','true');
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',icons[tab.dataset.view]);svg.append(path);tab.prepend(svg);
+  }
 }

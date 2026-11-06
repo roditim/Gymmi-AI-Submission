@@ -10,53 +10,35 @@
 </head>
 <body>
 <a class="skip-link" href="#planner-start">דלג לתוכנית האימונים</a>
-<header class="wrap"><a class="brand" href="./" aria-label="Gymmi — הבית"><span class="brand-mark" aria-hidden="true">G</span>GYMMI<span class="brand-sub">TRAINING JOURNAL</span></a><div class="header-actions"><button id="help-open" type="button" class="secondary">איך מתחילים?</button><button id="account-open" type="button" class="secondary">החשבון שלי</button></div></header>
+<div class="app-shell"><aside class="app-rail" aria-label="ניווט ראשי"><a class="rail-brand" href="./" aria-label="Gymmi — הבית"><span class="brand-mark">G</span><span>GYMMI<span class="rail-sub">MAKE YOUR NEXT MOVE</span></span></a><p class="rail-caption">המרחב שלך להתקדם</p><nav class="app-nav" aria-label="מסכי האפליקציה"><button type="button" data-view="plan" aria-pressed="true">התוכנית השבועית</button><button type="button" data-view="calendar" aria-pressed="false">יומן חודשי</button><button type="button" data-view="history" aria-pressed="false">היסטוריה</button><button type="button" data-view="backup" aria-pressed="false">גיבוי ונתונים</button></nav><div class="rail-note"><span class="rail-note-mark">✦</span><strong>אימון אחד בכל פעם.</strong><p>תוכנית קטנה. מקום קבוע בשבוע.</p></div><a class="rail-deck" href="../">מצגת הפרויקט ↗</a></aside><div class="workspace"><header class="wrap"><a class="brand mobile-brand" href="./" aria-label="Gymmi — הבית"><span class="brand-mark" aria-hidden="true">G</span>GYMMI<span class="brand-sub">TRAINING JOURNAL</span></a><div class="workspace-title"><span id="today-label"></span><strong>המרחב האישי שלך</strong></div><div class="header-actions"><button id="help-open" type="button" class="secondary">איך מתחילים?</button><button id="account-open" type="button" class="secondary">החשבון שלי</button></div></header>
 <main class="wrap">
 <p id="message" role="status" aria-live="polite" hidden></p>
 <p id="storage-error" role="alert" hidden></p>
 <section class="journey" aria-label="מסע האימונים שלי">
-<div class="journey-copy"><p class="eyebrow">YOUR NEXT CHAPTER</p><h1>השבוע שלך.<br>הקצב שלך.</h1><p>מתכננים אימונים, בוחרים מתי ומתקדמים צעד אחר צעד.</p><div class="actions"><button id="new-workout" type="button">אימון חדש</button><button id="open-ai" type="button" class="secondary">עזרה בשיבוץ עם AI</button></div><p id="saving-mode" class="muted">מצב אורח · שמירה בדפדפן הזה</p></div>
-<div class="journey-progress"><div class="journey-emblem" aria-hidden="true"><svg viewBox="0 0 80 90" fill="none"><path d="M40 4 72 17v27c0 20-16 33-32 42C24 77 8 64 8 44V17L40 4Z" stroke="currentColor" stroke-width="2"/><path d="m23 44 11 11 24-25" stroke="currentColor" stroke-width="4"/></svg></div>
-<p class="eyebrow">WEEKLY JOURNEY</p><label class="progress-label" for="week-progress" id="progress-text">עוד לא נוספו אימונים לשבוע הזה</label>
-<progress id="week-progress" max="1" value="0"></progress>
-<section class="summary" aria-label="התקדמות השבוע"><div><strong id="planned-count">0</strong><span>אימונים בתוכנית</span></div><div><strong id="completed-count">0</strong><span>הושלמו</span></div><div><strong id="skipped-count">0</strong><span>סומנו כדילוג</span></div></section>
-</div></section>
+<div class="journey-copy"><div class="hero-topline"><span class="hero-kicker">YOUR NEXT MOVE</span><span class="hero-symbol" aria-hidden="true">↗</span></div><h1 id="focus-title">כל מסע מתחיל<br>באימון אחד.</h1><p id="focus-meta">בנה תוכנית שמתאימה לשבוע שלך.</p><div class="actions"><button id="new-workout" type="button">＋ אימון חדש</button><button id="focus-workout" type="button" class="hero-secondary" hidden>לפרטי האימון</button></div><svg class="hero-art" viewBox="0 0 220 220" aria-hidden="true" fill="none"><g transform="rotate(-28 110 110)" stroke="currentColor" stroke-width="9"><rect x="28" y="74" width="30" height="72" rx="9"/><rect x="58" y="60" width="30" height="100" rx="9"/><path d="M88 110h44"/><rect x="132" y="60" width="30" height="100" rx="9"/><rect x="162" y="74" width="30" height="72" rx="9"/></g></svg></div>
+<div class="journey-progress"><div class="progress-top"><p>ההתקדמות השבועית</p><span>WEEKLY PROGRESS</span></div><div class="progress-center"><div id="progress-ring" class="progress-ring" aria-hidden="true"><strong id="progress-percent">0<span>%</span></strong></div><label class="progress-label" for="week-progress" id="progress-text">עוד לא נוספו אימונים לשבוע הזה</label></div><progress id="week-progress" max="1" value="0"></progress><section class="summary" aria-label="התקדמות השבוע"><div><strong id="planned-count">0</strong><span>בתוכנית</span></div><div><strong id="completed-count">0</strong><span>הושלמו</span></div><div><strong id="skipped-count">0</strong><span>דילוג</span></div></section></div>
+</section><div class="planner-utility"><p id="saving-mode" class="muted">מצב אורח · שמירה בדפדפן הזה</p><button id="open-ai" type="button" class="ai-shortcut"><span aria-hidden="true">✦</span> עזרה בשיבוץ עם AI <span aria-hidden="true">←</span></button></div>
 <section id="onboarding" class="onboarding" aria-labelledby="onboarding-title" hidden>
 <div class="onboarding-top"><p id="onboarding-count" class="eyebrow">היכרות קצרה · 1 מתוך 3</p><button id="onboarding-skip" type="button" class="text-button">דלג על ההדרכה</button></div>
 <h2 id="onboarding-title" tabindex="-1">מתחילים באימון אחד</h2><p id="onboarding-text"></p>
 <div class="actions"><button id="onboarding-action" type="button">הוסף אימון ראשון</button><button id="onboarding-back" type="button" class="secondary" hidden>חזרה</button><button id="onboarding-next" type="button" class="secondary">הבא</button></div>
 </section>
 <div class="dashboard">
-<aside class="account" aria-label="החשבון שלי">
-<details id="account-panel" open><summary>החשבון ושמירת האימונים</summary><p class="muted">אפשר להתחיל כאורח. חשבון מאפשר לשמור בענן ולהמשיך ממכשיר אחר.</p><p id="account-status">מצב אורח — היומן נשמר בדפדפן הזה.</p>
-<form id="auth-form"><div class="form-grid">
-<label>מייל<input id="auth-email" type="email" autocomplete="username" required maxlength="254" dir="ltr"></label>
-<label>סיסמה (לפחות 10 תווים)<input id="auth-password" type="password" minlength="10" maxlength="128" autocomplete="current-password" required dir="ltr"></label>
-</div><div class="actions"><button id="sign-in" type="submit">כניסה</button><button id="sign-up" type="button" class="secondary">הרשמה</button></div>
-<p class="muted">ב־MVP הלימודי נכנסים מיד אחרי ההרשמה, ללא אישור מייל. הבעלות על כתובת המייל אינה מאומתת. אין כרגע שחזור סיסמה באתר.</p></form>
-<div id="account-actions" class="actions" hidden><button id="reload-cloud" class="secondary" type="button">טען מחדש מהענן</button><button id="upload-local" class="secondary" type="button">העבר יומן מקומי לחשבון</button><button id="sign-out" class="secondary" type="button">יציאה</button></div>
-<p class="muted">בחשבון מחובר האימונים נשמרים ב־Supabase. היומן המקומי נפרד ואינו עולה לענן אוטומטית. לרענון שינויים ממכשיר אחר לחץ ״טען מחדש מהענן״.</p>
-</details></aside>
+
 <div class="planner" id="planner-start" tabindex="-1">
-<nav class="app-nav" aria-label="מסכי האפליקציה"><button type="button" data-view="plan" aria-pressed="true">התוכנית השבועית</button><button type="button" data-view="calendar" aria-pressed="false">יומן חודשי</button><button type="button" data-view="history" aria-pressed="false">היסטוריה</button><button type="button" data-view="backup" aria-pressed="false">גיבוי ונתונים</button></nav>
+
 <section aria-label="בחירת שבוע" class="week-picker" id="week-picker">
 <button type="button" id="previous-week" class="secondary">השבוע הקודם</button>
 <label>בחירת שבוע<input type="date" id="week-start" required></label>
 <button type="button" id="next-week" class="secondary">השבוע הבא</button>
 <button type="button" id="current-week" class="secondary">השבוע הנוכחי</button>
-<p id="week-range" class="muted"></p></section>
+<p id="week-range" class="muted"></p><div id="week-strip" class="week-strip" role="group" aria-label="ימי השבוע"></div></section>
 
 <section id="view-plan">
-<div class="section-title"><div><p class="eyebrow">QUEST BOARD</p><h2>האימונים שלי השבוע</h2></div><button type="button" id="example-plan" class="secondary">הוסף תוכנית לדוגמה</button></div>
-<p class="muted">תוכנית הדוגמה היא תבנית ארגון. את התרגילים והפרטים אפשר להתאים לתוכנית שלך.</p>
+<div class="section-title"><div><p class="eyebrow">MY TRAINING PLAN</p><h2>האימונים שלי השבוע</h2></div><button type="button" id="example-plan" class="secondary">הוסף תוכנית לדוגמה</button></div>
+<p class="section-intro">האימונים שהגדרת, בקצב ובימים שלך.</p>
 <p id="next-action" class="next-action" aria-live="polite"></p><div id="workout-list"></div>
-<details id="workout-editor" open><summary id="editor-heading">הוספת אימון</summary>
-<form id="workout-form">
-<input type="hidden" id="editing-id">
-<div class="form-grid"><label>שם האימון<input id="workout-title" maxlength="100" required placeholder="למשל: אימון כוח"></label><label>תאריך<input id="workout-date" type="date" required></label><label>משך מתוכנן בדקות<input id="workout-minutes" type="number" min="5" max="180" step="5" value="30" required></label></div>
-<label>תרגילים ופרטים<textarea id="workout-exercises" maxlength="2000" rows="3" required placeholder="התרגילים מתוך התוכנית שלך"></textarea></label>
-<div class="actions"><button type="submit" id="save-workout">הוסף אימון</button><button type="button" id="cancel-edit" class="secondary" hidden>בטל עריכה</button></div>
-</form></details>
+
 <details id="ai-panel" class="ai-planner" open><summary>עוזר AI לשיבוץ השבוע</summary><div class="ai-content">
 <p class="eyebrow">AI WEEK PLANNER</p><h2 id="ai-heading">מתי נוח לך להתאמן?</h2>
 <button id="ai-sign-in" type="button" class="secondary">כניסה לשימוש ב־AI</button><p class="muted" id="ai-status">התחבר לחשבון כדי לקבל הצעת שיבוץ לאימונים שלך.</p>
@@ -81,4 +63,19 @@
 </div></div></main>
 <footer class="wrap"><a class="deck-link" href="../">מצגת הפרויקט ↗</a><p>Gymmi · יומן אימונים עם עוזר AI לשיבוץ שבועי באישור המשתמש. אין חיזוי השלמה או התאמה רפואית.</p><a href="https://github.com/roditim/Gymmi-AI-Submission">קוד הפרויקט ב־GitHub</a></footer>
 <noscript>יש להפעיל JavaScript בדפדפן כדי להשתמש בתוכנית ובמעקב.</noscript>
-</body></html>
+<dialog id="account-dialog" aria-label="החשבון שלי"><div class="dialog-top"><span>החשבון שלי</span><button id="close-account" type="button" class="close-button" aria-label="סגור חשבון">✕</button></div><p id="account-feedback" class="dialog-feedback" role="status" hidden></p><aside class="account" aria-label="כניסה ושמירה בענן">
+<details id="account-panel" open><summary>החשבון ושמירת האימונים</summary><p class="muted">אפשר להתחיל כאורח. חשבון מאפשר לשמור בענן ולהמשיך ממכשיר אחר.</p><p id="account-status">מצב אורח — היומן נשמר בדפדפן הזה.</p>
+<form id="auth-form"><div class="form-grid">
+<label>מייל<input id="auth-email" type="email" autocomplete="username" required maxlength="254" dir="ltr"></label>
+<label>סיסמה (לפחות 10 תווים)<input id="auth-password" type="password" minlength="10" maxlength="128" autocomplete="current-password" required dir="ltr"></label>
+</div><div class="actions"><button id="sign-in" type="submit">כניסה</button><button id="sign-up" type="button" class="secondary">הרשמה</button></div>
+<p class="muted">ב־MVP הלימודי נכנסים מיד אחרי ההרשמה, ללא אישור מייל. הבעלות על כתובת המייל אינה מאומתת. אין כרגע שחזור סיסמה באתר.</p></form>
+<div id="account-actions" class="actions" hidden><button id="reload-cloud" class="secondary" type="button">טען מחדש מהענן</button><button id="upload-local" class="secondary" type="button">העבר יומן מקומי לחשבון</button><button id="sign-out" class="secondary" type="button">יציאה</button></div>
+<p class="muted">בחשבון מחובר האימונים נשמרים ב־Supabase. היומן המקומי נפרד ואינו עולה לענן אוטומטית. לרענון שינויים ממכשיר אחר לחץ ״טען מחדש מהענן״.</p>
+</details></aside></dialog><dialog id="workout-dialog" aria-labelledby="editor-heading"><div class="dialog-top"><span>התוכנית שלך</span><button id="close-editor" type="button" class="close-button" aria-label="סגור טופס אימון">✕</button></div><p id="editor-feedback" class="dialog-feedback" role="status" hidden></p><details id="workout-editor" open><summary id="editor-heading">הוספת אימון</summary>
+<form id="workout-form">
+<input type="hidden" id="editing-id">
+<div class="form-grid"><label>שם האימון<input id="workout-title" maxlength="100" required placeholder="למשל: אימון כוח"></label><label>תאריך<input id="workout-date" type="date" required></label><label>משך מתוכנן בדקות<input id="workout-minutes" type="number" min="5" max="180" step="5" value="30" required></label></div>
+<label>תרגילים ופרטים<textarea id="workout-exercises" maxlength="2000" rows="3" required placeholder="התרגילים מתוך התוכנית שלך"></textarea></label>
+<div class="actions"><button type="submit" id="save-workout">הוסף אימון</button><button type="button" id="cancel-edit" class="secondary" hidden>בטל עריכה</button></div>
+</form></details></dialog></div></div></body></html>

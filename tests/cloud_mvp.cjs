@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const fs = require('node:fs/promises');
 const { chromium } = require('playwright');
+const ui=require('./ui_helpers.cjs');
 const config = require('node:vm').runInNewContext(
   require('node:fs').readFileSync('docs/app/config.js', 'utf8') + '; window.GYMMI_CONFIG', {window:{}});
 const api = config.url;
@@ -21,13 +22,15 @@ async function request(path, method='GET', body, token=service, key=service) {
 }
 async function login(page, user) {
   await page.goto(url);
+  await ui.account(page);
   await page.locator('#auth-email').fill(user.email);
   await page.locator('#auth-password').fill(user.password);
   await page.locator('#sign-in').click();
   await page.waitForFunction(() => document.querySelector('#account-status').textContent.includes('שמירה בענן'));
-  await page.locator('#save-workout').waitFor({state:'visible'});
+  await page.waitForFunction(()=>!document.querySelector('#new-workout').disabled);
 }
 async function add(page, title) {
+  await ui.editor(page);
   await page.locator('#workout-title').fill(title);
   await page.locator('#workout-exercises').fill('Disposable QA routine');
   await page.locator('#save-workout').click();
@@ -87,7 +90,7 @@ async function snapshot(token) {
     await device.locator('#workout-title').fill('Must not overwrite'); await device.locator('#save-workout').click();
     await device.waitForFunction(()=>document.querySelector('#message').textContent.includes('ממכשיר אחר'));
     assert.equal((await snapshot(users[0].token))[0].workouts[0].title,'Newest cloud version');
-    await device.locator('#reload-cloud').click();
+    await ui.closeEditor(device);await ui.account(device);await device.locator('#reload-cloud').click();
     await device.locator('#workout-list article h3').filter({hasText:'Newest cloud version'}).waitFor();
     checks.push('stale device write rejected; explicit reload obtains newest journal');
     await device.route(api+'/rest/v1/**',r=>r.abort());
@@ -99,16 +102,16 @@ async function snapshot(token) {
     await device.unroute(api+'/rest/v1/**');
     checks.push('network failure preserves saved state and editable draft without claiming success');
     await device.route(api+'/rest/v1/**',r=>r.abort());
-    await device.locator('#reload-cloud').click();
+    await ui.closeEditor(device);await ui.account(device);await device.locator('#reload-cloud').click();
     await device.waitForFunction(()=>document.querySelector('#message').textContent.includes('היומן לא נטען'));
     assert.equal(await device.locator('#save-workout').isDisabled(),true);
     assert.equal(await device.locator('#workout-list article').count(),0);
     await device.unroute(api+'/rest/v1/**');
-    await device.locator('#reload-cloud').click();
+    await ui.account(device);await device.locator('#reload-cloud').click();
     await device.locator('#workout-list article h3').filter({hasText:'Newest cloud version'}).waitFor();
     assert.equal(await device.locator('#save-workout').isDisabled(),false);
     checks.push('failed cloud load blocks editing and successful reload restores it');
-    await a.locator('#upload-local').click();
+    await ui.account(a);await a.locator('#upload-local').click();
     await a.waitForFunction(()=>document.querySelector('#message').textContent.includes('היומן הועבר'));
     assert.equal((await snapshot(users[0].token))[0].workouts[0].title,'Guest kept locally');
     await a.locator('#sign-out').click(); await a.locator('#auth-form').waitFor({state:'visible'});
@@ -126,7 +129,7 @@ async function snapshot(token) {
     await a.evaluate(() => { File.prototype.text = function () { return new Promise(resolve => { window.finishQAFile = () => resolve('{"version":1,"workouts":[]}'); }); }; });
     await a.locator('#import-data').setInputFiles({name:'delayed.json',mimeType:'application/json',buffer:Buffer.from('{}')});
     await a.waitForFunction(()=>typeof window.finishQAFile==='function');
-    await a.locator('#sign-out').click();
+    await ui.account(a);await a.locator('#sign-out').click();
     await a.waitForFunction(()=>document.querySelector('#account-status').textContent.includes('מצב אורח'));
     await a.evaluate(()=>window.finishQAFile());
     await a.waitForFunction(()=>document.querySelector('#message').textContent.includes('החשבון השתנה'));
