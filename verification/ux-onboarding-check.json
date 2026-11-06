@@ -2,22 +2,65 @@
   "date": "2026-11-06",
   "feature": "Mobile planner navigation, first-use onboarding and clearer actions",
   "local_ux_browser_groups_passed": 8,
-  "local_regression_browser_groups_passed": {"guest": 8, "calendar": 7, "cloud": 10, "signup": 6, "ai": 8},
+  "local_regression_browser_groups_passed": {
+    "guest": 8,
+    "calendar": 7,
+    "cloud": 10,
+    "signup": 6,
+    "ai": 8
+  },
   "local_mobile_signup_groups_passed": 6,
   "mobile_signup_viewport": "390x844",
-  "local_unit_tests_passed": {"calendar": 7, "ai_validation": 9},
+  "local_unit_tests_passed": {
+    "calendar": 7,
+    "ai_validation": 9
+  },
   "real_provider_calls_in_ai_regression": 2,
   "ux_suite_real_provider_calls": 0,
-  "mocked_cases": ["invalid AI output", "stale AI preview", "Google draft opening"],
-  "viewports_checked": [320, 360, 390, 768, 1365],
-  "screenshots_reviewed": [320, 390, 768, 1365, "mobile calendar"],
+  "mocked_cases": [
+    "invalid AI output",
+    "stale AI preview",
+    "Google draft opening"
+  ],
+  "viewports_checked": [
+    320,
+    360,
+    390,
+    768,
+    1365
+  ],
+  "screenshots_reviewed": [
+    320,
+    390,
+    768,
+    1365,
+    "mobile calendar"
+  ],
   "real_device_testing": false,
   "journal_storage_key_and_format_changed": false,
   "backend_or_database_changed": false,
   "onboarding_creates_or_uploads_workouts": false,
   "preference_key": "gymmi-onboarding-v1",
   "preview_issue_and_resolution": "Parallel local tests initially had refused asset connections from the preview server. Diagnostic requests confirmed missing script downloads. The private server queue was increased; diagnostic loads and affected suites then passed. No test assertions were relaxed.",
-  "public_frontend_verified": false,
+  "public_frontend_verified": true,
   "runner": "Local browser runner; not hosted CI",
-  "limits": ["Chrome viewport emulation, not real iOS/Android hardware", "Onboarding dismissal may not persist if browser preference storage is blocked"]
+  "limits": [
+    "Chrome viewport emulation, not real iOS/Android hardware",
+    "Onboarding dismissal may not persist if browser preference storage is blocked"
+  ],
+  "checked_at_utc": "2026-11-06T15:51:32.292765+00:00",
+  "public_url": "https://roditim.github.io/Gymmi-AI-Submission/app/",
+  "public_ux_browser_groups_passed": 8,
+  "public_mobile_signup_groups_passed": 6,
+  "public_source_matches": [
+    "index.html",
+    "style.css",
+    "ux.js",
+    "app.js",
+    "calendar.js",
+    "ai.js"
+  ],
+  "tested_runtime_commit": "aa78ae0911a58138a8fab9114f278e0b4da6d399",
+  "github_pages_deployment_run": 42246504646,
+  "public_runner": "Local browser runner against public HTTPS; not hosted CI"
 }
