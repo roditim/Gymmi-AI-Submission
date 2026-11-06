@@ -1,5 +1,7 @@
 # Development
 
+Onboarding and shortcuts live in docs/app/ux.js. They use the separate optional gymmi-onboarding-v1 preference, never replace the journal or upload guest workouts. The initial tour is inline and skippable. Mobile starts with account and AI details collapsed; header shortcuts open them, and fixed bottom navigation selects views and moves focus. Existing controls and IDs are preserved. The journal format, Supabase schema and backend are unchanged. tests/ux_mvp.cjs covers five viewport widths and keyboard access; GYMMI_TEST_MOBILE=1 enables the 390×844 signup regression. Test evidence describes viewport emulation, not real-device testing.
+
 The production application is docs/app: buildless HTML, CSS and JavaScript. Serve it with python -m http.server 8520 --directory docs/app, or any static HTTP server. The GitHub Pages source is main:/docs, so the app is at /Gymmi-AI-Submission/app/ and the presentation is at the repository Pages root.
 
 The RPG-inspired theme uses CSS, a native SVG emblem and status badges. Quests are the existing workouts, with no XP, levels, avatar logic or extra database fields. Preserve IDs and accessible action labels used by the browser tests. The English presentation source is docs/presentation.json; public HTML is docs/index.html. docs/assets/gymmi-rpg-ui.png is an actual screenshot with sample guest data. Hebrew speaking notes and private presentation notes support the student's own explanation.

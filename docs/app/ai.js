@@ -44,7 +44,9 @@ function setupAI() {
       byId('ai-summary').textContent = proposal.summary;
       for (const item of proposal.assignments) {
         const workout = rows.find(w=>w.id===item.workoutId);
-        byId('ai-assignments').append(element('li',workout.title+' — '+workout.date+' ← '+item.date+' · '+item.reason));
+        const itemRow=element('li');
+        itemRow.append(element('strong',workout.title),element('p','תאריך נוכחי: '+workout.date+' · תאריך מוצע: '+item.date),element('p',item.reason));
+        byId('ai-assignments').append(itemRow);
       }
       for (const warning of proposal.warnings) byId('ai-warnings').append(element('li',warning));
       byId('ai-proposal').hidden = false; notice('התקבלה הצעת AI. בדוק אותה לפני אישור; היומן עדיין לא השתנה.');

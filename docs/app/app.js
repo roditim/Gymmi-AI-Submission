@@ -170,13 +170,14 @@ function render() {
   byId("week-progress").value = rows.length ? completed / rows.length : 0;
   byId("progress-text").textContent = rows.length ? "הושלמו " + completed + " מתוך " + rows.length + " אימונים השבוע" : "עוד לא נוספו אימונים לשבוע הזה";
   const list = byId("workout-list"); list.replaceChildren();
-  if (!rows.length) list.append(element("p", "השבוע שלך מתחיל כאן. הוסף אימון או תוכנית לדוגמה.", "empty"));
+  if (!rows.length) list.append(element("p", "עוד אין אימונים בשבוע הזה. התוכנית הבאה שלך מתחילה כאן.", "empty"));
   for (const row of rows) list.append(workoutCard(row));
   const history = byId("history-list"); history.replaceChildren();
   const past = state.workouts.filter(w => w.status !== "planned").sort((a, b) => b.date.localeCompare(a.date));
   if (!past.length) history.append(element("p", "אימונים שהושלמו או שסומנו כדילוג יופיעו כאן.", "empty"));
   for (const row of past) history.append(workoutCard(row, true));
   renderCalendar();
+  refreshUX();
 }
 byId("workout-form").addEventListener("submit", async event => {
   event.preventDefault(); const id = byId("editing-id").value;
@@ -201,7 +202,7 @@ byId("week-start").addEventListener("change", () => { try { byId("week-start").v
 byId("previous-week").addEventListener("click", () => { byId("week-start").value = shiftDate(byId("week-start").value, -7); render(); });
 byId("next-week").addEventListener("click", () => { byId("week-start").value = shiftDate(byId("week-start").value, 7); render(); });
 byId("current-week").addEventListener("click", () => { byId("week-start").value = monday(today()); render(); });
-for (const button of document.querySelectorAll("[data-view]")) button.addEventListener("click", () => showView(button.dataset.view));
+for (const button of document.querySelectorAll("[data-view]")) button.addEventListener("click", () => { showView(button.dataset.view); focusCurrentView(); });
 byId("export-data").addEventListener("click", () => {
   try {
   if (activeUser && storageProblem) throw new Error("יש לטעון את היומן בענן לפני ייצוא.");
@@ -264,6 +265,7 @@ byId("sign-out").addEventListener("click", async () => {
 });
 setupAI();
 setupCalendar();
+setupUX();
 (async () => {
   try {
     // The auth SDK also needs storage. Avoid starting it when access is denied.
