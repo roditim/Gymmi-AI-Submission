@@ -2,8 +2,8 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "Workout planning with AI and a monthly calendar",
-      "A public student MVP with Supabase accounts",
+      "A weekly workout plan with AI scheduling",
+      "A public student MVP with a private cloud journal",
       "Matan Roditi\nAI Development final project"
     ],
     "kind": "cover",
@@ -22,12 +22,12 @@
     "key": "journey"
   },
   {
-    "title": "The MVP features",
+    "title": "A focused workout dashboard",
     "lines": [
-      "Weekly plan and monthly calendar\nAdd or edit workouts and select any day.",
-      "AI weekly planner\nDescribe availability, review a proposal and approve dates.",
-      "Private cloud journal\nSign up, sign in and load another device.",
-      "Progress and RPG-inspired UI\nWeekly completion, history and quest-style workout cards."
+      "Next workout\nA clear starting point with saved routine details.",
+      "Weekly progress\nA completion ring calculated from the workout journal.",
+      "Focused forms\nWorkout and account dialogs keep the plan visible.",
+      "Mobile navigation\nA day strip, bottom navigation and skippable onboarding."
     ],
     "kind": "features",
     "key": "features"
@@ -35,10 +35,10 @@
   {
     "title": "Browser, Supabase and OpenAI",
     "lines": [
-      "Browser app\nWorkout forms, calendar and progress.\nReview and approve AI proposals.",
-      "Supabase\nAuth and owner-only journal access.\nEdge Function validates AI requests.",
-      "OpenAI\nGPT-5.4 Mini interprets availability.\nReturns a structured weekday proposal.",
-      "The API key stays in Supabase Secrets. The server checks ownership, quotas and output."
+      "Browser app\nHTML, CSS and JavaScript.\nForms, calendar and progress.",
+      "Supabase\nAuth identifies the user.\nPostgres stores the journal.\nRLS checks ownership.",
+      "OpenAI\ngpt-5.4-mini interprets availability.\nThe server validates its proposal.",
+      "The Edge Function keeps the API key in Secrets. Approved dates use the same revision-protected save."
     ],
     "kind": "architecture",
     "key": "architecture"
@@ -68,44 +68,44 @@
   {
     "title": "Verification results",
     "lines": [
-      "The AI browser suite uses two real model calls; invalid and stale cases use labelled mocks.",
-      "Calendar checks mock Google opening. No personal calendar was connected."
+      "Chrome viewport checks cover 320 to 1365 px. No physical-device test.",
+      "The AI regression used two real calls. Invalid and stale outputs use labelled mocks."
     ],
     "kind": "tests",
     "table": [
       [
         "Area",
-        "Count",
+        "Groups",
         "Examples",
-        "Scope",
+        "Run scope",
         "Result"
       ],
       [
-        "Journal flows",
-        "24",
-        "Guest, cloud, signup",
-        "Browser",
+        "Redesigned UI",
+        "6",
+        "Five viewport widths",
+        "Public app",
+        "Passed"
+      ],
+      [
+        "Onboarding",
+        "8",
+        "Navigation and drafts",
+        "Public app",
+        "Passed"
+      ],
+      [
+        "Mobile signup",
+        "6",
+        "Login and cloud save",
+        "Public app",
         "Passed"
       ],
       [
         "AI planner",
         "8",
-        "Real model + mocks",
-        "Browser",
-        "Passed"
-      ],
-      [
-        "Output rules",
-        "9",
-        "IDs, dates, privacy",
-        "Unit checks",
-        "Passed"
-      ],
-      [
-        "Calendar",
-        "7 + 7",
-        "Browser + date/export rules",
-        "Browser / unit",
+        "Real calls + mocks",
+        "Local + backend",
         "Passed"
       ]
     ],
@@ -116,19 +116,19 @@
     "title": "Git workflow and public deployment",
     "kind": "git",
     "lines": [
-      "Cursor edits the local project. Git records commits on a feature branch.",
-      "Push the branch to GitHub, open a PR, inspect the diff and merge into main.",
-      "GitHub Pages publishes docs/ from main; Supabase runs the server function.",
-      "Real examples: PR #9 adds AI scheduling; PR #11 adds the monthly calendar."
+      "Cursor is the code editor. Git records changes on a feature branch.",
+      "A commit records a change. Push uploads it to GitHub for a pull request.",
+      "Merge into main publishes docs/ through GitHub Pages. The server function deploys separately.",
+      "Real examples: PR #9 adds AI scheduling. PR #16 redesigns the interface."
     ]
   },
   {
     "title": "Live demo",
     "lines": [
-      "Sign in, complete a current workout and reload.",
-      "Add two 30-minute workouts to next week and describe your available days.",
-      "Review the AI proposal, approve it and inspect the monthly calendar.",
-      "Download the month as ICS, then show the source code and a merged PR."
+      "Open the public app, sign in and add a workout for today.",
+      "Mark it complete, show the progress ring and reload.",
+      "Add two short workouts to next week. Review and approve an AI proposal.",
+      "Show the dates in the monthly calendar, then show one merged PR."
     ],
     "kind": "steps",
     "key": "demo"
