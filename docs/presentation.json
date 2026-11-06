@@ -2,46 +2,50 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "Workout tracking with an AI weekly planner",
+      "Workout planning with AI and a monthly calendar",
       "A public student MVP with Supabase accounts",
       "Matan Roditi\nAI Development final project"
     ],
     "kind": "cover",
-    "note": "פתיחה: Gymmi הוא יומן אימונים עם עוזר AI פעיל. המשתמש כותב מתי הוא פנוי, המודל מציע שיבוץ לאימונים שהוגדרו, והמשתמש מאשר לפני שמירה. אין חיזוי השלמה או יצירת תרגילים."
+    "note": "פתיחה: Gymmi הוא יומן אימונים עם עוזר AI פעיל. המשתמש כותב מתי הוא פנוי, המודל מציע שיבוץ לאימונים שהוגדרו, והמשתמש מאשר לפני שמירה. אין חיזוי השלמה או יצירת תרגילים.",
+    "key": "cover"
   },
   {
-    "title": "A weekly plan becomes visible progress",
+    "title": "The workout planning journey",
     "lines": [
       "01  Plan the week with dates, duration and routine details.",
       "02  Describe your availability and review an AI scheduling proposal.",
       "03  See the completed share of your weekly plan.",
-      "04  Sign in on another device to load the same journal.",
+      "04  Review the monthly calendar and load your journal on another device.",
       "Example: one completed workout out of three planned."
     ],
     "kind": "steps",
-    "note": "דוגמה פשוטה: תכננתי שלושה אימונים, השלמתי אחד והמערכת מציגה אחד מתוך שלושה. זו ספירה של נתונים שהמשתמש סימן, לא תחזית ולא המלצה רפואית. שינוי השבוע משנה את האימונים ואת ההתקדמות המוצגים. ה־AI מציע ימים, והקוד מחשב את התאריכים. זו הצעה שדורשת בדיקה ואישור, לא שינוי אוטומטי."
+    "note": "דוגמה פשוטה: תכננתי שלושה אימונים, השלמתי אחד והמערכת מציגה אחד מתוך שלושה. זו ספירה של נתונים שהמשתמש סימן, לא תחזית ולא המלצה רפואית. שינוי השבוע משנה את האימונים ואת ההתקדמות המוצגים. ה־AI מציע ימים, והקוד מחשב את התאריכים. זו הצעה שדורשת בדיקה ואישור, לא שינוי אוטומטי.",
+    "key": "journey"
   },
   {
-    "title": "A small product works end to end",
+    "title": "The MVP features",
     "lines": [
-      "Weekly planning\nAdd, edit and delete your workouts.",
+      "Weekly plan and monthly calendar\nAdd or edit workouts and select any day.",
       "AI weekly planner\nDescribe availability, review a proposal and approve dates.",
       "Private cloud journal\nSign up, sign in and load another device.",
       "Progress and RPG-inspired UI\nWeekly completion, history and quest-style workout cards."
     ],
     "kind": "features",
-    "note": "הממשק החדש הוא CSS ו-HTML עם תגיות סטטוס קטנות ב-JavaScript. אין עדיין דמות, XP, רמות או מערכת משימות נפרדת. משימה היא אותו אימון ברשימה, כך שאפשר להסביר את כל המוצר בפשטות."
+    "note": "המשתמש הוא מתאמן. אפשר לתכנן אימונים ולראות אותם בשתי תצוגות: שבוע וחודש. אלה אותם נתונים, לא שתי רשימות שונות. סטטוס השלמה והיסטוריה מבוססים על סימון המשתמש. עיצוב ה־RPG הוא חזותי בלבד, ללא XP או דמות.",
+    "key": "features"
   },
   {
-    "title": "Simple code connects to managed services",
+    "title": "Browser, Supabase and OpenAI",
     "lines": [
-      "Browser app\nForms, journal state and proposal review.\nApproval uses the existing save flow.",
+      "Browser app\nWorkout forms, calendar and progress.\nReview and approve AI proposals.",
       "Supabase\nAuth and owner-only journal access.\nEdge Function validates AI requests.",
       "OpenAI\nGPT-5.4 Mini interprets availability.\nReturns a structured weekday proposal.",
       "The API key stays in Supabase Secrets. The server checks ownership, quotas and output."
     ],
     "kind": "architecture",
-    "note": "הדפדפן פונה ל־Supabase Edge Function עם Session. השרת מאמת את המשתמש וקורא את היומן בהרשאותיו. ל־OpenAI נשלחים רק הזמינות, שמות ומשך האימונים, והימים המותרים. המפתח נשאר ב־Secrets. המודל מחזיר יום בשבוע, הקוד ממיר לתאריך ומאמת. רק אישור המשתמש מפעיל שמירה רגילה עם revision."
+    "note": "הדפדפן פונה ל־Supabase Edge Function עם Session. השרת מאמת את המשתמש וקורא את היומן בהרשאותיו. ל־OpenAI נשלחים רק הזמינות, שמות ומשך האימונים, והימים המותרים. המפתח נשאר ב־Secrets. המודל מחזיר יום בשבוע, הקוד ממיר לתאריך ומאמת. רק אישור המשתמש מפעיל שמירה רגילה עם revision.",
+    "key": "architecture"
   },
   {
     "title": "The user approves every AI change",
@@ -52,13 +56,26 @@
       "04  Save the approved dates with revision checks."
     ],
     "kind": "steps",
-    "note": "צילום ההצעה מגיע מבדיקת מודל אמיתית עם נתוני QA לדוגמה. לא נשמר שינוי עד האישור. הפלט מוגבל למזהי אימונים ולימים מותרים. שינוי יומן או זמינות מבטל הצעה קודמת. הניסוי תפס פעם טעות ביום; העברנו את המרת ימי השבוע לתאריכים לקוד. עדיין ייתכנו טעויות בפירוש הבקשה, ולכן נדרשת בדיקה אנושית."
+    "note": "צילום ההצעה מגיע מבדיקת מודל אמיתית עם נתוני QA לדוגמה. לא נשמר שינוי עד האישור. הפלט מוגבל למזהי אימונים ולימים מותרים. שינוי יומן או זמינות מבטל הצעה קודמת. הניסוי תפס פעם טעות ביום; העברנו את המרת ימי השבוע לתאריכים לקוד. עדיין ייתכנו טעויות בפירוש הבקשה, ולכן נדרשת בדיקה אנושית.",
+    "key": "ai"
   },
   {
-    "title": "AI proposals have their own validation checks",
+    "key": "calendar",
+    "title": "Monthly calendar and manual export",
+    "kind": "calendar",
     "lines": [
-      "Two real model calls per AI browser run. Invalid and stale output cases use labelled mocks.",
-      "Daily and global limits were checked. Hosted test CI is not configured."
+      "Select a day to see, add or edit workouts.",
+      "AI-approved dates appear in the same journal.",
+      "Open a Google event draft or download planned workouts as ICS.",
+      "Manual export only. All-day events; no automatic or two-way sync."
+    ],
+    "note": "זהו צילום אמיתי של האתר עם שלושה אימוני אורח לדוגמה, ללא חשבון אישי. calendar.js מצייר את אותו state.workouts של השבוע. calendar-lib.js מחשב ימים ומייצר ICS וקישור לטיוטת Google. הייצוא כולל רק אימונים מתוכננים בחודש הנבחר. שם, תאריך ומשך בלבד; פרטי התרגילים אינם מועברים. האירוע יום שלם כי אין שעת התחלה במוצר. המשתמש שומר ידנית ב־Google; Gymmi אינה יודעת אם שמר. שינוי ב־Gymmi לא משנה עותק חיצוני, וייבוא חוזר עלול ליצור כפילויות."
+  },
+  {
+    "title": "Verification results",
+    "lines": [
+      "The AI browser suite uses two real model calls; invalid and stale cases use labelled mocks.",
+      "Calendar checks mock Google opening. No personal calendar was connected."
     ],
     "kind": "tests",
     "table": [
@@ -89,31 +106,53 @@
         "IDs, dates, privacy",
         "Unit checks",
         "Passed"
+      ],
+      [
+        "Calendar",
+        "7 + 7",
+        "Browser + date/export rules",
+        "Browser / unit",
+        "Passed"
       ]
     ],
-    "note": "24 קבוצות דפדפן קודמות נבדקו לצד 8 קבוצות AI ו־9 בדיקות אימות לוגיקה. לכל ריצת AI בדפדפן שתי קריאות ספק אמיתיות; פלט שגוי והצעה ישנה מדומים במפורש. גבול מכסה גלובלי נבדק בטרנזקציה שבוטלה. לא מציגים את כל הבדיקות כקריאות מודל אמיתיות. תוצאות ב־verification/ai-planner-check.json."
+    "note": "תוצאות מתועדות ולא בדיקות חדשות של מודל בשקופית: 24 קבוצות יומן/ענן/הרשמה; 8 קבוצות AI עם שתי קריאות מודל אמיתיות בכל ריצה ושאר תרחישים עם הדמיות מסומנות; 9 בדיקות כללי AI. ליומן החודשי נוספו 7 קבוצות דפדפן ו־7 בדיקות לוגיקת תאריכים/ייצוא. Google מדומה בבדיקה ולא נוצר אירוע אמיתי. אין CI לבדיקות ב־GitHub; הריצות בוצעו ממחשב הפיתוח מול האתר והשירותים. מקורות: verification/ai-planner-check.json ו־verification/calendar-check.json.",
+    "key": "tests"
   },
   {
-    "title": "A five-minute demo tells the story",
+    "key": "git",
+    "title": "Git workflow and public deployment",
+    "kind": "git",
     "lines": [
-      "Register, mark a current workout complete and reload the journal.",
-      "Open next week and add a small set of planned workouts.",
-      "Describe available days, request AI help and inspect the proposal.",
-      "Approve the schedule, reload and show the saved dates."
+      "Cursor edits the local project. Git records commits on a feature branch.",
+      "Push the branch to GitHub, open a PR, inspect the diff and merge into main.",
+      "GitHub Pages publishes docs/ from main; Supabase runs the server function.",
+      "Real examples: PR #9 adds AI scheduling; PR #11 adds the monthly calendar."
+    ],
+    "note": "Git היא מערכת ניהול גרסאות, GitHub הוא האתר שמחזיק את הריפו ו־PR, ו־Cursor הוא עורך הקוד. branch מאפשר לפתח שינוי בנפרד מ־main. commit מתעד קבוצת שינויים. push מעלה את ההיסטוריה ל־GitHub. PR מציג הבדלים ותיאור; merge מכניס ל־main. PR אמיתי אינו הוכחה שמפתח אחר עשה סקירה. המיזוג אצלנו מפעיל פרסום GitHub Pages, אבל Edge Function פורסמה בנפרד ל־Supabase. בדיקות המוצר בוצעו ידנית ממחשב הפיתוח, לא ב־CI אוטומטי. דוגמאות: https://github.com/roditim/Gymmi-AI-Submission/pull/9 ו־https://github.com/roditim/Gymmi-AI-Submission/pull/11. אין סודות בריפו."
+  },
+  {
+    "title": "Live demo",
+    "lines": [
+      "Sign in, complete a current workout and reload.",
+      "Add two 30-minute workouts to next week and describe your available days.",
+      "Review the AI proposal, approve it and inspect the monthly calendar.",
+      "Download the month as ICS, then show the source code and a merged PR."
     ],
     "kind": "steps",
-    "note": "בחר שבוע הבא כדי להשאיר את כל הימים זמינים. אפשר להכניס שני אימונים של 30 דקות ולכתוב בעברית שפנויים רק ברביעי ובשישי. הראה את ההצעה לפני שמירה, ואז אשר. בקשה נוספת יכולה להדגים ביטול אם נשארה מכסה. יש עד 3 ניסיונות ביום לחשבון ומכסה כוללת של 100 ניסיונות להדגמה."
+    "note": "הדגמה: חשבון מוכן מראש, אימון להיום לסימון השלמה. בשבוע הבא הוסף שני אימונים של 30 דקות, כתוב שפנויים רק ברביעי ובשישי ובקש הצעה. הראה שלא נשמר דבר לפני האישור. אשר ורענן; עבור ליומן החודשי ובחר את החודש והיום המתאימים. הראה ייצוא ICS בלי לחבר חשבון Google. לבסוף פתח PR ממוזג בריפו. אם המודל נכשל, הראה את הודעת הכשל ואת הצילום מבדיקה קודמת, עם הסבר מפורש שזה צילום קודם. שמור ניסיון אחד להצגה: 3 ביום UTC לחשבון ו־100 לכל הפרויקט.",
+    "key": "demo"
   },
   {
-    "title": "A focused MVP follows the clarified brief",
+    "title": "Scope and current limits",
     "lines": [
-      "Production: a public HTTPS app and a public GitHub repository.",
-      "Core product: workout planning, completion and weekly progress.",
-      "RPG today: visual style. Avatars, XP and levels remain future work.",
-      "AI today: a server-backed scheduler. Trained ML and CrewAI remain optional.",
-      "Limits: AI suggestions need review. Emails are unverified and recovery is unavailable."
+      "Production: public HTTPS app, GitHub source and cloud accounts.",
+      "AI: an existing language model proposes dates; the user reviews and approves.",
+      "Calendar: manual Google drafts or ICS export; all-day events with no automatic sync.",
+      "RPG is visual. Trained ML and CrewAI remain optional research.",
+      "MVP limits: unverified emails, no password recovery and capped AI requests."
     ],
     "kind": "scope",
-    "note": "ההבהרה האחרונה של יונתן היא הקובעת: אתר ציבורי חובה, CrewAI ו-ML אינם חובה. היו ניסויי מחקר קודמים, אך אין לקרוא למודל הביקורים ההיסטורי חיזוי השלמת אימון. המשתמש אישר במפורש שאין אימות מייל ב-MVP הלימודי. Free עשוי להשהות פרויקט בתקופה של פעילות נמוכה. נעזרתי בעוזר קוד, ואני צריך לדעת להסביר את ההגשה בעצמי. כעת יש AI פעיל, אך הוא משתמש במודל שפה קיים ולא מאמן מודל חדש. למודל יש חיוב ספק נפרד ממסלול Supabase החינמי. יש מכסת 3 ניסיונות לחשבון ביום UTC ו־100 לפרויקט, כולל כשלי ספק. פרטי תרגילים והיסטוריית השלמות אינם נשלחים."
+    "note": "ההבהרה האחרונה של יונתן קובעת: קישור ציבורי חובה; CrewAI ו־ML מאומן אינם חובה. אין להבטיח ציון או אישור למימוש המסוים. אין חיזוי השלמת אימון או יצירת תרגילים. אין OAuth ל־Google ואין סנכרון דו־כיווני. המשתמש אישר הרשמה בלי אימות מייל ל־MVP הלימודי; אין שחזור סיסמה. Supabase נבנה במסלול Free; שימוש ב־OpenAI מחויב בנפרד, עם 3 ניסיונות ביום UTC לחשבון ו־100 לפרויקט כולל כשלים. נעזרתי בעוזר קוד ואני אחראי להבין ולהסביר את מה שאני מגיש.",
+    "key": "scope"
   }
 ]

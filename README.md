@@ -2,6 +2,8 @@
 
 [פתח את האפליקציה הציבורית](https://roditim.github.io/Gymmi-AI-Submission/app/) · [English presentation](https://roditim.github.io/Gymmi-AI-Submission/) · [מדריך חזרה להצגה](docs/REHEARSAL_HE.md)
 
+[מדריך מלא להצגה: האפליקציה, הקוד, AI, Supabase, Git והיומן](docs/COMPLETE_PRESENTATION_GUIDE_HE.md) — כולל תסריט הדגמה ומושגים בפשטות; הערות בעברית לכל אחת מעשר השקופיות ב־[PRESENTER_NOTES_HE.md](docs/PRESENTER_NOTES_HE.md).
+
 Gymmi הוא MVP למתאמן שרוצה לארגן אימונים בשבוע ולראות מה השלים. עוזר AI מפרש זמינות בשפה חופשית ומציע תאריכים לאימונים שכבר הוגדרו, לבדיקה ואישור לפני שמירה. לפי הבהרת המרצה שהועברה ב־4.11.2026, פריסה ל־Production עם קישור ציבורי היא חובה; CrewAI הוא המלצה ומודל ML מאומן אינו חובה. ההבהרה הזו מנחה את גרסת ההגשה.
 
 ## מה עושים באפליקציה
