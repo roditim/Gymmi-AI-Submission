@@ -2,8 +2,8 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "Workout planning with AI and a monthly calendar",
-      "A public student MVP with Supabase accounts",
+      "A weekly workout plan with AI scheduling",
+      "A public student MVP with a private cloud journal",
       "Matan Roditi\nAI Development final project"
     ],
     "kind": "cover",
@@ -24,24 +24,24 @@
     "key": "journey"
   },
   {
-    "title": "The MVP features",
+    "title": "A focused workout dashboard",
     "lines": [
-      "Weekly plan and monthly calendar\nAdd or edit workouts and select any day.",
-      "AI weekly planner\nDescribe availability, review a proposal and approve dates.",
-      "Private cloud journal\nSign up, sign in and load another device.",
-      "Progress and RPG-inspired UI\nWeekly completion, history and quest-style workout cards."
+      "Next workout\nA clear starting point with saved routine details.",
+      "Weekly progress\nA completion ring calculated from the workout journal.",
+      "Focused forms\nWorkout and account dialogs keep the plan visible.",
+      "Mobile navigation\nA day strip, bottom navigation and skippable onboarding."
     ],
     "kind": "features",
-    "note": "המשתמש הוא מתאמן. אפשר לתכנן אימונים ולראות אותם בשתי תצוגות: שבוע וחודש. אלה אותם נתונים, לא שתי רשימות שונות. סטטוס השלמה והיסטוריה מבוססים על סימון המשתמש. עיצוב ה־RPG הוא חזותי בלבד, ללא XP או דמות.",
+    "note": "הראה את העיצוב החדש: הכרטיס הבולט הוא האימון הבא ששמור ביומן, והטבעת סופרת השלמות אמיתיות. הוספה וכניסה נפתחות בחלונות. סגירה או Escape שומרים טיוטה; שמירה מוצלחת או ביטול עריכה מנקים אותה. רצועת הימים פותחת אימון קיים או הוספה ביום ריק. במחשב ניווט צד, ובמובייל ניווט תחתון והדרכה ניתנת לדילוג. השראה חזותית בלבד: מקורות ב־docs/UI_RESEARCH_HE.md. אין כאן מחקר משתמשים או XP.",
     "key": "features"
   },
   {
     "title": "Browser, Supabase and OpenAI",
     "lines": [
-      "Browser app\nWorkout forms, calendar and progress.\nReview and approve AI proposals.",
-      "Supabase\nAuth and owner-only journal access.\nEdge Function validates AI requests.",
-      "OpenAI\nGPT-5.4 Mini interprets availability.\nReturns a structured weekday proposal.",
-      "The API key stays in Supabase Secrets. The server checks ownership, quotas and output."
+      "Browser app\nHTML, CSS and JavaScript.\nForms, calendar and progress.",
+      "Supabase\nAuth identifies the user.\nPostgres stores the journal.\nRLS checks ownership.",
+      "OpenAI\ngpt-5.4-mini interprets availability.\nThe server validates its proposal.",
+      "The Edge Function keeps the API key in Secrets. Approved dates use the same revision-protected save."
     ],
     "kind": "architecture",
     "note": "הדפדפן פונה ל־Supabase Edge Function עם Session. השרת מאמת את המשתמש וקורא את היומן בהרשאותיו. ל־OpenAI נשלחים רק הזמינות, שמות ומשך האימונים, והימים המותרים. המפתח נשאר ב־Secrets. המודל מחזיר יום בשבוע, הקוד ממיר לתאריך ומאמת. רק אישור המשתמש מפעיל שמירה רגילה עם revision.",
@@ -74,48 +74,48 @@
   {
     "title": "Verification results",
     "lines": [
-      "The AI browser suite uses two real model calls; invalid and stale cases use labelled mocks.",
-      "Calendar checks mock Google opening. No personal calendar was connected."
+      "Chrome viewport checks cover 320 to 1365 px. No physical-device test.",
+      "The AI regression used two real calls. Invalid and stale outputs use labelled mocks."
     ],
     "kind": "tests",
     "table": [
       [
         "Area",
-        "Count",
+        "Groups",
         "Examples",
-        "Scope",
+        "Run scope",
         "Result"
       ],
       [
-        "Journal flows",
-        "24",
-        "Guest, cloud, signup",
-        "Browser",
+        "Redesigned UI",
+        "6",
+        "Five viewport widths",
+        "Public app",
+        "Passed"
+      ],
+      [
+        "Onboarding",
+        "8",
+        "Navigation and drafts",
+        "Public app",
+        "Passed"
+      ],
+      [
+        "Mobile signup",
+        "6",
+        "Login and cloud save",
+        "Public app",
         "Passed"
       ],
       [
         "AI planner",
         "8",
-        "Real model + mocks",
-        "Browser",
-        "Passed"
-      ],
-      [
-        "Output rules",
-        "9",
-        "IDs, dates, privacy",
-        "Unit checks",
-        "Passed"
-      ],
-      [
-        "Calendar",
-        "7 + 7",
-        "Browser + date/export rules",
-        "Browser / unit",
+        "Real calls + mocks",
+        "Local + backend",
         "Passed"
       ]
     ],
-    "note": "תוצאות מתועדות ולא בדיקות חדשות של מודל בשקופית: 24 קבוצות יומן/ענן/הרשמה; 8 קבוצות AI עם שתי קריאות מודל אמיתיות בכל ריצה ושאר תרחישים עם הדמיות מסומנות; 9 בדיקות כללי AI. ליומן החודשי נוספו 7 קבוצות דפדפן ו־7 בדיקות לוגיקת תאריכים/ייצוא. Google מדומה בבדיקה ולא נוצר אירוע אמיתי. אין CI לבדיקות ב־GitHub; הריצות בוצעו ממחשב הפיתוח מול האתר והשירותים. מקורות: verification/ai-planner-check.json ו־verification/calendar-check.json.",
+    "note": "אלה תוצאות מתועדות מהריצה האחרונה של העיצוב: 6 קבוצות עיצוב ו־8 קבוצות הדרכה/ניווט על האתר הציבורי בחמישה רוחבים, ועוד 6 קבוצות הרשמה ושמירה ציבוריות ב־390x844. זו הדמיית גודל Chrome, לא מכשיר פיזי. 8 קבוצות AI הורצו מקומית מול שירותי השרת, ובהן שתי קריאות מודל אמיתיות בעברית ובאנגלית; מקרים לא תקינים וישנים נבדקו עם הדמיות מסומנות. גם בדיקות כללים קודמות עברו: 9 ל־AI ו־7 ליומן. אין לחבר את הקבוצות למספר משתמשים או לציון דיוק. הרצות ממחשב הפיתוח, לא CI. מקור: verification/ui-redesign-check.json.",
     "key": "tests"
   },
   {
@@ -123,23 +123,23 @@
     "title": "Git workflow and public deployment",
     "kind": "git",
     "lines": [
-      "Cursor edits the local project. Git records commits on a feature branch.",
-      "Push the branch to GitHub, open a PR, inspect the diff and merge into main.",
-      "GitHub Pages publishes docs/ from main; Supabase runs the server function.",
-      "Real examples: PR #9 adds AI scheduling; PR #11 adds the monthly calendar."
+      "Cursor is the code editor. Git records changes on a feature branch.",
+      "A commit records a change. Push uploads it to GitHub for a pull request.",
+      "Merge into main publishes docs/ through GitHub Pages. The server function deploys separately.",
+      "Real examples: PR #9 adds AI scheduling. PR #16 redesigns the interface."
     ],
-    "note": "Git היא מערכת ניהול גרסאות, GitHub הוא האתר שמחזיק את הריפו ו־PR, ו־Cursor הוא עורך הקוד. branch מאפשר לפתח שינוי בנפרד מ־main. commit מתעד קבוצת שינויים. push מעלה את ההיסטוריה ל־GitHub. PR מציג הבדלים ותיאור; merge מכניס ל־main. PR אמיתי אינו הוכחה שמפתח אחר עשה סקירה. המיזוג אצלנו מפעיל פרסום GitHub Pages, אבל Edge Function פורסמה בנפרד ל־Supabase. בדיקות המוצר בוצעו ידנית ממחשב הפיתוח, לא ב־CI אוטומטי. דוגמאות: https://github.com/roditim/Gymmi-AI-Submission/pull/9 ו־https://github.com/roditim/Gymmi-AI-Submission/pull/11. אין סודות בריפו."
+    "note": "Git היא מערכת ניהול גרסאות, GitHub הוא האתר שמחזיק את הריפו ו־PR, ו־Cursor הוא עורך הקוד. branch מאפשר לפתח שינוי בנפרד מ־main. commit מתעד קבוצת שינויים. push מעלה את ההיסטוריה ל־GitHub. PR מציג הבדלים ותיאור; merge מכניס ל־main. PR אמיתי אינו הוכחה שמפתח אחר עשה סקירה. המיזוג אצלנו מפעיל פרסום GitHub Pages, אבל Edge Function פורסמה בנפרד ל־Supabase. בדיקות המוצר בוצעו ידנית ממחשב הפיתוח, לא ב־CI אוטומטי. דוגמאות: https://github.com/roditim/Gymmi-AI-Submission/pull/9 ו־https://github.com/roditim/Gymmi-AI-Submission/pull/11. אין סודות בריפו. העיצוב החדש נכנס ב־PR #16: https://github.com/roditim/Gymmi-AI-Submission/pull/16. Cursor הוא עורך בלבד; אין חיבור נוסף שחייבים להפעיל כדי להציג את ההיסטוריה. אפשר לפתוח את אותה תיקייה ב־Cursor ולראות Git."
   },
   {
     "title": "Live demo",
     "lines": [
-      "Sign in, complete a current workout and reload.",
-      "Add two 30-minute workouts to next week and describe your available days.",
-      "Review the AI proposal, approve it and inspect the monthly calendar.",
-      "Download the month as ICS, then show the source code and a merged PR."
+      "Open the public app, sign in and add a workout for today.",
+      "Mark it complete, show the progress ring and reload.",
+      "Add two short workouts to next week. Review and approve an AI proposal.",
+      "Show the dates in the monthly calendar, then show one merged PR."
     ],
     "kind": "steps",
-    "note": "הדגמה: חשבון מוכן מראש, אימון להיום לסימון השלמה. בשבוע הבא הוסף שני אימונים של 30 דקות, כתוב שפנויים רק ברביעי ובשישי ובקש הצעה. הראה שלא נשמר דבר לפני האישור. אשר ורענן; עבור ליומן החודשי ובחר את החודש והיום המתאימים. הראה ייצוא ICS בלי לחבר חשבון Google. לבסוף פתח PR ממוזג בריפו. אם המודל נכשל, הראה את הודעת הכשל ואת הצילום מבדיקה קודמת, עם הסבר מפורש שזה צילום קודם. שמור ניסיון אחד להצגה: 3 ביום UTC לחשבון ו־100 לכל הפרויקט.",
+    "note": "הכן חשבון הדגמה מראש. לחץ כניסה / הרשמה ואז אימון חדש. הוסף אימון להיום, שמור וסמן הושלם. הראה את הטבעת ורענן. עבור לשבוע הבא, הוסף שני אימונים של 30 דקות, פתח עזרה בשיבוץ עם AI וכתוב: פנוי רק ברביעי ובשישי, עד 30 דקות בכל יום. בדוק תאריכים ונימוקים, הראה שהכרטיסים לא השתנו ואז אשר את השיבוץ ואת הודעת האישור. עבור ליומן החודשי ובחר את החודש הנכון. לסיום הראה PR #16. ICS הוא הרחבה אם נשאר זמן. יש 3 ניסיונות ביום UTC לחשבון ו־100 לפרויקט כולל כשלים, ללא איפוס אוטומטי. אם הבקשה נכשלת, הראה צילום קודם והצהר שהוא צילום, ללא המצאת ריצה חיה.",
     "key": "demo"
   },
   {
@@ -152,7 +152,7 @@
       "MVP limits: unverified emails, no password recovery and capped AI requests."
     ],
     "kind": "scope",
-    "note": "ההבהרה האחרונה של יונתן קובעת: קישור ציבורי חובה; CrewAI ו־ML מאומן אינם חובה. אין להבטיח ציון או אישור למימוש המסוים. אין חיזוי השלמת אימון או יצירת תרגילים. אין OAuth ל־Google ואין סנכרון דו־כיווני. המשתמש אישר הרשמה בלי אימות מייל ל־MVP הלימודי; אין שחזור סיסמה. Supabase נבנה במסלול Free; שימוש ב־OpenAI מחויב בנפרד, עם 3 ניסיונות ביום UTC לחשבון ו־100 לפרויקט כולל כשלים. נעזרתי בעוזר קוד ואני אחראי להבין ולהסביר את מה שאני מגיש.",
+    "note": "ההבהרה האחרונה של יונתן קובעת: קישור ציבורי חובה; CrewAI ו־ML מאומן אינם חובה. אין להבטיח ציון או אישור למימוש המסוים. אין חיזוי השלמת אימון או יצירת תרגילים. אין OAuth ל־Google ואין סנכרון דו־כיווני. המשתמש אישר הרשמה בלי אימות מייל ל־MVP הלימודי; אין שחזור סיסמה. Supabase נבנה במסלול Free; שימוש ב־OpenAI מחויב בנפרד, עם 3 ניסיונות ביום UTC לחשבון ו־100 לפרויקט כולל כשלים. נעזרתי בעוזר קוד ואני אחראי להבין ולהסביר את מה שאני מגיש. ההיקף תואם את ההבהרה האחרונה שנמסרה, אך לא התקבל אישור נפרד של המרצה לכל פרט במימוש הסופי.",
     "key": "scope"
   }
 ]

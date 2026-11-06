@@ -1,6 +1,6 @@
 # Gymmi — תוכנית אימונים והתקדמות
 
-[פתח את האפליקציה הציבורית](https://roditim.github.io/Gymmi-AI-Submission/app/) · [English presentation](https://roditim.github.io/Gymmi-AI-Submission/) · [מדריך חזרה להצגה](docs/REHEARSAL_HE.md)
+[פתח את האפליקציה הציבורית](https://roditim.github.io/Gymmi-AI-Submission/app/) · [English presentation](https://roditim.github.io/Gymmi-AI-Submission/) · [מדריך חזרה להצגה בעיצוב החדש](docs/REHEARSAL_HE.md)
 
 [מדריך מלא להצגה: האפליקציה, הקוד, AI, Supabase, Git והיומן](docs/COMPLETE_PRESENTATION_GUIDE_HE.md) — כולל תסריט הדגמה ומושגים בפשטות; הערות בעברית לכל אחת מעשר השקופיות ב־[PRESENTER_NOTES_HE.md](docs/PRESENTER_NOTES_HE.md).
 
