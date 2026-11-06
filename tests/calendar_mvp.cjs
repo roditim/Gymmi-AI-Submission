@@ -1,6 +1,7 @@
 // UI checks use sample guest data. Google opening is intercepted: no real account or event is changed.
 const assert=require('node:assert/strict'),fs=require('node:fs/promises'),os=require('node:os'),path=require('node:path');
 const {chromium}=require('playwright');
+const ui=require('./ui_helpers.cjs');
 (async()=>{
   const url=process.argv[2]||'http://127.0.0.1:8530/';
   const browser=await chromium.launch({headless:true,...(process.env.GYMMI_BROWSER_PATH?{executablePath:process.env.GYMMI_BROWSER_PATH}:{})});
@@ -43,10 +44,10 @@ const {chromium}=require('playwright');
     await page.reload();await page.getByRole('button',{name:'יומן חודשי',exact:true}).click();
     card=page.locator('#calendar-day-list article').filter({hasText:'Edited calendar workout'});
     assert.ok((await card.getAttribute('class')).includes('completed'));
-    await card.getByRole('button',{name:'בטל סימון',exact:true}).click();
+    await ui.menu(card);await card.getByRole('button',{name:'בטל סימון',exact:true}).click();
     checks.push('calendar edit returns to editor; completion refreshes calendar and survives reload');
 
-    const view=page.locator('#view-calendar');await view.locator('summary').click();
+    const view=page.locator('#view-calendar');await view.getByText('אפשרויות Google Calendar וייצוא',{exact:true}).click();
     const downloadPromise=page.waitForEvent('download');await page.locator('#calendar-export').click();
     const download=await downloadPromise, contents=await fs.readFile(await download.path(),'utf8');
     assert.equal(download.suggestedFilename(),'gymmi-'+month+'.ics');
@@ -66,7 +67,7 @@ const {chromium}=require('playwright');
     await page.locator('#calendar-month').fill('2028-02');await page.locator('#calendar-month').dispatchEvent('change');
     await page.locator('[data-date="2028-02-29"]').click();
     card=page.locator('#calendar-day-list article');assert.equal(await card.getByRole('button',{name:'סמן הושלם',exact:true}).isDisabled(),true);
-    await card.getByRole('button',{name:'מחק',exact:true}).click();assert.equal(await page.locator('#calendar-day-list article').count(),0);
+    await ui.menu(card);await card.getByRole('button',{name:'מחק',exact:true}).click();assert.equal(await page.locator('#calendar-day-list article').count(),0);
     assert.equal(await page.locator('#calendar-export').isDisabled(),true);
     checks.push('future completion stays blocked; deletion clears the calendar and empty month export is disabled');
 

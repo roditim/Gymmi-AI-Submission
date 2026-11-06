@@ -4,6 +4,7 @@ const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const { chromium } = require('playwright');
+const ui=require('./ui_helpers.cjs');
 
 (async () => {
   const url = process.argv[2] || 'http://127.0.0.1:8520/';
@@ -16,6 +17,7 @@ const { chromium } = require('playwright');
   const checks = [];
   const state = () => page.evaluate(() => JSON.parse(localStorage.getItem('gymmi-workouts-v1') || '{"version":1,"workouts":[]}'));
   const fill = async (title, day) => {
+    await ui.editor(page);
     await page.locator('#workout-title').fill(title);
     await page.locator('#workout-date').fill(day);
     await page.locator('#workout-exercises').fill('My chosen routine');
@@ -42,7 +44,7 @@ const { chromium } = require('playwright');
     assert.equal((await state()).workouts[0].minutes, 45);
     assert.equal((await state()).workouts[0].status, 'completed');
     card = page.locator('article').filter({ hasText: 'Edited workout' });
-    await card.getByRole('button', { name: 'בטל סימון', exact: true }).click();
+    await ui.menu(card);await card.getByRole('button', { name: 'בטל סימון', exact: true }).click();
     assert.equal((await state()).workouts[0].status, 'planned');
     checks.push('editing preserves completion; undo updates progress');
 
@@ -50,7 +52,7 @@ const { chromium } = require('playwright');
     await fill('Future workout', tomorrow);
     card = page.locator('article').filter({ hasText: 'Future workout' });
     assert.equal(await card.getByRole('button', { name: 'סמן הושלם', exact: true }).isDisabled(), true);
-    assert.equal(await card.getByRole('button', { name: 'דילגתי', exact: true }).isDisabled(), true);
+    await ui.menu(card);assert.equal(await card.getByRole('button', { name: 'דילגתי', exact: true }).isDisabled(), true);
     const before = JSON.stringify(await state());
     await page.getByRole('button', { name: 'הוסף תוכנית לדוגמה', exact: true }).click();
     assert.equal(JSON.stringify(await state()), before);

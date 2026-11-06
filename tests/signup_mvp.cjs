@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const fs = require('node:fs/promises');
 const {chromium} = require('playwright');
+const ui=require('./ui_helpers.cjs');
 const config = require('node:vm').runInNewContext(require('node:fs').readFileSync('docs/app/config.js','utf8')+';window.GYMMI_CONFIG',{window:{}});
 const service = process.env.GYMMI_TEST_SERVICE_KEY;
 if(!service) throw new Error('Provide the cleanup key in the operator process environment only.');
@@ -12,7 +13,7 @@ const password=crypto.randomBytes(24).toString('base64url');
 let browser, userId; const checks=[];
 const mobile=process.env.GYMMI_TEST_MOBILE==='1';
 async function authForm(page,pw=password) {
-  if(mobile) await page.locator('#account-open').click();
+  await ui.account(page);
   await page.locator('#auth-email').fill(email);
   await page.locator('#auth-password').fill(pw);
 }
@@ -20,7 +21,7 @@ async function signedIn(page) {
   await page.waitForFunction(()=>document.querySelector('#account-status').textContent.includes('שמירה בענן'));
 }
 async function signOut(page) {
-  if(mobile) await page.locator('#account-open').click();
+  await ui.account(page);
   await page.locator('#sign-out').click();
   await page.waitForFunction(()=>document.querySelector('#account-status').textContent.includes('מצב אורח'));
 }
@@ -39,7 +40,7 @@ async function signOut(page) {
   assert.ok(userId); assert.ok(payload.access_token,'Signup must return a session without mail');
   await signedIn(page); assert.equal(await page.locator('#planned-count').innerText(),'0');
   checks.push('real browser signup returns a session without email or admin confirmation');
-  await page.locator('#workout-title').fill('Public signup QA workout');
+  await ui.editor(page);await page.locator('#workout-title').fill('Public signup QA workout');
   await page.locator('#workout-exercises').fill('Disposable QA routine');
   await page.locator('#save-workout').click();
   await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('האימון נשמר בתוכנית'));
