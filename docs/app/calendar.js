@@ -2,13 +2,14 @@
 let calendarMonth=new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
 let calendarDay=null;
 
-function showView(name) {
+function showView(name, refreshGoogle = true) {
   for (const tab of document.querySelectorAll('[data-view]')) {
     const active=tab.dataset.view===name;
     tab.setAttribute('aria-pressed',String(active)); byId('view-'+tab.dataset.view).hidden=!active;
   }
   byId('week-picker').hidden=name!=='plan';
   renderCalendar();
+  if (name === 'calendar' && refreshGoogle) updateGoogleSync();
 }
 function renderCalendar() {
   const list=byId('calendar-day-list'); list.replaceChildren();

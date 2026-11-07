@@ -1924,3 +1924,15 @@ footer a {
   border-bottom: 1px solid #30343a;
   overflow-wrap: anywhere;
 }
+
+#google-sync-panel {
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid #38452a;
+  border-radius: 16px;
+  background: #1b1e23;
+}
+
+#google-sync-panel h3 {
+  margin-top: 0;
+}

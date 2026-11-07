@@ -2,11 +2,12 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
 <meta name="description" content="Gymmi — תוכנית אימונים שבועית, סימון השלמה ומעקב התקדמות בסיסי.">
 <title>Gymmi · התוכנית שלי</title>
 <link rel="stylesheet" href="style.css">
 <script src="config.js" defer></script>
-<script src="cloud.js" defer></script><script src="ai.js" defer></script><script src="calendar-lib.js" defer></script><script src="calendar.js" defer></script><script src="ux.js" defer></script><script src="league.js" defer></script><script src="app.js" defer></script>
+<script src="cloud.js" defer></script><script src="ai.js" defer></script><script src="calendar-lib.js" defer></script><script src="calendar.js" defer></script><script src="google-sync.js" defer></script><script src="ux.js" defer></script><script src="league.js" defer></script><script src="app.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#planner-start">דלג לתוכנית האימונים</a>
@@ -78,13 +79,24 @@
 </section>
 <section id="view-calendar" hidden aria-label="יומן אימונים חודשי">
 <p class="eyebrow">YOUR TRAINING CALENDAR</p><h2 id="calendar-heading">יומן חודשי</h2>
+<section id="google-sync-panel" aria-labelledby="google-sync-title">
+<h3 id="google-sync-title">סנכרון עם Google Calendar</h3>
+<p>חבר חשבון Google כדי לסנכרן אימונים מתוכננים דרך יומן נפרד בשם Gymmi. בטלפון בחר את יומן Gymmi בעת הוספת אירוע יום שלם.</p>
+<p class="muted">הסנכרון משתף את שמות האימונים המתוכננים ואת התאריכים שלהם. מחיקת אירוע מקושר מסירה את האימון המתוכנן גם בצד השני.</p>
+<div class="actions">
+<button id="google-sync-connect" type="button" class="secondary">חבר חשבון Google</button>
+<button id="google-sync-now" type="button" class="secondary" hidden>סנכרן עכשיו</button>
+<button id="google-sync-disconnect" type="button" class="secondary" hidden>נתק את Google Calendar</button>
+</div>
+<p id="google-sync-message" class="muted" role="status">התחבר ל־Gymmi כדי להגדיר סנכרון.</p>
+</section>
 <div class="calendar-toolbar"><button id="calendar-previous" type="button" class="secondary">חודש קודם</button><label>בחירת חודש<input id="calendar-month" type="month" min="1000-01" max="9998-12"></label><button id="calendar-next" type="button" class="secondary">חודש הבא</button><button id="calendar-today" type="button" class="secondary">היום</button></div>
 <p id="calendar-summary" class="muted" aria-live="polite"></p>
 <p class="muted">בחר יום כדי לראות אימונים, לערוך או להוסיף אימון. הימים מסודרים מיום ראשון עד שבת.</p>
 <div class="calendar-weekdays" aria-hidden="true"><span>א׳</span><span>ב׳</span><span>ג׳</span><span>ד׳</span><span>ה׳</span><span>ו׳</span><span>ש׳</span></div><div id="calendar-days" class="calendar-grid" role="group" aria-label="ימי החודש"></div>
 <div class="calendar-legend"><span>● מתוכנן</span><span>● הושלם</span><span>● דילוג</span></div>
 <div class="section-title"><h3 id="calendar-day-heading"></h3><button id="calendar-add" type="button">הוסף אימון ביום הזה</button></div><div id="calendar-day-list"></div>
-<details><summary>אפשרויות Google Calendar וייצוא</summary><p>אפשר לפתוח אימון מתוכנן ב־Google Calendar מתוך כרטיס האימון ביום הנבחר, או להוריד את האימונים המתוכננים בחודש לקובץ ICS.</p><p class="muted">זו הוספה ידנית, ללא חיבור לחשבון Google וללא סנכרון אוטומטי או דו־כיווני. האימונים הם אירועי יום שלם כי לא הוגדרה שעת התחלה. מועברים רק שם, תאריך ומשך; פרטי התרגילים לא מועברים. ייבוא חוזר עלול ליצור כפילויות. שינוי או מחיקה ב־Gymmi לא יעדכנו עותק שכבר הוספת.</p><button id="calendar-export" type="button" class="secondary">הורד את החודש לקלנדר (ICS)</button></details>
+<details><summary>אפשרויות Google Calendar וייצוא</summary><p>אפשר לפתוח אימון מתוכנן ב־Google Calendar מתוך כרטיס האימון ביום הנבחר, או להוריד את האימונים המתוכננים בחודש לקובץ ICS.</p><p class="muted">טיוטות וקבצי ICS יוצרים עותקים ידניים. הסנכרון הדו־כיווני מיועד ליומן Gymmi שנוצר בחיבור מעל. האימונים הם אירועי יום שלם כי לא הוגדרה שעת התחלה. מועברים רק שם, תאריך ומשך; פרטי התרגילים לא מועברים. ייבוא חוזר עלול ליצור כפילויות. שינוי או מחיקה ב־Gymmi לא יעדכנו עותק שכבר הוספת.</p><button id="calendar-export" type="button" class="secondary">הורד את החודש לקלנדר (ICS)</button></details>
 </section>
 <section id="view-history" hidden><h2>היסטוריית אימונים</h2><p class="muted">אימון שלא סומן נשאר מתוכנן. המערכת אינה מניחה שדילגת עליו.</p><div id="history-list"></div></section>
 <section id="view-backup" hidden><h2>גיבוי ונתונים</h2><p>הגיבוי שייך ליומן המוצג: לחשבון בענן כאשר מחוברים, ולדפדפן במצב אורח. שחזור או איפוס בחשבון ישנו גם את היומן בענן. היומן המקומי נשאר נפרד.</p><div class="actions"><button type="button" id="export-data">הורד גיבוי JSON</button><label class="file-label">שחזר מגיבוי<input type="file" id="import-data" accept=".json,application/json"></label></div><p class="muted">בשחזור תופיע בקשת אישור לפני החלפת הנתונים הקיימים. אין להזין מידע רפואי רגיש. אפשר למחוק את אימוני החשבון באמצעות האיפוס; מחיקת חשבון מלאה נעשית כרגע דרך מנהל הפרויקט.</p><button type="button" id="reset-data" class="danger">מחק את הנתונים בדפדפן הזה</button></section>
