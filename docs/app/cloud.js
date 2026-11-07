@@ -52,5 +52,13 @@ const cloud = (() => {
       : await table.upsert({ user_id: userId, nickname });
     if (result.error) throw result.error;
   }
-  return { connect, load, save, plan, loadLeague, saveLeagueMembership };
+  async function googleCalendar(body) {
+    const { data, error } = await client.functions.invoke('google-calendar-sync', { body });
+    if (error) {
+      const problem = await error.context?.json?.().catch(() => null);
+      throw Error(typeof problem?.error === 'string' ? problem.error : 'temporary');
+    }
+    return data;
+  }
+  return { connect, load, save, plan, loadLeague, saveLeagueMembership, googleCalendar };
 })();

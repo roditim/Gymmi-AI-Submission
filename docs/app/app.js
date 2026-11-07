@@ -36,7 +36,7 @@ function readGuest() {
 async function changeAccount(user) {
   const generation = ++accountGeneration;
   accountLoading = true;
-  activeUser = user; revision = 0; cancelEdit(); resetLeague();
+  activeUser = user; revision = 0; cancelEdit(); resetLeague(); resetGoogleSync();
   state = { version: 1, workouts: [] }; storageProblem = !!user;
   byId("storage-error").hidden = true;
   byId("auth-form").hidden = !!user; byId("account-actions").hidden = !user;
@@ -61,6 +61,7 @@ async function changeAccount(user) {
       accountLoading = false;
       setBusy(false);
       loadLeague();
+      syncGoogleAfterAccountChange();
     }
   }
 }
@@ -287,6 +288,7 @@ setupAI();
 setupCalendar();
 setupUX();
 setupLeague();
+setupGoogleSync();
 (async () => {
   try {
     // The auth SDK also needs storage. Avoid starting it when access is denied.
