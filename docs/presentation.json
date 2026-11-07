@@ -2,7 +2,7 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "A weekly workout plan with AI scheduling",
+      "Workout planning, AI scheduling and EXP",
       "A public student MVP with a private cloud journal",
       "Matan Roditi\nAI Development final project"
     ],
@@ -22,12 +22,12 @@
     "key": "journey"
   },
   {
-    "title": "A focused workout dashboard",
+    "title": "Progress and weekly league",
     "lines": [
-      "Next workout\nA clear starting point with saved routine details.",
-      "Weekly progress\nA completion ring calculated from the workout journal.",
-      "Focused forms\nWorkout and account dialogs keep the plan visible.",
-      "Mobile navigation\nA day strip, bottom navigation and skippable onboarding."
+      "100 EXP per completed workout\nMark it in the plan or monthly calendar.",
+      "500 EXP per level\nYour level uses all completed workouts in your journal.",
+      "Optional weekly league\nJoin with a nickname from a signed-in account.",
+      "Weekly standings\nThe top 20 by EXP, Monday to Sunday in Israel."
     ],
     "kind": "features",
     "key": "features"
@@ -56,13 +56,13 @@
   },
   {
     "key": "calendar",
-    "title": "Monthly calendar and manual export",
+    "title": "Monthly calendar and Google Calendar",
     "kind": "calendar",
     "lines": [
-      "Select a day to see, add or edit workouts.",
-      "AI-approved dates appear in the same journal.",
-      "Open a Google event draft or download planned workouts as ICS.",
-      "Manual export only. All-day events; no automatic or two-way sync."
+      "Select a day to add, edit or complete a workout.",
+      "Calendar completions count toward EXP. Approved AI dates appear here.",
+      "Open a Google Calendar draft or export the planned workouts as ICS.",
+      "Manual transfer of all-day events. No automatic sync."
     ]
   },
   {
@@ -88,10 +88,10 @@
         "Passed"
       ],
       [
-        "Onboarding",
-        "8",
-        "Navigation and drafts",
-        "Public app",
+        "EXP and weekly league",
+        "4",
+        "Two QA accounts",
+        "Local + backend",
         "Passed"
       ],
       [
@@ -125,10 +125,10 @@
   {
     "title": "Live demo",
     "lines": [
-      "Open the public app, sign in and add a workout for today.",
-      "Mark it complete, show the progress ring and reload.",
-      "Add two short workouts to next week. Review and approve an AI proposal.",
-      "Show the dates in the monthly calendar, then show one merged PR."
+      "Complete today’s workout in the calendar and show the EXP change.",
+      "Open the weekly league and join with a nickname.",
+      "Ask AI to schedule two planned workouts. Review and approve.",
+      "Show the new dates in the calendar and open a Google event draft."
     ],
     "kind": "steps",
     "key": "demo"
@@ -139,7 +139,7 @@
       "Production: public HTTPS app, GitHub source and cloud accounts.",
       "AI: an existing language model proposes dates; the user reviews and approves.",
       "Calendar: manual Google drafts or ICS export; all-day events with no automatic sync.",
-      "RPG is visual. Trained ML and CrewAI remain optional research.",
+      "Weekly competition uses self-reported workout completions.",
       "MVP limits: unverified emails, no password recovery and capped AI requests."
     ],
     "kind": "scope",
