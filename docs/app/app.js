@@ -36,7 +36,7 @@ function readGuest() {
 async function changeAccount(user) {
   const generation = ++accountGeneration;
   accountLoading = true;
-  activeUser = user; revision = 0; cancelEdit();
+  activeUser = user; revision = 0; cancelEdit(); resetLeague();
   state = { version: 1, workouts: [] }; storageProblem = !!user;
   byId("storage-error").hidden = true;
   byId("auth-form").hidden = !!user; byId("account-actions").hidden = !user;
@@ -56,7 +56,13 @@ async function changeAccount(user) {
       notice("היומן לא נטען. העריכה חסומה כדי לשמור על הנתונים בענן. נסה לטעון מחדש. " + error.message, true);
       byId("account-status").textContent = "מחובר · טעינת הענן נכשלה";
     }
-  } finally { if (generation === accountGeneration) { accountLoading = false; setBusy(false); } }
+  } finally {
+    if (generation === accountGeneration) {
+      accountLoading = false;
+      setBusy(false);
+      loadLeague();
+    }
+  }
 }
 
 function isoDate(value) {
@@ -112,7 +118,9 @@ async function save(next, recover = false) {
       if (generation !== accountGeneration) return false;
       revision = nextRevision;
     } else localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    state = next; storageProblem = false; byId("storage-error").hidden = true; render(); return true;
+    state = next; storageProblem = false; byId("storage-error").hidden = true; render();
+    loadLeague();
+    return true;
   }
   catch (error) { notice("השינוי לא נשמר: " + error.message, true); return false; }
   finally { if (generation === accountGeneration) setBusy(false); }
@@ -189,6 +197,7 @@ function render() {
   for (const row of past) history.append(workoutCard(row, true));
   renderCalendar();
   refreshUX();
+  renderExperience();
 }
 byId("workout-form").addEventListener("submit", async event => {
   event.preventDefault(); const id = byId("editing-id").value;
@@ -277,6 +286,7 @@ byId("sign-out").addEventListener("click", async () => {
 setupAI();
 setupCalendar();
 setupUX();
+setupLeague();
 (async () => {
   try {
     // The auth SDK also needs storage. Avoid starting it when access is denied.

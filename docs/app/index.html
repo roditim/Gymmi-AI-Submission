@@ -6,7 +6,7 @@
 <title>Gymmi · התוכנית שלי</title>
 <link rel="stylesheet" href="style.css">
 <script src="config.js" defer></script>
-<script src="cloud.js" defer></script><script src="ai.js" defer></script><script src="calendar-lib.js" defer></script><script src="calendar.js" defer></script><script src="ux.js" defer></script><script src="app.js" defer></script>
+<script src="cloud.js" defer></script><script src="ai.js" defer></script><script src="calendar-lib.js" defer></script><script src="calendar.js" defer></script><script src="ux.js" defer></script><script src="league.js" defer></script><script src="app.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#planner-start">דלג לתוכנית האימונים</a>
@@ -38,6 +38,34 @@
 <div class="section-title"><div><p class="eyebrow">MY TRAINING PLAN</p><h2>האימונים שלי השבוע</h2></div><button type="button" id="example-plan" class="secondary">הוסף תוכנית לדוגמה</button></div>
 <p class="section-intro">האימונים שהגדרת, בקצב ובימים שלך.</p>
 <p id="next-action" class="next-action" aria-live="polite"></p><div id="workout-list"></div>
+
+<details id="league-panel" class="league-panel">
+<summary><strong>רמות ודירוג שבועי</strong><span id="exp-level">רמה 1</span><bdi id="exp-total">0 EXP</bdi></summary>
+<div class="league-content">
+<p>כל אימון שמסומן ״הושלם״ שווה 100 EXP. כל 500 EXP מעלים רמה.</p>
+<progress id="exp-progress" max="500" value="0" aria-label="התקדמות לרמה הבאה"></progress>
+<p id="exp-next" class="muted"></p>
+<p class="muted">אפשר לסמן השלמה גם ביומן החודשי. שתי התצוגות קוראות את אותם אימונים.</p>
+<button id="league-calendar" class="secondary" type="button">פתח יומן חודשי</button>
+<p>הדירוג מציג את 20 המובילים לפי תאריך האימון, מיום שני עד יום ראשון לפי שעון ישראל. ההשתתפות לבחירתך. בדירוג מוצגים כינוי וניקוד בלבד.</p>
+<div id="league-guest"><button id="league-sign-in" class="secondary" type="button">התחבר לדירוג</button></div>
+<div id="league-member" hidden>
+<form id="league-form">
+<label for="league-nickname">כינוי שיוצג בדירוג</label>
+<input id="league-nickname" minlength="3" maxlength="24" required autocomplete="off" placeholder="למשל: GymmiRunner">
+<button id="league-join" type="submit">הצטרף לדירוג</button>
+</form>
+<div class="actions league-actions">
+<button id="league-refresh" class="secondary" type="button">רענן דירוג</button>
+<button id="league-leave" class="secondary" type="button" hidden>צא מהדירוג</button>
+</div>
+<p id="league-status" role="status" class="muted"></p>
+<table id="league-table" aria-label="דירוג EXP שבועי" hidden>
+<thead><tr><th scope="col">מקום</th><th scope="col">כינוי</th><th scope="col">EXP השבוע</th></tr></thead>
+<tbody id="league-body"></tbody>
+</table>
+</div>
+</div></details>
 
 <details id="ai-panel" class="ai-planner" open><summary>עוזר AI לשיבוץ השבוע</summary><div class="ai-content">
 <p class="eyebrow">AI WEEK PLANNER</p><h2 id="ai-heading">מתי נוח לך להתאמן?</h2>

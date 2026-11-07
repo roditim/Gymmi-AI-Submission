@@ -2,7 +2,7 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "A weekly workout plan with AI scheduling",
+      "Workout planning, AI scheduling and EXP",
       "A public student MVP with a private cloud journal",
       "Matan Roditi\nAI Development final project"
     ],
@@ -24,15 +24,15 @@
     "key": "journey"
   },
   {
-    "title": "A focused workout dashboard",
+    "title": "Progress and weekly league",
     "lines": [
-      "Next workout\nA clear starting point with saved routine details.",
-      "Weekly progress\nA completion ring calculated from the workout journal.",
-      "Focused forms\nWorkout and account dialogs keep the plan visible.",
-      "Mobile navigation\nA day strip, bottom navigation and skippable onboarding."
+      "100 EXP per completed workout\nMark it in the plan or monthly calendar.",
+      "500 EXP per level\nYour level uses all completed workouts in your journal.",
+      "Optional weekly league\nJoin with a nickname from a signed-in account.",
+      "Weekly standings\nThe top 20 by EXP, Monday to Sunday in Israel."
     ],
     "kind": "features",
-    "note": "הראה את העיצוב החדש: הכרטיס הבולט הוא האימון הבא ששמור ביומן, והטבעת סופרת השלמות אמיתיות. הוספה וכניסה נפתחות בחלונות. סגירה או Escape שומרים טיוטה; שמירה מוצלחת או ביטול עריכה מנקים אותה. רצועת הימים פותחת אימון קיים או הוספה ביום ריק. במחשב ניווט צד, ובמובייל ניווט תחתון והדרכה ניתנת לדילוג. השראה חזותית בלבד: מקורות ב־docs/UI_RESEARCH_HE.md. אין כאן מחקר משתמשים או XP.",
+    "note": "הראה סימון אימון ביומן החודשי, ואז פתח ״רמות ודירוג שבועי״. כל אימון שהושלם שווה 100 EXP וכל 500 EXP מעלים רמה. ביטול סימון מסיר את הניקוד. הדירוג מחושב מתאריכי האימונים בשבוע הנוכחי לפי שעון ישראל. מצטרפים במפורש עם כינוי ואפשר לצאת. רק כינוי וניקוד מוצגים מול משתמשים אחרים. צילום המסך מציג שני חשבונות בדיקה זמניים. ההשלמות הן דיווח עצמי.",
     "key": "features"
   },
   {
@@ -61,15 +61,15 @@
   },
   {
     "key": "calendar",
-    "title": "Monthly calendar and manual export",
+    "title": "Monthly calendar and Google Calendar",
     "kind": "calendar",
     "lines": [
-      "Select a day to see, add or edit workouts.",
-      "AI-approved dates appear in the same journal.",
-      "Open a Google event draft or download planned workouts as ICS.",
-      "Manual export only. All-day events; no automatic or two-way sync."
+      "Select a day to add, edit or complete a workout.",
+      "Calendar completions count toward EXP. Approved AI dates appear here.",
+      "Open a Google Calendar draft or export the planned workouts as ICS.",
+      "Manual transfer of all-day events. No automatic sync."
     ],
-    "note": "זהו צילום אמיתי של האתר עם שלושה אימוני אורח לדוגמה, ללא חשבון אישי. calendar.js מצייר את אותו state.workouts של השבוע. calendar-lib.js מחשב ימים ומייצר ICS וקישור לטיוטת Google. הייצוא כולל רק אימונים מתוכננים בחודש הנבחר. שם, תאריך ומשך בלבד; פרטי התרגילים אינם מועברים. האירוע יום שלם כי אין שעת התחלה במוצר. המשתמש שומר ידנית ב־Google; Gymmi אינה יודעת אם שמר. שינוי ב־Gymmi לא משנה עותק חיצוני, וייבוא חוזר עלול ליצור כפילויות."
+    "note": "פתח את ״יומן חודשי״ והראה שהאימונים מגיעים מאותו יומן של התוכנית. סימון השלמה ביומן מזכה באותו EXP. אחרי אישור הצעת AI, התאריכים החדשים מופיעים כאן. בחר אימון מתוכנן ולחץ ״הוסף ל־Google Calendar״ כדי לפתוח טיוטה שדורשת שמירה ידנית. אפשר גם לייצא קובץ ICS של האימונים המתוכננים בחודש. האירועים הם יום שלם, וההעברה כוללת שם, תאריך ומשך בלבד. אין סנכרון אוטומטי או חיבור לחשבון Google מתוך Gymmi."
   },
   {
     "title": "Verification results",
@@ -94,10 +94,10 @@
         "Passed"
       ],
       [
-        "Onboarding",
-        "8",
-        "Navigation and drafts",
-        "Public app",
+        "EXP and weekly league",
+        "4",
+        "Two QA accounts",
+        "Local + backend",
         "Passed"
       ],
       [
@@ -115,7 +115,7 @@
         "Passed"
       ]
     ],
-    "note": "אלה תוצאות מתועדות מהריצה האחרונה של העיצוב: 6 קבוצות עיצוב ו־8 קבוצות הדרכה/ניווט על האתר הציבורי בחמישה רוחבים, ועוד 6 קבוצות הרשמה ושמירה ציבוריות ב־390x844. זו הדמיית גודל Chrome, לא מכשיר פיזי. 8 קבוצות AI הורצו מקומית מול שירותי השרת, ובהן שתי קריאות מודל אמיתיות בעברית ובאנגלית; מקרים לא תקינים וישנים נבדקו עם הדמיות מסומנות. גם בדיקות כללים קודמות עברו: 9 ל־AI ו־7 ליומן. אין לחבר את הקבוצות למספר משתמשים או לציון דיוק. הרצות ממחשב הפיתוח, לא CI. מקור: verification/ui-redesign-check.json.",
+    "note": "אלה תוצאות מתועדות מהריצה האחרונה של העיצוב: 6 קבוצות עיצוב ו־8 קבוצות הדרכה/ניווט על האתר הציבורי בחמישה רוחבים, ועוד 6 קבוצות הרשמה ושמירה ציבוריות ב־390x844. זו הדמיית גודל Chrome, לא מכשיר פיזי. 8 קבוצות AI הורצו מקומית מול שירותי השרת, ובהן שתי קריאות מודל אמיתיות בעברית ובאנגלית; מקרים לא תקינים וישנים נבדקו עם הדמיות מסומנות. גם בדיקות כללים קודמות עברו: 9 ל־AI ו־7 ליומן. אין לחבר את הקבוצות למספר משתמשים או לציון דיוק. הרצות ממחשב הפיתוח, לא CI. מקור: verification/ui-redesign-check.json. ארבע קבוצות דירוג חדשות בדקו שני חשבונות מול Supabase, מעבר רמה מתוך היומן, בידוד נתונים ויציאה מהדירוג. חשבונות הבדיקה נמחקו.",
     "key": "tests"
   },
   {
@@ -133,13 +133,13 @@
   {
     "title": "Live demo",
     "lines": [
-      "Open the public app, sign in and add a workout for today.",
-      "Mark it complete, show the progress ring and reload.",
-      "Add two short workouts to next week. Review and approve an AI proposal.",
-      "Show the dates in the monthly calendar, then show one merged PR."
+      "Complete today’s workout in the calendar and show the EXP change.",
+      "Open the weekly league and join with a nickname.",
+      "Ask AI to schedule two planned workouts. Review and approve.",
+      "Show the new dates in the calendar and open a Google event draft."
     ],
     "kind": "steps",
-    "note": "הכן חשבון הדגמה מראש. לחץ כניסה / הרשמה ואז אימון חדש. הוסף אימון להיום, שמור וסמן הושלם. הראה את הטבעת ורענן. עבור לשבוע הבא, הוסף שני אימונים של 30 דקות, פתח עזרה בשיבוץ עם AI וכתוב: פנוי רק ברביעי ובשישי, עד 30 דקות בכל יום. בדוק תאריכים ונימוקים, הראה שהכרטיסים לא השתנו ואז אשר את השיבוץ ואת הודעת האישור. עבור ליומן החודשי ובחר את החודש הנכון. לסיום הראה PR #16. ICS הוא הרחבה אם נשאר זמן. יש 3 ניסיונות ביום UTC לחשבון ו־100 לפרויקט כולל כשלים, ללא איפוס אוטומטי. אם הבקשה נכשלת, הראה צילום קודם והצהר שהוא צילום, ללא המצאת ריצה חיה.",
+    "note": "היכנס עם חשבון הדגמה והכן אימון להיום. סמן השלמה ביומן והראה 100 EXP נוספים במסך התוכנית. פתח ״רמות ודירוג שבועי״, הצטרף בכינוי והראה את הטבלה. אפשר להכין שני חשבונות הדגמה נפרדים מראש כדי להראות את ההשוואה. עבור לשבוע הבא, הוסף שני אימונים, בקש הצעת AI, בדוק ואשר. חזור ליומן, בחר אימון מתוכנן ופתח טיוטת Google Calendar. אפשר להציג את שלב האישור או להוריד ICS בלי לשמור אירוע חיצוני. אם בקשת ה־AI נכשלת, הצג את התוצאה המצולמת בשקופית 5 כצילום מריצה קודמת.",
     "key": "demo"
   },
   {
@@ -148,7 +148,7 @@
       "Production: public HTTPS app, GitHub source and cloud accounts.",
       "AI: an existing language model proposes dates; the user reviews and approves.",
       "Calendar: manual Google drafts or ICS export; all-day events with no automatic sync.",
-      "RPG is visual. Trained ML and CrewAI remain optional research.",
+      "Weekly competition uses self-reported workout completions.",
       "MVP limits: unverified emails, no password recovery and capped AI requests."
     ],
     "kind": "scope",

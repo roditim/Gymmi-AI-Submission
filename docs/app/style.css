@@ -1880,3 +1880,47 @@ footer a {
     min-height:44px
   }
 }
+
+.league-panel {
+  margin: 1.2rem 0;
+  border: 1px solid #38452a;
+  border-radius: 16px;
+  background: #1b1e23;
+}
+
+.league-panel > summary {
+  padding: 1rem;
+  cursor: pointer;
+  color: #dbfb86;
+}
+
+.league-panel > summary span,
+.league-panel > summary bdi {
+  margin-inline-start: .65rem;
+}
+
+.league-content {
+  padding: 0 1rem 1rem;
+}
+
+.league-content progress {
+  width: 100%;
+  accent-color: #dbfb86;
+}
+
+.league-actions {
+  margin-block: .7rem;
+}
+
+.league-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.league-content th,
+.league-content td {
+  padding: .5rem .25rem;
+  text-align: start;
+  border-bottom: 1px solid #30343a;
+  overflow-wrap: anywhere;
+}
