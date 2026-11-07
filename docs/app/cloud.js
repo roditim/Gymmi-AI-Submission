@@ -36,5 +36,21 @@ const cloud = (() => {
     }
     return data;
   }
-  return { connect, load, save, plan };
+  async function loadLeague(userId) {
+    const [profile, standings] = await Promise.all([
+      client.from("league_members").select("nickname").eq("user_id", userId).maybeSingle(),
+      client.rpc("weekly_league")
+    ]);
+    if (profile.error) throw profile.error;
+    if (standings.error) throw standings.error;
+    return { profile: profile.data, rows: standings.data };
+  }
+  async function saveLeagueMembership(userId, nickname) {
+    const table = client.from("league_members");
+    const result = nickname === null
+      ? await table.delete().eq("user_id", userId)
+      : await table.upsert({ user_id: userId, nickname });
+    if (result.error) throw result.error;
+  }
+  return { connect, load, save, plan, loadLeague, saveLeagueMembership };
 })();
