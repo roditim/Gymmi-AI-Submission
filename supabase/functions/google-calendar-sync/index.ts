@@ -1,8 +1,10 @@
-import { eventBody, hash, planSync } from './planner.mjs';
+import { eventBody, hash, matchesGoogleEvent, planSync, workoutSchedule } from './planner.mjs';
+import { busyByDay, googleWeek } from '../_shared/google-availability.mjs';
 
 const app = 'https://roditim.github.io/Gymmi-AI-Submission/app/';
 const origin = new URL(app).origin;
 const scope = 'https://www.googleapis.com/auth/calendar.app.created';
+const freeBusyScope = 'https://www.googleapis.com/auth/calendar.freebusy';
 const supabase = Deno.env.get('SUPABASE_URL')!;
 const anon = Deno.env.get('SUPABASE_ANON_KEY')!;
 const service = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -90,7 +92,7 @@ async function begin(user: string) {
   await db('google_calendar_states', 'POST',
     { user_id: user, state_hash: await hash(state), verifier, expires_at: iso(600000) });
   return { url: 'https://accounts.google.com/o/oauth2/v2/auth?' + new URLSearchParams({
-    client_id: clientId!, redirect_uri: app, response_type: 'code', scope, state,
+    client_id: clientId!, redirect_uri: app, response_type: 'code', scope: scope + ' ' + freeBusyScope, state,
     access_type: 'offline', prompt: 'consent', code_challenge: challenge, code_challenge_method: 'S256'
   }) };
 }
@@ -123,7 +125,7 @@ async function finish(user: string, code: unknown, state: unknown) {
 async function listEvents(base: string, access: string) {
   const events = [];
   const parameters = new URLSearchParams({ maxResults: '250', showDeleted: 'false',
-    fields: 'nextPageToken,items(id,status,etag,summary,start(date),end(date),recurrence,recurringEventId,extendedProperties(private),attendees,attendeesOmitted,eventType)' });
+    fields: 'nextPageToken,items(id,status,etag,summary,start(date,dateTime,timeZone),end(date,dateTime,timeZone),recurrence,recurringEventId,extendedProperties(private),attendees,attendeesOmitted,eventType)' });
   for (let page = 0; page < 5; page++) {
     const response = await google(base + '?' + parameters, access);
     events.push(...(response.items || []));
@@ -139,8 +141,14 @@ async function sendChange(base: string, access: string, change: any) {
     return null;
   }
   if (change.type === 'update') {
+    const body = eventBody(change.row);
+    // Clear the old date shape when an all-day workout becomes timed or vice versa.
+    if (Boolean(change.row.startTime) !== Boolean(change.event.start?.dateTime)) {
+      Object.assign(body.start, change.row.startTime ? {date:null} : {dateTime:null,timeZone:null});
+      Object.assign(body.end, change.row.startTime ? {date:null} : {dateTime:null,timeZone:null});
+    }
     const event = await google(base + '/' + encodeURIComponent(change.event.id) + '?sendUpdates=none', access,
-      'PATCH', eventBody(change.row), change.event.etag);
+      'PATCH', body, change.event.etag);
     return event.id;
   }
   const id = 'gymmi' + await hash(change.id + '\n' + (change.previousId || ''));
@@ -155,8 +163,7 @@ async function sendChange(base: string, access: string, change: any) {
     });
     if (existing && existing.status !== 'cancelled') {
       if (existing.extendedProperties?.private?.gymmiWorkoutId !== change.id ||
-          existing.summary !== change.row.title || existing.start?.date !== change.row.date ||
-          existing.end?.date !== eventBody(change.row).end.date) throw new SyncError('changed');
+          !matchesGoogleEvent(change.row, existing)) throw new SyncError('changed');
       return existing.id;
     }
     // Google can retain a deleted ID. A new ID permits re-adding that workout.
@@ -201,7 +208,7 @@ async function syncOne(user: string) {
       if (Date.now() - started > 28000) break;
       const eventId = await sendChange(base, tokens.access_token, change);
       if (eventId) Object.defineProperty(plan.links, change.id, {
-        value: { eventId, title: change.row.title, date: change.row.date }, enumerable: true, configurable: true, writable: true
+        value: { eventId, ...workoutSchedule(change.row) }, enumerable: true, configurable: true, writable: true
       });
       else delete plan.links[change.id];
       done++;
@@ -223,6 +230,28 @@ async function status(user: string) {
   const [journal] = await db('workout_journals?select=revision&' + queryUser(user));
   return { available: configured, connected: true, lastSync: link.last_sync_at,
     problem: link.last_error, paused: link.paused, revision: journal?.revision || 0 };
+}
+
+async function availability(user: string, weekStart: unknown) {
+  let week;
+  try { week = googleWeek(weekStart); } catch { throw new SyncError('request', 400); }
+  const [link] = await db(connections + '?select=refresh_cipher,paused&' + queryUser(user));
+  if (!link || link.paused) return { available: false, reason: link ? 'permission' : 'not_connected' };
+  const refresh = await decrypt(link.refresh_cipher, user);
+  try {
+    const tokens = await tokenRequest({ grant_type: 'refresh_token', refresh_token: refresh });
+    if (typeof tokens.refresh_token === 'string' && tokens.refresh_token !== refresh) {
+      await db(connections + '?' + queryUser(user) + '&refresh_cipher=eq.' + encodeURIComponent(link.refresh_cipher),
+        'PATCH', { refresh_cipher: await encrypt(tokens.refresh_token, user) });
+    }
+    const result = await google('freeBusy', tokens.access_token, 'POST', week.query);
+    return { available: true, busy: busyByDay(week, result), checkedAt: iso() };
+  } catch (error) {
+    if (error instanceof SyncError && (error.message === 'permission' || error.status === 403)) {
+      return { available: false, reason: 'freebusy_permission' };
+    }
+    throw error;
+  }
 }
 
 Deno.serve(async req => {
@@ -260,6 +289,7 @@ Deno.serve(async req => {
     if (body.action === 'status') return reply(await status(user));
     if (!configured && body.action !== 'disconnect') return reply({ error: 'unconfigured' }, 503);
     switch (body.action) {
+      case 'availability': return reply(await availability(user, body.weekStart));
       case 'start': return reply(await begin(user));
       case 'finish': await finish(user, body.code, body.state); break;
       case 'sync': await syncOne(user); break;

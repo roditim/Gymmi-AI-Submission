@@ -4,6 +4,9 @@ let googleSyncRequest = 0;
 let googleSyncBusy = false;
 let googleSyncConnected = false;
 let googleSyncCallback = null;
+let googleConnection = 'guest';
+let googleAvailabilityGeneration = 0;
+const googleAvailability = new Map();
 
 const googleSyncMessages = {
   permission: "ההרשאה ל־Google פגה או שהיומן הוסר. נתק את החיבור וחבר מחדש.",
@@ -21,6 +24,8 @@ function resetGoogleSync() {
   googleSyncRequest += 1;
   googleSyncBusy = false;
   googleSyncConnected = false;
+  googleConnection = activeUser ? 'checking' : 'guest';
+  clearGoogleAvailability();
   byId("google-sync-connect").hidden = false;
   byId("google-sync-connect").disabled = !!activeUser;
   byId("google-sync-now").hidden = true;
@@ -30,6 +35,9 @@ function resetGoogleSync() {
 
 function showGoogleSync(result) {
   googleSyncConnected = result.connected;
+  googleConnection = !result.available ? 'unconfigured'
+    : result.paused ? 'paused' : result.connected ? 'connected' : 'disconnected';
+  if (googleConnection !== 'connected') clearGoogleAvailability();
   byId("google-sync-connect").hidden = result.connected;
   byId("google-sync-connect").disabled = !result.available || googleSyncBusy;
   byId("google-sync-now").hidden = !result.connected;
@@ -43,6 +51,8 @@ function showGoogleSync(result) {
     !result.available ? googleSyncMessages.unconfigured :
     !result.connected ? "בחר בחיבור כדי ליצור יומן Gymmi בחשבון Google שתבחר." :
     last ? "מחובר · סנכרון אחרון " + last : "מחובר · ממתין לסנכרון הראשון.";
+  updateAvailabilityViews();
+  refreshAI();
 }
 
 function canRefreshFromGoogle() {
@@ -91,6 +101,9 @@ async function updateGoogleSync(action = "status", payload = {}) {
       byId("google-sync-connect").disabled = false;
       byId("google-sync-now").disabled = false;
       byId("google-sync-disconnect").disabled = false;
+      if (!googleSyncConnected) googleConnection = error.message === 'unconfigured' ? 'unconfigured' : 'error';
+      updateAvailabilityViews();
+      refreshAI();
     }
   } finally {
     if (request === googleSyncRequest) {
@@ -106,11 +119,100 @@ function syncGoogleAfterAccountChange() {
     googleSyncCallback = null;
     showView("calendar", false);
     if (callback.error) {
+      googleConnection = 'disconnected';
+      renderGoogleAvailability();
+      refreshAI();
       byId("google-sync-message").textContent = "החיבור ל־Google לא אושר.";
       return;
     }
     updateGoogleSync("finish", callback);
-  } else if (!byId("view-calendar").hidden) updateGoogleSync();
+  } else if (activeUser) updateGoogleSync();
+}
+
+function clearGoogleAvailability() {
+  googleAvailabilityGeneration++;
+  googleAvailability.clear();
+}
+
+function availabilityMessage(week) {
+  const status = {
+    guest: 'התחברו ל־Gymmi כדי לחבר את Google Calendar.',
+    checking: 'בודק את מצב החיבור ל־Google Calendar…',
+    unconfigured: 'Google Calendar עדיין ממתין להגדרת החיבור של Gymmi.',
+    disconnected: 'Google Calendar עדיין לא מחובר לחשבון הזה.',
+    paused: 'החיבור ל־Google מושהה. ניתן לחבר מחדש ביומן.',
+    error: 'מצב החיבור ל־Google Calendar אינו זמין כרגע.',
+  };
+  if (googleConnection !== 'connected') return status[googleConnection];
+  const data = googleAvailability.get(week);
+  if (data?.busy) return 'מחובר ל־Google Calendar · שעות תפוסות מהיומן הראשי (שעון ישראל)';
+  if (data?.reason === 'freebusy_permission') return 'מחובר ל־Google · כדי לראות שעות תפוסות, חברו מחדש ואשרו גישה לזמינות.';
+  if (data?.reason) return 'מחובר ל־Google · השעות התפוסות לא נטענו כרגע.';
+  return 'מחובר ל־Google · טוען שעות תפוסות…';
+}
+
+function showBusyHours(id, entries, includeDate) {
+  const list = byId(id);
+  list.replaceChildren();
+  if (!entries) return;
+  for (const [date, blocks] of Object.entries(entries)) {
+    if (!blocks.length) continue;
+    const row = element('li');
+    if (includeDate) row.append(element('strong', new Intl.DateTimeFormat('he-IL', {
+      weekday: 'short', day: 'numeric', month: 'numeric',
+    }).format(parseDate(date))));
+    const times = element('bdi', blocks.map(block => block.start + '–' + block.end).join(' · '));
+    times.dir = 'ltr';
+    row.append(times); list.append(row);
+  }
+  if (!list.children.length) list.append(element('li', 'אין שעות תפוסות בטווח הזה.'));
+}
+
+function renderGoogleAvailability() {
+  const planWeek = byId('week-start').value;
+  const dayWeek = calendarDay ? monday(calendarDay) : planWeek;
+  const weekly = googleAvailability.get(planWeek)?.busy;
+  const daily = googleAvailability.get(dayWeek)?.busy;
+  byId('google-dashboard').hidden = byId('view-plan').hidden;
+  byId('google-dashboard-status').textContent = availabilityMessage(planWeek);
+  byId('ai-google-status').textContent = availabilityMessage(planWeek);
+  byId('google-calendar-status').textContent = availabilityMessage(dayWeek);
+  showBusyHours('google-week-busy', weekly, true);
+  showBusyHours('google-day-busy', daily && calendarDay ? {[calendarDay]: daily[calendarDay] || []} : null, false);
+  for (const day of document.querySelectorAll('#calendar-days [data-date]')) {
+    const hasBusy = Boolean(daily?.[day.dataset.date]?.length);
+    day.toggleAttribute('data-google-busy', hasBusy);
+    if (hasBusy) day.setAttribute('aria-description', 'יש שעות תפוסות ב־Google Calendar');
+    else day.removeAttribute('aria-description');
+  }
+}
+
+async function loadGoogleAvailability(week) {
+  if (!activeUser || googleConnection !== 'connected' || !week) return;
+  const current = googleAvailability.get(week);
+  if (current?.pending || current?.until > Date.now()) return;
+  const generation = googleAvailabilityGeneration;
+  googleAvailability.set(week, {pending: true});
+  let result;
+  try {
+    result = await cloud.googleCalendar({action: 'availability', weekStart: week});
+  } catch {
+    result = {reason: 'temporary'};
+  }
+  if (generation !== googleAvailabilityGeneration) return;
+  googleAvailability.set(week, {busy: result.available ? result.busy : null,
+    reason: result.available ? null : result.reason || 'temporary', until: Date.now() + 60000});
+  if (googleAvailability.size > 10) {
+    const old = [...googleAvailability].find(([key, value]) => key !== week && !value.pending);
+    if (old) googleAvailability.delete(old[0]);
+  }
+  renderGoogleAvailability();
+}
+
+function updateAvailabilityViews() {
+  renderGoogleAvailability();
+  if (!byId('view-plan').hidden || byId('ai-dialog').open) loadGoogleAvailability(byId('week-start').value);
+  if (!byId('view-calendar').hidden && calendarDay) loadGoogleAvailability(monday(calendarDay));
 }
 
 function setupGoogleSync() {
@@ -130,6 +232,11 @@ function setupGoogleSync() {
     if (confirm("להפסיק את הסנכרון? היומן שכבר נוצר ב־Google יישאר בחשבון Google שלך.")) {
       updateGoogleSync("disconnect");
     }
+  });
+  for (const id of ['google-dashboard-settings', 'ai-google-settings']) byId(id).addEventListener('click', () => {
+    if (byId('ai-dialog').open) byId('ai-dialog').close();
+    showView('calendar');
+    focusCurrentView();
   });
   setInterval(() => {
     if (!document.hidden && googleSyncConnected) updateGoogleSync();

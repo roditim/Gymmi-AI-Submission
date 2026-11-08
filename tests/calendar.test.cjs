@@ -38,3 +38,10 @@ test('ICS rejects corrupt dates, duplicate ids and unplanned workouts',()=>{
   assert.throws(()=>calendar.ics([row,row],'guest'));
   assert.throws(()=>calendar.ics([{...row,status:'completed'}],'guest'));
 });
+test('timed exports use Israel time and retain the complete workout duration', () => {
+  const row = {id:'timed',title:'Walk',date:'2026-11-16',startTime:'18:00',minutes:30,status:'planned'};
+  const range = calendar.timeRange(row);
+  assert.equal(range.end,'18:30');
+  assert.equal(new URL(calendar.googleUrl(row)).searchParams.get('dates'),'20261116T160000Z/20261116T163000Z');
+  assert.match(calendar.ics([row],'guest'),/DTSTART:20261116T160000Z\r\nDTEND:20261116T163000Z/);
+});

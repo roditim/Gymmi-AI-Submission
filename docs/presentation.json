@@ -24,7 +24,7 @@
   {
     "title": "Progress and the optional league",
     "lines": [
-      "100 EXP per completed workout\nMark it in the plan or monthly calendar.",
+      "100 EXP per completed workout\nA celebration shows the points moving into the EXP meter.",
       "500 EXP per level\nYour level uses all completed workouts in your journal.",
       "Optional weekly league\nJoin with a nickname from a signed-in account.",
       "Weekly standings\nThe top 20 by EXP, Monday to Sunday in Israel."
@@ -47,9 +47,9 @@
     "title": "The AI scheduling dialog",
     "lines": [
       "01  Open the AI scheduler from the top of the weekly plan.",
-      "02  Check the selected week and describe your availability.",
-      "03  Compare current and suggested dates in the dialog. The journal stays as it was.",
-      "04  Approve the proposal to save the dates to Supabase. Reload to see them in the calendar."
+      "02  Describe your available days and hours. When Google is connected, Gymmi checks busy times.",
+      "03  Review each proposed date and time range in the dialog.",
+      "04  Approve to save dates and times to Supabase. Reload to see them in the calendar."
     ],
     "kind": "steps",
     "key": "ai"
@@ -144,7 +144,7 @@
     "lines": [
       "Production: public HTTPS app, GitHub source and cloud accounts.",
       "AI proposes workout dates and ranks eligible coaches. Users choose what to save or whom to contact.",
-      "Calendar: Google drafts and ICS export. Automatic sync awaits Google OAuth setup.",
+      "Google drafts and ICS export are available. Busy-time checks and automatic sync require Google OAuth setup.",
       "Weekly competition uses self-reported workout completions.",
       "Coaches self-publish their details. The two demo profiles and their ratings are fictional.",
       "MVP limits: unverified emails, no password recovery and capped AI requests."

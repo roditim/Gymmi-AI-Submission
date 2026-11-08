@@ -101,6 +101,7 @@ function validate(payload) {
     if (typeof row.title !== "string" || !row.title.trim() || row.title.length > 100) throw new Error("שם אימון לא תקין");
     if (typeof row.exercises !== "string" || !row.exercises.trim() || row.exercises.length > 2000) throw new Error("פרטי אימון חסרים או ארוכים מדי");
     if (!Number.isInteger(row.minutes) || row.minutes < 5 || row.minutes > 180) throw new Error("משך האימון צריך להיות בין 5 ל־180 דקות");
+    GymmiCalendar.timeRange(row);
     if (!Object.hasOwn(statusNames, row.status)) throw new Error("סטטוס אימון לא תקין");
     if (row.status !== "planned" && row.date > today()) throw new Error("אין לסמן אימון עתידי כהושלם או כדילוג");
     if (row.status === "planned" ? row.resolvedAt !== null : typeof row.resolvedAt !== "string" || !Number.isFinite(Date.parse(row.resolvedAt))) throw new Error("זמן הסימון אינו מתאים לסטטוס");
@@ -134,7 +135,11 @@ async function mark(id, status) {
   const row = state.workouts.find(w => w.id === id);
   if (!row || row.status === status) return;
   if (status !== "planned" && row.date > today()) { notice("אפשר לסמן רק אימון של היום או של יום קודם.", true); return; }
-  if (await update(id, { status, resolvedAt: status === "planned" ? null : new Date().toISOString() })) notice("סטטוס האימון נשמר.");
+  const previousExp = experienceTotal();
+  if (await update(id, { status, resolvedAt: status === "planned" ? null : new Date().toISOString() })) {
+    if (status === 'completed') celebrateExperience(previousExp);
+    else notice("סטטוס האימון נשמר.");
+  }
 }
 function element(tag, text, className) {
   const el = document.createElement(tag); if (text !== undefined) el.textContent = text;
@@ -148,6 +153,7 @@ function editWorkout(row) {
   showView('plan');
   byId("editing-id").value = row.id; byId("workout-title").value = row.title;
   byId("workout-date").value = row.date; byId("workout-minutes").value = row.minutes;
+  byId('workout-start-time').value = row.startTime || '';
   byId("workout-exercises").value = row.exercises; byId("save-workout").textContent = "שמור שינויים";
   byId("editor-heading").textContent = "עריכת אימון"; byId("cancel-edit").hidden = false;
   presentWorkoutEditor();
@@ -164,7 +170,10 @@ function workoutCard(row, history = false) {
   heading.append(element("p", new Intl.DateTimeFormat("he-IL", { weekday: "long", day: "numeric", month: "long" }).format(parseDate(row.date)), "date"));
   heading.append(element("span", statusNames[row.status], "status-badge")); card.append(heading);
   card.append(element("h3", row.title));
-  card.append(element("p", row.minutes + " דקות מתוכננות", "duration"));
+  const duration = element("p", row.minutes + " דקות מתוכננות", "duration");
+  const range = GymmiCalendar.timeRange(row);
+  if (range) duration.append(' · ', element('bdi', range.start + '–' + range.end));
+  card.append(duration);
   const routine=element('details',undefined,'routine-details');routine.append(element('summary','פרטי האימון'),element('p',row.exercises));card.append(routine);
   if (!history) {
     const buttons = element("div", undefined, "actions");
@@ -183,7 +192,7 @@ function workoutCard(row, history = false) {
 function render() {
   refreshAI();
   const start = byId("week-start").value; const end = shiftDate(start, 7);
-  const rows = state.workouts.filter(w => w.date >= start && w.date < end).sort((a, b) => a.date.localeCompare(b.date));
+  const rows = state.workouts.filter(w => w.date >= start && w.date < end).sort(GymmiCalendar.scheduleOrder);
   const completed = rows.filter(w => w.status === "completed").length;
   byId("planned-count").textContent = rows.length; byId("completed-count").textContent = completed;
   byId("skipped-count").textContent = rows.filter(w => w.status === "skipped").length;
@@ -199,11 +208,13 @@ function render() {
   renderCalendar();
   refreshUX();
   renderExperience();
+  if (!byId('view-plan').hidden) updateAvailabilityViews();
 }
 byId("workout-form").addEventListener("submit", async event => {
   event.preventDefault(); const id = byId("editing-id").value;
   const fields = { title: byId("workout-title").value.trim(), date: byId("workout-date").value,
-    minutes: Number(byId("workout-minutes").value), exercises: byId("workout-exercises").value.trim() };
+    minutes: Number(byId("workout-minutes").value), startTime: byId('workout-start-time').value || null,
+    exercises: byId("workout-exercises").value.trim() };
   let saved;
   if (id) saved = await update(id, fields);
   else saved = await save({ version: 1, workouts: [...state.workouts, { id: crypto.randomUUID(), ...fields, status: "planned", resolvedAt: null }] });

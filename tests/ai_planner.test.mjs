@@ -4,7 +4,7 @@ import {weekDates, requestData, candidates, providerRequest, validateProposal, m
 const body={weekStart:'2026-11-09',preferences:'Monday and Thursday only',workoutIds:['a','b']};
 const rows=[{id:'a',date:'2026-11-09',status:'planned',title:'Walk',minutes:30,exercises:'PRIVATE_DETAILS'}, {id:'b',date:'2026-11-10',status:'planned',title:'Strength',minutes:30}];
 const input=candidates(requestData(body),rows,'2026-11-09');
-const good={summary:'הצעה',assignments:[{workoutId:'a',date:'2026-11-09',reason:'זמינות'}],warnings:[]};
+const good={summary:'הצעה',assignments:[{workoutId:'a',date:'2026-11-09',startTime:'18:00',reason:'זמינות'}],warnings:[]};
 test('valid week and partial proposals allow unscheduled workouts to remain unchanged',()=>assert.equal(validateProposal(good,input),good));
 test('invalid, impossible and non-Monday dates fail',()=>{for(const d of ['bad','2026-02-30','2026-11-10'])assert.throws(()=>weekDates(d));});
 test('request bounds and duplicate workout ids fail',()=>{assert.throws(()=>requestData({...body,preferences:'x'.repeat(501)}));assert.throws(()=>requestData({...body,workoutIds:['a','a']}));});
@@ -13,4 +13,15 @@ test('past dates never reach the model',()=>{const i=candidates(requestData(body
 test('provider receives minimal data and a strict structured schema',()=>{const r=providerRequest(body.preferences,input),raw=JSON.stringify(r);assert.equal(r.store,false);assert.equal(r.text.format.strict,true);assert.ok(!raw.includes('PRIVATE_DETAILS'));assert.ok(JSON.parse(r.input).workouts.every(w=>!Object.hasOwn(w,'exercises')));assert.equal(r.model,'gpt-5.4-mini');});
 test('model cannot invent workout ids or dates',()=>{for(const row of [{...good.assignments[0],workoutId:'foreign'},{...good.assignments[0],date:'2026-12-01'}])assert.throws(()=>validateProposal({...good,assignments:[row]},input));});
 test('duplicate ids, duplicate dates and oversized explanations fail',()=>{assert.throws(()=>validateProposal({...good,assignments:[good.assignments[0],good.assignments[0]]},input));assert.throws(()=>validateProposal({...good,assignments:[good.assignments[0],{...good.assignments[0],workoutId:'b'}]},input));assert.throws(()=>validateProposal({...good,summary:'x'.repeat(801)},input));});
-test('weekday-to-date conversion is deterministic; unknown weekdays fail',()=>{assert.equal(modelProposal({...good,assignments:[{workoutId:'a',weekday:'Wednesday',reason:'ok'}]},input).assignments[0].date,'2026-11-11');assert.throws(()=>modelProposal({...good,assignments:[{workoutId:'a',weekday:'Unknown',reason:'bad'}]},input));});
+test('weekday-to-date conversion is deterministic; unknown weekdays fail',()=>{assert.equal(modelProposal({...good,assignments:[{workoutId:'a',weekday:'Wednesday',startTime:'18:00',reason:'ok'}]},input).assignments[0].date,'2026-11-11');assert.throws(()=>modelProposal({...good,assignments:[{workoutId:'a',weekday:'Unknown',startTime:'18:00',reason:'bad'}]},input));});
+
+test('timed proposals reject overlaps, invalid hours and workouts crossing midnight',()=>{
+  const busy=Object.fromEntries(input.dates.map(date=>[date,date==='2026-11-09'?[{start:'18:15',end:'19:00'}]:[]]));
+  const linked={...input,busy};
+  const at=startTime=>({...good,assignments:[{...good.assignments[0],startTime}]});
+  assert.throws(()=>validateProposal(at('18:00'),linked));
+  assert.throws(()=>validateProposal(at('23:45'),linked));
+  assert.throws(()=>validateProposal(at('8:30'),linked));
+  assert.equal(validateProposal(at('19:00'),linked).assignments[0].startTime,'19:00');
+  assert.deepEqual(JSON.parse(providerRequest(body.preferences,linked).input).busy,busy);
+});

@@ -40,6 +40,7 @@ function openAIPlanner() {
   const dialog=byId('ai-dialog');
   byId('ai-feedback').hidden=true;
   if(!dialog.open)dialog.showModal();
+  updateAvailabilityViews();
   const target=activeUser?byId('ai-preferences'):byId('ai-sign-in');
   target.focus({preventScroll:true});
 }
@@ -110,7 +111,9 @@ function setupUX() {
   byId('new-workout').addEventListener('click',openWorkoutEditor);
   byId('open-ai').addEventListener('click',openAIPlanner);
   byId('close-ai').addEventListener('click',()=>byId('ai-dialog').close());
-  byId('ai-dialog').addEventListener('close',()=>byId('open-ai').focus({preventScroll:true}));
+  byId('ai-dialog').addEventListener('close',()=>{
+    if(!byId('view-plan').hidden) byId('open-ai').focus({preventScroll:true});
+  });
   byId('account-open').addEventListener('click',openAccount);
   byId('close-editor').addEventListener('click',()=>byId('workout-dialog').close());
   byId('close-account').addEventListener('click',()=>byId('account-dialog').close());

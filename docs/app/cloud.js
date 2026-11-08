@@ -7,7 +7,8 @@ const cloud = (() => {
   function connect() {
     client = supabase.createClient(GYMMI_CONFIG.url, GYMMI_CONFIG.publishableKey, {
       global: { fetch: (url, options = {}) => fetch(url, { ...options,
-        signal: AbortSignal.any([...(options.signal ? [options.signal] : []), AbortSignal.timeout(String(url).includes('/functions/v1/') ? 40000 : 15000)]) }) }
+        signal: AbortSignal.any([...(options.signal ? [options.signal] : []), AbortSignal.timeout(
+          String(url).includes('/functions/v1/ai-week-plan') ? 55000 : String(url).includes('/functions/v1/') ? 40000 : 15000)]) }) }
     });
     return client;
   }

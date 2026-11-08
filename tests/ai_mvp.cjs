@@ -35,19 +35,19 @@ async function call(path,method='GET',body,token=service,key=service){const r=aw
  assert.deepEqual(await snapshot(),workouts);checks.push('real OpenAI proposal respects specified days and does not auto-save');
  await page.locator('#ai-apply').click();await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('השיבוץ שאישרת נשמר'));
  await page.locator('#ai-dialog').waitFor({state:'hidden'});
- const saved=await snapshot();assert.deepEqual(saved.map(w=>w.date).slice(0,2).sort(),[shift(week,2),shift(week,4)]);assert.deepEqual(saved[2],workouts[2]);assert.equal(saved[0].exercises,workouts[0].exercises);
+ const saved=await snapshot();assert.deepEqual(saved.slice(0,2).map(w=>w.startTime),workouts.slice(0,2).map(w=>p.assignments.find(item=>item.workoutId===w.id).startTime));assert.deepEqual(saved.map(w=>w.date).slice(0,2).sort(),[shift(week,2),shift(week,4)]);assert.deepEqual(saved[2],workouts[2]);assert.equal(saved[0].exercises,workouts[0].exercises);
  await page.reload();await page.waitForFunction(()=>document.querySelector('#account-status').textContent.includes('שמירה בענן'));await page.locator('#week-start').fill(week);await page.locator('#week-start').dispatchEvent('change');
  assert.deepEqual(await snapshot(),saved);checks.push('explicit approval persists dates; completed workout and exercise details remain unchanged');
  await page.locator('#open-ai').click();await page.locator('#ai-preferences').fill('פנוי רק ביום רביעי וביום שישי, עד 30 דקות בכל יום.');
  const hebrewResponse=page.waitForResponse(r=>r.url().includes('/functions/v1/ai-week-plan')&&r.request().method()==='POST');
  await page.locator('#ai-generate').click();const h=await hebrewResponse,hp=await h.json();assert.equal(h.status(),200,JSON.stringify(hp));assert.deepEqual(hp.assignments.map(x=>x.date).sort(),[shift(week,2),shift(week,4)]);
  await page.locator('#ai-proposal').waitFor({state:'visible'});await page.locator('#ai-dismiss').click();assert.deepEqual(await snapshot(),saved);checks.push('Hebrew availability works with a second real proposal; cancellation leaves the journal unchanged');
- await page.route(api+'/functions/v1/ai-week-plan',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({summary:'Invalid',assignments:[{workoutId:'foreign',date:week,reason:'bad'}],warnings:[]})}));
+ await page.route(api+'/functions/v1/ai-week-plan',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({summary:'Invalid',assignments:[{workoutId:'foreign',date:week,startTime:'18:00',reason:'bad'}],warnings:[]})}));
  await page.locator('#ai-generate').click();await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('התקבלה הצעה לא תקינה'));assert.equal(await page.locator('#ai-proposal').isVisible(),false);assert.deepEqual(await snapshot(),saved);await page.unroute(api+'/functions/v1/ai-week-plan');checks.push('invalid model-shaped output is blocked in the browser without saving');
  // Reserve the third attempt without another provider call, then exercise the actual server limit.
  const slot=await call('/rest/v1/rpc/claim_ai_request','POST',{p_user_id:users[0].id});assert.ok(slot.status<300);
  await page.locator('#ai-generate').click();await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('מכסת בקשות'));assert.deepEqual(await snapshot(),saved);checks.push('fourth daily attempt is rejected before a model call');
- await page.route(api+'/functions/v1/ai-week-plan',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({summary:'Mock used only to exercise stale-preview handling',assignments:[{workoutId:workouts[0].id,date:shift(week,2),reason:'test'}],warnings:[]})}));
+ await page.route(api+'/functions/v1/ai-week-plan',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({summary:'Mock used only to exercise stale-preview handling',assignments:[{workoutId:workouts[0].id,date:shift(week,2),startTime:'18:00',reason:'test'}],warnings:[]})}));
  await page.locator('#ai-generate').click();await page.locator('#ai-proposal').waitFor({state:'visible'});
  await page.locator('#close-ai').click();await ui.editor(page);await page.locator('#workout-title').fill('Unsaved draft');await ui.closeEditor(page);
  await page.locator('#open-ai').click();await page.locator('#ai-apply').click();
