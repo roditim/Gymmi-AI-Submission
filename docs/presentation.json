@@ -2,7 +2,7 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "Workout planning, AI scheduling and EXP",
+      "A workout journal with AI scheduling",
       "A public student MVP with a private cloud journal",
       "Matan Roditi\nAI Development final project"
     ],
@@ -10,19 +10,19 @@
     "key": "cover"
   },
   {
-    "title": "The workout planning journey",
+    "title": "From weekly plan to monthly calendar",
     "lines": [
-      "01  Plan the week with dates, duration and routine details.",
-      "02  Describe your availability and review an AI scheduling proposal.",
-      "03  See the completed share of your weekly plan.",
-      "04  Review the monthly calendar and load your journal on another device.",
-      "Example: one completed workout out of three planned."
+      "01  Add a workout with a date, duration and routine.",
+      "02  Mark the workout complete and see weekly progress update.",
+      "03  Reload the page to confirm the cloud save.",
+      "04  Find the same completed workout in the monthly calendar.",
+      "Next, ask AI to reschedule two planned workouts."
     ],
     "kind": "steps",
     "key": "journey"
   },
   {
-    "title": "Progress and weekly league",
+    "title": "Progress and the optional league",
     "lines": [
       "100 EXP per completed workout\nMark it in the plan or monthly calendar.",
       "500 EXP per level\nYour level uses all completed workouts in your journal.",
@@ -33,43 +33,43 @@
     "key": "features"
   },
   {
-    "title": "Browser, Supabase and OpenAI",
+    "title": "The browser, the cloud journal and the AI key",
     "lines": [
-      "Browser app\nHTML, CSS and JavaScript.\nForms, calendar and progress.",
+      "Browser app\nThe weekly plan and monthly calendar read the same journal.",
       "Supabase\nAuth identifies the user.\nPostgres stores the journal.\nRLS checks ownership.",
-      "OpenAI\ngpt-5.4-mini interprets availability.\nThe server validates its proposal.",
-      "The Edge Function keeps the API key in Secrets. Approved dates use the same revision-protected save."
+      "OpenAI\ngpt-5.4-mini proposes weekdays from the user’s availability.",
+      "The Supabase Edge Function calls OpenAI. The OpenAI key stays in Supabase Secrets on the server."
     ],
     "kind": "architecture",
     "key": "architecture"
   },
   {
-    "title": "The user approves every AI change",
+    "title": "The schedule stays a preview until approval",
     "lines": [
-      "01  Read availability and existing workout metadata.",
-      "02  Ask the model for a structured weekday proposal.",
-      "03  Validate ids and dates, then show a preview.",
-      "04  Save the approved dates with revision checks."
+      "01  Describe which days and times work for you.",
+      "02  The server validates the model’s proposal.",
+      "03  Compare current and suggested dates. The journal is unchanged.",
+      "04  Approve the proposal to save dates to Supabase."
     ],
     "kind": "steps",
     "key": "ai"
   },
   {
     "key": "calendar",
-    "title": "Monthly calendar and Google Calendar",
+    "title": "One journal in the weekly and monthly views",
     "kind": "calendar",
     "lines": [
-      "Select a day to add, edit or complete a workout.",
-      "Calendar completions count toward EXP. Approved AI dates appear here.",
-      "Open a Google Calendar draft or export the planned workouts as ICS.",
-      "Manual transfer of all-day events. No automatic sync."
+      "Select a day to see, add or complete a workout.",
+      "Reload and find the same completed workout.",
+      "Approved AI dates appear in this calendar after saving.",
+      "Optional: open a Google Calendar draft or export an ICS file."
     ]
   },
   {
-    "title": "Verification results",
+    "title": "Verification on the public app",
     "lines": [
-      "Chrome viewport checks cover 320 to 1365 px. No physical-device test.",
-      "The AI regression used two real calls. Invalid and stale outputs use labelled mocks."
+      "Before approval, the rehearsal request left the saved dates and journal revision unchanged.",
+      "After approval, the new dates survived reload and appeared in the monthly calendar."
     ],
     "kind": "tests",
     "table": [
@@ -95,17 +95,17 @@
         "Passed"
       ],
       [
-        "Mobile signup",
-        "6",
-        "Login and cloud save",
+        "Cloud demo",
+        "1 rehearsal",
+        "Completion survives reload",
         "Public app",
         "Passed"
       ],
       [
-        "AI planner",
-        "8",
-        "Real calls + mocks",
-        "Local + backend",
+        "AI approval",
+        "1 real call",
+        "Preview, approval, reload",
+        "Public app",
         "Passed"
       ]
     ],
@@ -123,12 +123,12 @@
     ]
   },
   {
-    "title": "Live demo",
+    "title": "Workout planning and scheduling",
     "lines": [
-      "Complete today’s workout in the calendar and show the EXP change.",
-      "Open the weekly league and join with a nickname.",
-      "Ask AI to schedule two planned workouts. Review and approve.",
-      "Show the new dates in the calendar and open a Google event draft."
+      "The weekly plan tracks completed workouts and progress.",
+      "The monthly calendar shows workouts from the same cloud journal.",
+      "AI suggests new dates for planned workouts.",
+      "The user approves each proposal before the dates are saved."
     ],
     "kind": "steps",
     "key": "demo"
@@ -138,7 +138,7 @@
     "lines": [
       "Production: public HTTPS app, GitHub source and cloud accounts.",
       "AI: an existing language model proposes dates; the user reviews and approves.",
-      "Calendar: manual Google drafts or ICS export; all-day events with no automatic sync.",
+      "Calendar: Google drafts and ICS export. Automatic sync awaits Google OAuth setup.",
       "Weekly competition uses self-reported workout completions.",
       "MVP limits: unverified emails, no password recovery and capped AI requests."
     ],
