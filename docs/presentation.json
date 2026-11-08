@@ -2,7 +2,7 @@
   {
     "title": "Gymmi AI",
     "lines": [
-      "A workout journal with AI scheduling",
+      "A workout journal with AI scheduling and coach matching",
       "A public student MVP with a private cloud journal",
       "Matan Roditi\nAI Development final project"
     ],
@@ -37,8 +37,8 @@
     "lines": [
       "Browser app\nThe weekly plan and monthly calendar read the same journal.",
       "Supabase\nAuth identifies the user.\nPostgres stores the journal.\nRLS checks ownership.",
-      "OpenAI\ngpt-5.4-mini proposes weekdays from the user’s availability.",
-      "The Supabase Edge Function calls OpenAI. The OpenAI key stays in Supabase Secrets on the server."
+      "OpenAI\nOne function suggests workout dates. A second ranks eligible coaches from the directory.",
+      "Both Supabase Edge Functions call OpenAI. The API key stays in Supabase Secrets."
     ],
     "kind": "architecture",
     "key": "architecture"
@@ -68,8 +68,8 @@
   {
     "title": "Verification on the public app",
     "lines": [
-      "Before approval, the rehearsal request left the saved dates and journal revision unchanged.",
-      "After approval, the new dates survived reload and appeared in the monthly calendar."
+      "Workout dates changed only after approval and survived a reload.",
+      "Two live questionnaires returned the expected demo coaches and the correct contact links."
     ],
     "kind": "tests",
     "table": [
@@ -96,7 +96,7 @@
       ],
       [
         "Cloud demo",
-        "1 rehearsal",
+        "1 reload check",
         "Completion survives reload",
         "Public app",
         "Passed"
@@ -105,6 +105,13 @@
         "AI approval",
         "1 real call",
         "Preview, approval, reload",
+        "Public app",
+        "Passed"
+      ],
+      [
+        "Coach matching",
+        "2 live calls",
+        "Different preferences and email drafts",
         "Public app",
         "Passed"
       ]
@@ -119,27 +126,27 @@
       "Cursor is the code editor. Git records changes on a feature branch.",
       "A commit records a change. Push uploads it to GitHub for a pull request.",
       "Merge into main publishes docs/ through GitHub Pages. The server function deploys separately.",
-      "Real examples: PR #9 adds AI scheduling. PR #16 redesigns the interface."
+      "PR #1 adds the coach directory, rating flow and AI questionnaire."
     ]
   },
   {
-    "title": "Workout planning and scheduling",
+    "title": "Coach directory and AI matching",
     "lines": [
-      "The weekly plan tracks completed workouts and progress.",
-      "The monthly calendar shows workouts from the same cloud journal.",
-      "AI suggests new dates for planned workouts.",
-      "The user approves each proposal before the dates are saved."
+      "01  Browse\nCompare specialties, audiences and member ratings.",
+      "02  Match\nChoose a goal, audience, format and coaching style. AI ranks eligible coaches and explains each match.",
+      "03  Contact\nSelect a coach and open an email draft."
     ],
-    "kind": "steps",
-    "key": "demo"
+    "kind": "coaches",
+    "key": "coaches"
   },
   {
     "title": "Scope and current limits",
     "lines": [
       "Production: public HTTPS app, GitHub source and cloud accounts.",
-      "AI: an existing language model proposes dates; the user reviews and approves.",
+      "AI proposes workout dates and ranks eligible coaches. Users choose what to save or whom to contact.",
       "Calendar: Google drafts and ICS export. Automatic sync awaits Google OAuth setup.",
       "Weekly competition uses self-reported workout completions.",
+      "Coaches self-publish their details. The two demo profiles and their ratings are fictional.",
       "MVP limits: unverified emails, no password recovery and capped AI requests."
     ],
     "kind": "scope",
