@@ -1,0 +1,33 @@
+.coaches { width:min(100% - 32px, 1080px); margin:0 auto 64px; }
+.coach-top, .coach-actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px 22px; }
+.coach-top { justify-content:space-between; padding:22px 0; }
+.coach-hero, .coach-panel { border:1px solid var(--line); border-radius:20px; padding:clamp(20px, 4vw, 42px); margin-bottom:18px; background:var(--panel); }
+.coach-hero { background:radial-gradient(ellipse at top left, #303c26, var(--panel) 65%); }
+.coach-hero h1 { font-size:clamp(31px, 6vw, 64px); line-height:1.1; margin:12px 0; }
+.coach-hero .coach-actions { margin:20px 0; }
+.coach-kicker { color:var(--green); font-size:12px; font-weight:750; letter-spacing:.12em; }
+.coach-button { color:#1a2110; background:var(--green); border-radius:10px; padding:10px 17px; font-weight:700; text-decoration:none; }
+.coach-message:empty { display:none; }
+.coach-message { padding:10px 14px; background:var(--panel-soft); border-radius:10px; }
+.coach-fields, .coach-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap:14px; margin:16px 0; }
+.coach-grid { grid-template-columns:repeat(auto-fit, minmax(min(100%, 270px), 1fr)); }
+.coach-filters { max-width:560px; }
+.coaches label, #coach-profile label { display:grid; gap:4px; }
+.coaches select, #coach-profile select { font:inherit; min-height:44px; width:100%; color:var(--text); background:var(--bg); border:1px solid var(--line); padding:7px 10px; border-radius:8px; }
+.coaches select:focus-visible, #coach-profile select:focus-visible { outline:2px solid var(--green); outline-offset:3px; }
+.coach-card { display:grid; align-content:start; gap:9px; min-width:0; padding:16px; background:var(--bg); border:1px solid var(--line); border-radius:13px; overflow-wrap:anywhere; }
+.coach-card p, .coach-card dl { margin:0; }
+.coach-card dt { font-size:13px; color:var(--muted); }
+.coach-card dd { margin:0 0 5px; }
+.coach-score { color:var(--gold); font-weight:650; }
+.coach-reason { color:var(--purple); border-inline-start:2px solid var(--purple); padding-inline-start:9px; }
+.coach-rating-form { display:flex; flex-wrap:wrap; align-items:end; gap:8px; border-top:1px solid var(--line); padding-top:10px; }
+.coach-rating-form label { min-width:86px; }
+.coach-rating-status { font-size:13px; width:100%; }
+#coach-profile { width:min(650px, 100% - 24px); max-height:90vh; overflow:auto; }
+#coach-profile form { display:grid; gap:12px; padding:16px; }
+#coach-profile fieldset { margin:0; border:1px solid var(--line); border-radius:10px; }
+.coach-checks { display:flex; flex-wrap:wrap; gap:8px 16px; }
+#coach-profile .coach-check { display:flex; align-items:center; gap:7px; }
+#coach-profile input[type=checkbox] { width:auto; }
+[hidden] { display:none !important; }

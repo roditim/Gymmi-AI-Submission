@@ -69,6 +69,11 @@ a {
   color:var(--green);
   text-underline-offset:4px
 }
+.coach-nav-link {
+  padding:8px 4px;
+  font-weight:650;
+  white-space:nowrap
+}
 h1,h2,h3,p {
   margin:0
 }

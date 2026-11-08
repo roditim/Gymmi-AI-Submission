@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Gymmi · מאמנים אישיים</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="coaches.css">
+<script src="../config.js" defer></script>
+<script src="../vendor/supabase.js" defer></script>
+<script src="coaches.js" defer></script>
+</head>
+<body>
+<main class="coaches">
+  <header class="coach-top">
+    <a href="../">← חזרה לתוכנית שלי</a>
+    <a href="../#account" id="coach-login">כניסה או הרשמה ל־Gymmi</a>
+    <span id="coach-session" hidden>מחוברים לחשבון Gymmi</span>
+  </header>
+  <section class="coach-hero">
+    <span class="coach-kicker">GYMMI / COACHES</span>
+    <h1>מצאו מאמן שמתאים לכם</h1>
+    <p>השוו תחומי התמחות, קהלים ודירוגים. אפשר להתחיל בשאלון קצר או לבחור ישירות מהספרייה.</p>
+    <div class="coach-actions">
+      <a class="coach-button" href="#coach-quiz">✦ התחילו שאלון</a>
+      <a href="#coach-directory">לספריית המאמנים</a>
+      <button class="secondary" id="open-coach-profile" type="button" hidden>הפרופיל שלי כמאמן</button>
+    </div>
+    <p class="muted" id="coach-register">כדי להירשם כמאמן, היכנסו לחשבון Gymmi ואז פתחו את הפרופיל שלכם כמאמן.</p>
+  </section>
+  <p id="coach-message" class="coach-message" role="status" aria-live="polite"></p>
+  <section class="coach-panel" id="coach-quiz">
+    <span class="coach-kicker">01 / MATCH</span>
+    <h2>שאלון התאמה</h2>
+    <p class="muted">ה־AI מדרג פרופילים מהספרייה לפי הבחירות שלכם. אם אתם מחפשים עבור ילד, הורה או אפוטרופוס ממלא את השאלון. לא נדרשים פרטי זיהוי או בריאות.</p>
+    <form id="coach-match-form">
+      <div class="coach-fields">
+        <label>מה המטרה?<select name="goal" required></select></label>
+        <label>למי מיועד האימון?<select name="audience" required></select></label>
+        <label>איך תרצו להתאמן?<select name="format" required></select></label>
+        <label>מה חשוב לכם בליווי?<select name="focus" required></select></label>
+      </div>
+      <button id="coach-match-submit" type="submit" disabled>קבלו התאמה עם AI</button>
+      <p id="coach-match-status" class="muted" role="status">התחברו כדי לקבל התאמות.</p>
+    </form>
+    <div id="coach-matches" class="coach-grid" hidden></div>
+  </section>
+  <section class="coach-panel" id="coach-directory">
+    <span class="coach-kicker">02 / DIRECTORY</span>
+    <h2>ספריית המאמנים</h2>
+    <p class="muted">המאמנים מפרסמים את הפרטים בעצמם. הדירוגים מבוססים על הצבעות חברי Gymmi. בדקו התאמה והסמכה מול המאמן לפני שבוחרים.</p>
+    <div class="coach-fields coach-filters">
+      <label>התמחות<select id="filter-goal"></select></label>
+      <label>קהל יעד<select id="filter-audience"></select></label>
+    </div>
+    <p id="coach-directory-status" role="status">טוען מאמנים…</p>
+    <div id="coach-list" class="coach-grid"></div>
+  </section>
+</main>
+
+<dialog id="coach-profile" aria-labelledby="coach-profile-title">
+  <div class="dialog-top"><h2 id="coach-profile-title">הפרופיל שלי כמאמן</h2><button class="close-button" id="close-coach-profile" type="button" aria-label="סגירה">✕</button></div>
+  <form id="coach-profile-form">
+    <label>שם שיוצג בספרייה<input name="display_name" required minlength="2" maxlength="60" autocomplete="name"></label>
+    <label>תיאור קצר<textarea name="bio" rows="3" required minlength="10" maxlength="500"></textarea></label>
+    <fieldset><legend>תחומי התמחות</legend><div class="coach-checks" id="coach-specialties"></div></fieldset>
+    <fieldset><legend>קהלים שמתאימים לליווי</legend><div class="coach-checks" id="coach-audiences"></div></fieldset>
+    <div class="coach-fields">
+      <label>פורמט אימון<select name="format" required></select></label>
+      <label>דגש בליווי<select name="focus" required></select></label>
+    </div>
+    <label>מייל עסקי ליצירת קשר<input name="contact_email" type="email" required maxlength="120" autocomplete="off"></label>
+    <label class="coach-check"><input name="published" type="checkbox"> אני מסכים/ה לפרסם את הפרופיל ואת המייל העסקי לכל מבקר באתר</label>
+    <p id="coach-profile-status" role="status"></p>
+    <button type="submit">שמירת פרופיל</button>
+  </form>
+</dialog>
+<template id="coach-card">
+  <article class="coach-card">
+    <h3></h3>
+    <p class="coach-score"></p>
+    <p class="coach-bio"></p>
+    <dl><dt>התמחות</dt><dd class="coach-goals"></dd><dt>מתאים ל</dt><dd class="coach-audience"></dd><dt>פורמט ודגש</dt><dd class="coach-format"></dd></dl>
+    <p class="coach-reason" hidden></p>
+    <div class="coach-actions"><a class="coach-contact">פנייה למאמן במייל</a></div>
+    <form class="coach-rating-form" hidden>
+      <label>הדירוג שלי<select name="score" required></select></label>
+      <button class="secondary" type="submit">שמירת דירוג</button>
+      <button class="coach-rating-remove secondary" type="button" hidden>הסרת דירוג</button>
+      <span class="coach-rating-status" role="status"></span>
+    </form>
+  </article>
+</template>
+</body>
+</html>

@@ -289,6 +289,7 @@ setupCalendar();
 setupUX();
 setupLeague();
 setupGoogleSync();
+if (location.hash === '#account') byId('account-open').click();
 (async () => {
   try {
     // The auth SDK also needs storage. Avoid starting it when access is denied.
