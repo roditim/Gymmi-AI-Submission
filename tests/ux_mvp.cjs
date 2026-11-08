@@ -7,7 +7,7 @@ const ui=require('./ui_helpers.cjs');
  const checks=[],errors=[];try{
   const page=await browser.newPage({viewport:{width:390,height:844},timezoneId:'Asia/Jerusalem'});page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url);await page.locator('#onboarding').waitFor();
-  assert.equal(await page.locator('#account-panel').getAttribute('open'),null);assert.equal(await page.locator('#ai-panel').getAttribute('open'),null);
+  assert.equal(await page.locator('#account-panel').getAttribute('open'),null);assert.equal(await page.locator('#ai-dialog').getAttribute('open'),null);
   const primary=await page.locator('#new-workout').boundingBox();assert.ok(primary.y+primary.height<600);assert.ok(primary.height>=44);
   assert.equal(await page.locator('.app-nav').evaluate(el=>getComputedStyle(el).position),'fixed');
   checks.push('mobile begins with a visible primary action; account and AI are collapsed; bottom navigation stays available');
@@ -32,12 +32,22 @@ const ui=require('./ui_helpers.cjs');
   assert.match(await page.locator('#next-action').innerText(),/הליכה בפארק/);
   checks.push('new-workout shortcut respects the selected week, preserves a draft and saves the first guest workout');
 
-  await page.locator('#open-ai').click();assert.notEqual(await page.locator('#ai-panel').getAttribute('open'),null);
+  const ai = page.locator('#open-ai');
+  await ai.scrollIntoViewIfNeeded();
+  const beforeAI = await page.evaluate(() => scrollY);
+  await ai.click();await page.locator('#ai-dialog[open]').waitFor();
+  assert.equal(await page.evaluate(() => scrollY),beforeAI);
+  await page.locator('#ai-preferences').fill('פנוי ביום שני');
+  await page.keyboard.press('Escape');await page.locator('#ai-dialog').waitFor({state:'hidden'});
+  assert.equal(await ai.evaluate(el=>el===document.activeElement),true);
+  await ai.click();
+  assert.equal(await page.locator('#ai-preferences').inputValue(),'פנוי ביום שני');
   assert.equal(await page.locator('#ai-generate').isDisabled(),true);await page.locator('#ai-sign-in').click();
   assert.notEqual(await page.locator('#account-panel').getAttribute('open'),null);assert.equal(await page.locator('#auth-email').evaluate(el=>el===document.activeElement),true);
   assert.equal((await page.evaluate(()=>JSON.parse(localStorage.getItem('gymmi-workouts-v1')))).workouts.length,1);
-  checks.push('guest AI shortcut explains sign-in and opens the account panel without uploading or changing the guest journal');
+  checks.push('AI opens without moving the page, preserves input, restores focus, and opens account sign-in without changing the guest journal');
   await ui.closeAccount(page);
+  await page.locator('#close-ai').click();
 
   await page.getByRole('button',{name:'יומן חודשי',exact:true}).click();assert.equal(await page.locator('#view-calendar').isVisible(),true);
   assert.equal(await page.locator('#week-picker').isVisible(),false);

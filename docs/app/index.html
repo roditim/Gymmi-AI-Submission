@@ -16,9 +16,9 @@
 <p id="message" role="status" aria-live="polite" hidden></p>
 <p id="storage-error" role="alert" hidden></p>
 <section class="journey" aria-label="מסע האימונים שלי">
-<div class="journey-copy"><div class="hero-topline"><span class="hero-kicker">YOUR NEXT MOVE</span><span class="hero-symbol" aria-hidden="true">↗</span></div><h1 id="focus-title">כל מסע מתחיל<br>באימון אחד.</h1><p id="focus-meta">בנה תוכנית שמתאימה לשבוע שלך.</p><div class="actions"><button id="new-workout" type="button">＋ אימון חדש</button><button id="focus-workout" type="button" class="hero-secondary" hidden>לפרטי האימון</button></div><svg class="hero-art" viewBox="0 0 220 220" aria-hidden="true" fill="none"><g transform="rotate(-28 110 110)" stroke="currentColor" stroke-width="9"><rect x="28" y="74" width="30" height="72" rx="9"/><rect x="58" y="60" width="30" height="100" rx="9"/><path d="M88 110h44"/><rect x="132" y="60" width="30" height="100" rx="9"/><rect x="162" y="74" width="30" height="72" rx="9"/></g></svg></div>
+<div class="journey-copy"><div class="hero-topline"><span class="hero-kicker">YOUR NEXT MOVE</span><span class="hero-symbol" aria-hidden="true">↗</span></div><h1 id="focus-title">כל מסע מתחיל<br>באימון אחד.</h1><p id="focus-meta">בנה תוכנית שמתאימה לשבוע שלך.</p><div class="actions"><button id="open-ai" type="button" class="ai-shortcut" aria-haspopup="dialog" aria-controls="ai-dialog"><span aria-hidden="true">✦</span> עזרה בשיבוץ עם AI</button><button id="new-workout" type="button" class="hero-secondary">＋ אימון חדש</button><button id="focus-workout" type="button" class="hero-secondary" hidden>לפרטי האימון</button></div><svg class="hero-art" viewBox="0 0 220 220" aria-hidden="true" fill="none"><g transform="rotate(-28 110 110)" stroke="currentColor" stroke-width="9"><rect x="28" y="74" width="30" height="72" rx="9"/><rect x="58" y="60" width="30" height="100" rx="9"/><path d="M88 110h44"/><rect x="132" y="60" width="30" height="100" rx="9"/><rect x="162" y="74" width="30" height="72" rx="9"/></g></svg></div>
 <div class="journey-progress"><div class="progress-top"><p>ההתקדמות השבועית</p><span>WEEKLY PROGRESS</span></div><div class="progress-center"><div id="progress-ring" class="progress-ring" aria-hidden="true"><strong id="progress-percent">0<span>%</span></strong></div><label class="progress-label" for="week-progress" id="progress-text">עוד לא נוספו אימונים לשבוע הזה</label></div><progress id="week-progress" max="1" value="0"></progress><section class="summary" aria-label="התקדמות השבוע"><div><strong id="planned-count">0</strong><span>בתוכנית</span></div><div><strong id="completed-count">0</strong><span>הושלמו</span></div><div><strong id="skipped-count">0</strong><span>דילוג</span></div></section></div>
-</section><div class="planner-utility"><p id="saving-mode" class="muted">מצב אורח · שמירה בדפדפן הזה</p><button id="open-ai" type="button" class="ai-shortcut"><span aria-hidden="true">✦</span> עזרה בשיבוץ עם AI <span aria-hidden="true">←</span></button></div>
+</section><div class="planner-utility"><p id="saving-mode" class="muted">מצב אורח · שמירה בדפדפן הזה</p></div>
 <section id="onboarding" class="onboarding" aria-labelledby="onboarding-title" hidden>
 <div class="onboarding-top"><p id="onboarding-count" class="eyebrow">היכרות קצרה · 1 מתוך 3</p><button id="onboarding-skip" type="button" class="text-button">דלג על ההדרכה</button></div>
 <h2 id="onboarding-title" tabindex="-1">מתחילים באימון אחד</h2><p id="onboarding-text"></p>
@@ -68,14 +68,7 @@
 </div>
 </div></details>
 
-<details id="ai-panel" class="ai-planner" open><summary>עוזר AI לשיבוץ השבוע</summary><div class="ai-content">
-<p class="eyebrow">AI WEEK PLANNER</p><h2 id="ai-heading">מתי נוח לך להתאמן?</h2>
-<button id="ai-sign-in" type="button" class="secondary">כניסה לשימוש ב־AI</button><p class="muted" id="ai-status">התחבר לחשבון כדי לקבל הצעת שיבוץ לאימונים שלך.</p>
-<form id="ai-form"><label for="ai-preferences">ימים פנויים ומגבלות זמן</label><textarea id="ai-preferences" minlength="5" maxlength="500" rows="2" required placeholder="למשל: פנוי ביום שני וחמישי, עד 30 דקות בכל יום"></textarea>
-<p class="muted">בלחיצה יישלחו ל־OpenAI הזמינות שכתבת, שמות ומשך האימונים המתוכננים בשבוע הנבחר (עד 7). פרטי התרגילים והיסטוריית ההשלמות לא נשלחים. זו הצעת לוח זמנים לבדיקה, ולא תוכנית אימון או המלצה רפואית. אל תזין מידע רפואי.</p>
-<button id="ai-generate" type="submit" disabled>הצע שיבוץ עם AI</button></form>
-<div id="ai-proposal" hidden><h3>הצעה לבדיקה — עדיין לא נשמרה</h3><p id="ai-summary"></p><ul id="ai-assignments"></ul><ul id="ai-warnings"></ul><p class="muted">אימונים שלא מופיעים בהצעה יישארו בתאריכים המקוריים. בדוק שהתאריכים מתאימים לך לפני אישור.</p><div class="actions"><button id="ai-apply" type="button">אשר ושמור את השיבוץ</button><button id="ai-dismiss" type="button" class="secondary">בטל הצעה</button></div></div>
-</div></details>
+
 </section>
 <section id="view-calendar" hidden aria-label="יומן אימונים חודשי">
 <p class="eyebrow">YOUR TRAINING CALENDAR</p><h2 id="calendar-heading">יומן חודשי</h2>
@@ -103,6 +96,16 @@
 </div></div></main>
 <footer class="wrap"><a class="deck-link" href="../">מצגת הפרויקט ↗</a><p>Gymmi · יומן אימונים עם עוזר AI לשיבוץ שבועי באישור המשתמש. אין חיזוי השלמה או התאמה רפואית.</p><a href="https://github.com/roditim/Gymmi-AI-Submission">קוד הפרויקט ב־GitHub</a></footer>
 <noscript>יש להפעיל JavaScript בדפדפן כדי להשתמש בתוכנית ובמעקב.</noscript>
+<dialog id="ai-dialog" aria-labelledby="ai-heading">
+<div class="dialog-top"><span>✦ עוזר השיבוץ · GYMMI AI</span><button id="close-ai" type="button" class="close-button" aria-label="סגור עוזר AI">✕</button></div>
+<p id="ai-feedback" class="dialog-feedback" role="status" hidden></p><div class="ai-content">
+<h2 id="ai-heading">מתי נוח לך להתאמן?</h2><p id="ai-week-label"></p>
+<button id="ai-sign-in" type="button" class="secondary">כניסה לשימוש ב־AI</button><p class="muted" id="ai-status">התחבר לחשבון כדי לקבל הצעת שיבוץ לאימונים שלך.</p>
+<form id="ai-form"><label for="ai-preferences">ימים פנויים ומגבלות זמן</label><textarea id="ai-preferences" minlength="5" maxlength="500" rows="2" required placeholder="למשל: פנוי בשני ובחמישי, עד 30 דקות ביום"></textarea>
+<p class="muted">נשתף עם OpenAI את הזמינות, שמות האימונים המתוכננים ואת משכם כדי להציע תאריכים. אין צורך להזין מידע אישי או רפואי.</p>
+<button id="ai-generate" type="submit" disabled>הצע שיבוץ עם AI</button></form>
+<div id="ai-proposal" hidden><h3 id="ai-proposal-heading" tabindex="-1">הצעה לבדיקה — עדיין לא נשמרה</h3><p id="ai-summary"></p><ul id="ai-assignments"></ul><ul id="ai-warnings"></ul><p class="muted">אימונים שלא מופיעים בהצעה יישארו בתאריכים המקוריים. בדוק שהתאריכים מתאימים לך לפני אישור.</p><div class="actions"><button id="ai-apply" type="button">אשר ושמור את השיבוץ</button><button id="ai-dismiss" type="button" class="secondary">בטל הצעה</button></div></div>
+</div></dialog>
 <dialog id="account-dialog" aria-label="החשבון שלי"><div class="dialog-top"><span>החשבון שלי</span><button id="close-account" type="button" class="close-button" aria-label="סגור חשבון">✕</button></div><p id="account-feedback" class="dialog-feedback" role="status" hidden></p><aside class="account" aria-label="כניסה ושמירה בענן">
 <details id="account-panel" open><summary>החשבון ושמירת האימונים</summary><p class="muted">אפשר להתחיל כאורח. חשבון מאפשר לשמור בענן ולהמשיך ממכשיר אחר.</p><p id="account-status">מצב אורח — היומן נשמר בדפדפן הזה.</p>
 <form id="auth-form"><div class="form-grid">
