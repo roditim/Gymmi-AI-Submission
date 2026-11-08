@@ -9,11 +9,6 @@
     "raw source downloads",
     "legacy dataset and runs"
   ],
-  "unchanged_runtime_code": [
-    "gymmi/",
-    "app.py",
-    "run.py",
-    "tests/"
-  ],
+  "submission": "The public history was filtered for submission. The archived Python research and its run outputs are separate from the deployed web application.",
   "disclosure": "Developed by the student with coding-assistant support; no independent peer review or instructor approval claimed."
 }

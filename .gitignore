@@ -12,3 +12,10 @@ verification/*.txt
 user_data/
 supabase/.temp/
 supabase/.branches/
+
+*-PRIVATE/
+*-PRIVATE.*
+docs/REHEARSAL_HE.md
+docs/PRESENTER_NOTES_HE.md
+docs/COMPLETE_PRESENTATION_GUIDE_HE.md
+docs/DEMO_HE.md
