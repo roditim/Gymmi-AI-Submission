@@ -3,6 +3,7 @@ import { test } from 'node:test';
 
 test('OAuth state belongs to one account and the worker pushes and pulls through a simulated Google API', async () => {
   const scope = 'https://www.googleapis.com/auth/calendar.app.created';
+  const freeBusyScope = 'https://www.googleapis.com/auth/calendar.freebusy';
   const settings = {
     SUPABASE_URL: 'https://supabase.test', SUPABASE_ANON_KEY: 'anon', SUPABASE_SERVICE_ROLE_KEY: 'service',
     GOOGLE_CALENDAR_CLIENT_ID: 'fake-client', GOOGLE_CALENDAR_CLIENT_SECRET: 'fake-secret',
@@ -69,6 +70,11 @@ test('OAuth state belongs to one account and the worker pushes and pulls through
     if (url.host === 'www.googleapis.com') {
       assert.equal(init.headers.Authorization, 'Bearer access');
       if (url.pathname.endsWith('/calendars') && method === 'POST') return response({ id: 'gymmi-test' });
+      if (url.pathname.endsWith('/freeBusy')) {
+        assert.equal(method,'POST');
+        assert.deepEqual(body.items,[{id:'primary'}]);
+        return response({calendars:{primary:{busy:[{start:'2026-11-11T18:00:00+02:00',end:'2026-11-11T19:00:00+02:00'}]}}});
+      }
       assert.equal(url.pathname, '/calendar/v3/calendars/gymmi-test/events');
       if (method === 'POST') {
         assert.equal(url.searchParams.get('sendUpdates'), 'none');
@@ -87,7 +93,7 @@ test('OAuth state belongs to one account and the worker pushes and pulls through
         ...(worker ? { 'x-gymmi-calendar-worker': worker } : {}) } }));
     assert.equal((await invoke({ action: 'status' })).status, 401);
     const authUrl = new URL((await (await invoke({ action: 'start' }, 'a')).json()).url);
-    assert.equal(authUrl.searchParams.get('scope'), scope);
+    assert.deepEqual(authUrl.searchParams.get('scope').split(' '), [scope,freeBusyScope]);
     assert.equal(authUrl.searchParams.get('access_type'), 'offline');
     assert.equal(authUrl.searchParams.get('code_challenge_method'), 'S256');
     const finish = { action: 'finish', code: 'mock-code', state: authUrl.searchParams.get('state') };
@@ -96,15 +102,22 @@ test('OAuth state belongs to one account and the worker pushes and pulls through
     assert.equal(connected.connected, true);
     assert.equal(JSON.stringify(connected).includes('refresh-secret'), false);
     assert.notEqual(link.refresh_cipher, 'refresh-secret');
+    const freeBusy = {action:'availability',weekStart:'2026-11-09'};
+    assert.equal((await (await invoke(freeBusy,'b')).json()).available,false);
+    const available = await (await invoke(freeBusy,'a')).json();
+    assert.deepEqual(available.busy['2026-11-11'],[{start:'18:00',end:'19:00'}]);
+    assert.equal(JSON.stringify(available).includes('refresh-secret'),false);
     assert.equal((await invoke(finish, 'a')).status, 400);
     assert.equal((await invoke({ action: 'worker' }, 'a')).status, 401);
     assert.equal((await invoke({ action: 'worker' }, null, 'worker-test')).status, 200);
     assert.equal(event.summary, 'Walk');
     assert.equal(link.links.abc.eventId, event.id);
-    event = { ...event, summary: 'Moved on phone', start: { date: '2026-11-10' }, end: { date: '2026-11-11' }, etag: '"etag-2"' };
+    event = { ...event, summary: 'Moved on phone', start: { dateTime:'2026-11-10T18:15:00+02:00' }, end: { dateTime:'2026-11-10T18:45:00+02:00' }, etag: '"etag-2"' };
     assert.equal((await invoke({ action: 'worker' }, null, 'worker-test')).status, 200);
     assert.equal(journal[0].title, 'Moved on phone');
     assert.equal(journal[0].date, '2026-11-10');
+    assert.equal(journal[0].startTime,'18:15');
+    assert.equal(journal[0].minutes,30);
     assert.equal(journal[0].exercises, 'Private exercise details');
     assert.equal(revision, 2);
     assert.equal((await (await invoke({ action: 'disconnect' }, 'a')).json()).connected, false);

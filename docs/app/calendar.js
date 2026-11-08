@@ -9,6 +9,7 @@ function showView(name, refreshGoogle = true) {
   }
   byId('week-picker').hidden=name!=='plan';
   renderCalendar();
+  if (name === 'plan') updateAvailabilityViews();
   if (name === 'calendar' && refreshGoogle) updateGoogleSync();
 }
 function renderCalendar() {
@@ -26,7 +27,7 @@ function renderCalendar() {
   byId('calendar-next').disabled=calendarMonth==='9998-12';
   const grid=byId('calendar-days'); grid.replaceChildren();
   for (const day of GymmiCalendar.monthDays(calendarMonth)) {
-    const workouts=state.workouts.filter(w=>w.date===day);
+    const workouts=state.workouts.filter(w=>w.date===day).sort(GymmiCalendar.scheduleOrder);
     const label=new Intl.DateTimeFormat('he-IL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(parseDate(day));
     const button=action('',()=>{ calendarDay=day; calendarMonth=day.slice(0,7); renderCalendar(); },false,'calendar-day');
     button.dataset.date=day; button.setAttribute('aria-label',label+' · '+workouts.length+' אימונים');
@@ -34,23 +35,24 @@ function renderCalendar() {
     if (day===today()) button.setAttribute('aria-current','date');
     if (day.slice(0,7)!==calendarMonth) button.classList.add('outside-month');
     button.append(element('span',String(Number(day.slice(-2))),'day-number'));
-    for (const row of workouts.slice(0,2)) button.append(element('span',row.title,'calendar-event '+row.status));
+    for (const row of workouts.slice(0,2)) button.append(element('span',(row.startTime ? row.startTime+' · ' : '')+row.title,'calendar-event '+row.status));
     if (workouts.length>2) button.append(element('span','ועוד '+(workouts.length-2),'calendar-more'));
     grid.append(button);
   }
   byId('calendar-day-heading').textContent=new Intl.DateTimeFormat('he-IL',{weekday:'long',day:'numeric',month:'long'}).format(parseDate(calendarDay));
-  const selected=state.workouts.filter(w=>w.date===calendarDay);
+  const selected=state.workouts.filter(w=>w.date===calendarDay).sort(GymmiCalendar.scheduleOrder);
   if (!selected.length) list.append(element('p','אין אימונים ביום הזה. אפשר להוסיף אימון חדש.','empty'));
   for (const row of selected) {
     const card=workoutCard(row);
     if(row.status==='planned') card.append(action('הוסף ל־Google Calendar',()=>{
-      if(confirm('לפתוח טיוטת אירוע ב־Google Calendar? שם האימון, התאריך והמשך יועברו ל־Google. פרטי התרגילים לא יועברו. צריך לשמור שם ידנית; אין סנכרון.')) {
+      if(confirm('לפתוח טיוטת אירוע ב־Google Calendar? שם האימון, התאריך, השעה אם הוגדרה והמשך יועברו ל־Google. פרטי התרגילים לא יועברו. צריך לשמור שם ידנית; אין סנכרון.')) {
         window.open(GymmiCalendar.googleUrl(row),'_blank','noopener,noreferrer');
         notice('נשלחה בקשה לפתיחת טיוטה ב־Google. יש לשמור אותה שם ידנית. Gymmi לא מאשרת שהאירוע נשמר.');
       }
     },busy||storageProblem,'secondary'));
     list.append(card);
   }
+  updateAvailabilityViews();
 }
 function setupCalendar() {
   function move(offset) {

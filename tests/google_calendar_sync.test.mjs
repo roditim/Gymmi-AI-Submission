@@ -48,16 +48,17 @@ test('Google removals delete unchanged planned rows and Gymmi completions preser
   assert.equal(locallyChanged.writes[0].previousId, 'event1');
 });
 
-test('Google additions import once, with timed and recurring events excluded', async () => {
-  const timed = { ...event(), id: 'timed', start: { dateTime: '2026-11-08T13:00:00+02:00' } };
+test('Google additions import once, and skips recurring events', async () => {
+  const timed = { ...event(), id: 'timed', start: { dateTime: '2026-11-08T13:00:00+02:00' }, end: {dateTime:'2026-11-08T13:35:00+02:00'} };
   const recurring = { ...event(), id: 'series', recurrence: ['RRULE:FREQ=WEEKLY'] };
   const converted = await planSync([row()], baseline, [{ ...timed, id: 'event1' }]);
-  assert.equal(converted.workouts, null);
+  assert.equal(converted.workouts[0].startTime,'13:00');
   assert.equal(converted.writes.length, 0);
   const first = await planSync([], {}, [event(), timed, recurring]);
-  assert.equal(first.workouts.length, 1);
+  assert.equal(first.workouts.length, 2);
   assert.equal(first.workouts[0].status, 'planned');
   assert.equal(first.workouts[0].minutes, 30);
+  assert.equal(first.workouts[1].minutes, 35);
   const again = await planSync(first.workouts, first.links, [event(), timed, recurring]);
   assert.equal(again.workouts, null);
   assert.equal(again.writes.length, 0);
@@ -69,4 +70,13 @@ test('recover an already-created Google export without a duplicate workout', asy
   assert.equal(plan.workouts, null);
   assert.equal(plan.links.a.eventId, remote.id);
   assert.equal(plan.writes.length, 0);
+});
+
+test('a timed workout exports with an end time in the Gymmi Google calendar', async () => {
+  const timed = {...row(),startTime:'18:00',minutes:30};
+  const plan = await planSync([timed],baseline,[event()]);
+  assert.equal(plan.writes[0].type,'update');
+  const exported = eventBody(plan.writes[0].row);
+  assert.deepEqual(exported.start,{dateTime:'2026-11-08T18:00:00',timeZone:'Asia/Jerusalem'});
+  assert.deepEqual(exported.end,{dateTime:'2026-11-08T18:30:00',timeZone:'Asia/Jerusalem'});
 });

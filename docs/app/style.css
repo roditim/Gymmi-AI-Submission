@@ -74,6 +74,112 @@ a {
   font-weight:650;
   white-space:nowrap
 }
+.google-availability-card {
+  margin:0 0 20px;
+  padding:13px 16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--panel)
+}
+.google-availability-header,.ai-google-note {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px 14px
+}
+.google-availability-card h2 {font-size:16px}
+.google-availability-card p,.ai-google-note p {margin:0}
+.google-busy-list {
+  display:grid;
+  gap:5px;
+  margin:10px 0 0;
+  padding:0;
+  list-style:none;
+  font-size:13px
+}
+.google-busy-list:empty {display:none}
+.google-busy-list li {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 12px;
+  color:var(--purple)
+}
+.ai-google-note {
+  margin:12px 0;
+  padding:9px 12px;
+  border:1px solid #56436a;
+  border-radius:10px;
+  color:#e2d4f4;
+  font-size:13px
+}
+.calendar-day[data-google-busy] .day-number::after {
+  content:'';
+  display:inline-block;
+  width:7px;
+  height:7px;
+  margin-inline-start:5px;
+  border-radius:50%;
+  background:var(--purple)
+}
+.exp-home {margin-top:12px}
+.exp-home p {margin:0 0 5px;color:var(--green);font-size:12px}
+.exp-meter {height:8px;border-radius:20px;overflow:hidden;background:#30382a}
+.exp-meter span {display:block;height:100%;width:0;background:linear-gradient(90deg,#a9d65a,var(--green))}
+.exp-celebration {
+  position:fixed;
+  z-index:30;
+  inset-inline-end:16px;
+  bottom:calc(18px + env(safe-area-inset-bottom));
+  width:min(315px,calc(100% - 32px));
+  padding:16px;
+  border:1px solid #566844;
+  border-radius:16px;
+  background:#20291d;
+  color:var(--text);
+  box-shadow:0 12px 35px #0008
+}
+.exp-celebration .close-button {
+  float:left;
+  min-width:34px;
+  min-height:34px;
+  font-size:13px
+}
+#exp-gain {display:block;color:var(--green);font-size:25px;font-weight:800}
+#exp-celebration-total {margin:0 0 8px;color:var(--muted);font-size:13px}
+#exp-confetti {
+  position:absolute;
+  pointer-events:none;
+  left:45%;
+  top:36%
+}
+#exp-confetti i {
+  position:absolute;
+  width:7px;
+  height:9px;
+  border-radius:2px;
+  background:var(--green);
+  animation:exp-confetti .78s ease-out var(--delay) both
+}
+#exp-confetti i:nth-child(3n) {background:var(--purple)}
+#exp-confetti i:nth-child(4n) {background:var(--gold)}
+.exp-flight {
+  position:fixed;
+  z-index:31;
+  direction:ltr;
+  pointer-events:none;
+  color:var(--green);
+  font-size:24px;
+  font-weight:800;
+  opacity:0
+}
+@keyframes exp-confetti {
+  from {opacity:1;transform:translate(0,0) rotate(0)}
+  to {opacity:0;transform:translate(var(--x),var(--y)) rotate(250deg)}
+}
+@media(max-width:740px) {
+  .exp-celebration {bottom:calc(85px + env(safe-area-inset-bottom))}
+}
 h1,h2,h3,p {
   margin:0
 }
