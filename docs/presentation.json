@@ -44,12 +44,12 @@
     "key": "architecture"
   },
   {
-    "title": "The schedule stays a preview until approval",
+    "title": "The AI scheduling dialog",
     "lines": [
-      "01  Describe which days and times work for you.",
-      "02  The server validates the model’s proposal.",
-      "03  Compare current and suggested dates. The journal is unchanged.",
-      "04  Approve the proposal to save dates to Supabase."
+      "01  Open the AI scheduler from the top of the weekly plan.",
+      "02  Check the selected week and describe your availability.",
+      "03  Compare current and suggested dates in the dialog. The journal stays as it was.",
+      "04  Approve the proposal to save the dates to Supabase. Reload to see them in the calendar."
     ],
     "kind": "steps",
     "key": "ai"
