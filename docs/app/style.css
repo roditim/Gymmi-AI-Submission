@@ -465,17 +465,6 @@ progress::-moz-progress-bar {
 #saving-mode[data-state=error] {
   color:#ffb3a9
 }
-.ai-shortcut {
-  padding:7px 0;
-  background:transparent;
-  border:0;
-  color:var(--purple);
-  font-size:12px
-}
-.ai-shortcut>span:first-child {
-  font-size:20px;
-  margin-left:5px
-}
 .onboarding {
   padding:18px 22px;
   background:#20251c;
@@ -812,46 +801,38 @@ progress::-moz-progress-bar {
   color:var(--muted);
   font-size:13px
 }
-.ai-planner {
-  margin-top:24px;
-  background:#1f1e29;
-  border:1px solid #393448;
-  border-radius:16px;
-  padding:17px 20px
-}
-.ai-planner>summary {
-  cursor:pointer;
-  list-style:none;
-  color:#e0d9f5;
-  font-size:15px;
-  font-weight:500;
-  display:flex;
+.journey-copy .ai-shortcut {
+  display:inline-flex;
   align-items:center;
-  gap:12px;
-  min-height:36px
+  gap:8px;
+  min-height:44px;
+  background:#30204c;
+  color:#faf4ff;
+  border:1px solid #563c7d;
+  box-shadow:0 4px 12px #33214a35;
+  font-weight:750
 }
-.ai-planner>summary::before {
-  content:'✦';
-  font-size:24px;
-  color:var(--purple)
+.ai-shortcut span {
+  color:#d6bfff;
+  font-size:17px
 }
-.ai-planner>summary::after {
-  content:'＋';
-  margin-inline-start:auto;
-  color:#a598bd
+#ai-dialog {
+  width:min(620px,calc(100% - 24px));
+  background:linear-gradient(155deg,#292239,#1b1a23 68%);
+  border-color:#5a4671;
+  overscroll-behavior:contain
 }
-.ai-planner[open]>summary::after {
-  content:'−'
+#ai-dialog .dialog-top {
+  color:#d9c6f5;
+  font-weight:650
 }
-.ai-content {
-  padding-top:15px
+#ai-week-label {
+  color:#d9c6f5;
+  font-size:13px
 }
 .ai-content h2 {
   font-size:23px;
   margin:6px 0
-}
-.ai-content .eyebrow {
-  color:#a99dc4
 }
 .ai-content .muted {
   font-size:12px;
@@ -1348,9 +1329,6 @@ footer a {
   .planner-utility {
     gap:8px
   }
-  .ai-shortcut {
-    font-size:11px
-  }
   .week-strip {
     gap:5px
   }
@@ -1515,13 +1493,6 @@ footer a {
   #saving-mode {
     font-size:10px
   }
-  .ai-shortcut {
-    font-size:10px;
-    min-height:38px
-  }
-  .ai-shortcut>span:first-child {
-    font-size:17px
-  }
   .onboarding {
     padding:14px 17px;
     margin-bottom:22px;
@@ -1630,13 +1601,6 @@ footer a {
   }
   .empty p {
     font-size:12px
-  }
-  .ai-planner {
-    padding:15px 17px;
-    margin-top:20px
-  }
-  .ai-planner>summary {
-    font-size:13px
   }
   .ai-content h2 {
     font-size:21px
@@ -1773,9 +1737,6 @@ footer a {
     gap:4px
   }
   #saving-mode {
-    font-size:9px
-  }
-  .ai-shortcut {
     font-size:9px
   }
   .workout>.actions>.secondary {

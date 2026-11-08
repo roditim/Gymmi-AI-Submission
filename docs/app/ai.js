@@ -23,7 +23,7 @@ function checkAIResult(proposal, rows, dates) {
   return proposal;
 }
 function setupAI() {
-  byId('ai-preferences').addEventListener('input', clearAIDraft);
+  byId('ai-preferences').addEventListener('input', () => { clearAIDraft(); refreshAI(); byId('ai-feedback').hidden = true; });
   byId('ai-dismiss').addEventListener('click', () => { clearAIDraft(); refreshAI(); notice('ההצעה בוטלה. היומן לא השתנה.'); });
   byId('ai-form').addEventListener('submit', async event => {
     event.preventDefault(); if (busy || !activeUser || storageProblem) return;
@@ -35,7 +35,7 @@ function setupAI() {
     if (!rows.length || rows.length > 7) { notice('הוסף לתוכנית בין אימון אחד ל־7 אימונים שטרם סומנו בשבוע הנבחר.',true); return; }
     const preferences = byId('ai-preferences').value.trim();
     const base = JSON.stringify(state), userId = activeUser.id, generation = accountGeneration;
-    setBusy(true); byId('ai-status').textContent = 'עוזר ה־AI מכין הצעה. עדיין לא מתבצעת שמירה…';
+    setBusy(true); notice('עוזר ה־AI מכין הצעה. עדיין לא מתבצעת שמירה…');
     try {
       const proposal = await cloud.plan({weekStart:week,preferences,workoutIds:rows.map(w=>w.id)});
       if (generation !== accountGeneration || week !== byId('week-start').value || base !== JSON.stringify(state)) throw Error('היומן או החשבון השתנו בזמן הבקשה. בקש הצעה חדשה.');
@@ -50,6 +50,7 @@ function setupAI() {
       }
       for (const warning of proposal.warnings) byId('ai-warnings').append(element('li',warning));
       byId('ai-proposal').hidden = false; notice('התקבלה הצעת AI. בדוק אותה לפני אישור; היומן עדיין לא השתנה.');
+      if (byId('ai-dialog').open) byId('ai-proposal-heading').focus();
     } catch (error) { notice(error.message,true); }
     finally { setBusy(false); }
   });
@@ -62,6 +63,6 @@ function setupAI() {
     const next = {version:1,workouts:state.workouts.map(row => {
       const item = assignments.find(a=>a.workoutId===row.id); return item ? {...row,date:item.date} : row;
     })};
-    if (await save(next)) { clearAIDraft(); cancelEdit(); refreshAI(); notice('השיבוץ שאישרת נשמר בחשבון.'); }
+    if (await save(next)) { clearAIDraft(); cancelEdit(); refreshAI(); byId('ai-dialog').close(); notice('השיבוץ שאישרת נשמר בחשבון.'); }
   });
 }

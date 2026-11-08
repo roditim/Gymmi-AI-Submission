@@ -88,7 +88,7 @@ function notice(text, isError = false) {
   const close=element('button','×','notice-close');close.type='button';close.setAttribute('aria-label','סגור הודעה');close.addEventListener('click',()=>{el.hidden=true;});el.append(close);
   clearTimeout(noticeTimer);if(!isError)noticeTimer=setTimeout(()=>{el.hidden=true;},7000);
   el.setAttribute("role", isError ? "alert" : "status");
-  for (const [dialogId, feedbackId] of [['workout-dialog','editor-feedback'],['account-dialog','account-feedback']]) {
+  for (const [dialogId, feedbackId] of [['workout-dialog','editor-feedback'],['account-dialog','account-feedback'],['ai-dialog','ai-feedback']]) {
     if(byId(dialogId).open){const feedback=byId(feedbackId);feedback.textContent=text;feedback.hidden=false;feedback.setAttribute('role',isError?'alert':'status');}
   }
 }

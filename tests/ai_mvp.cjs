@@ -34,6 +34,7 @@ async function call(path,method='GET',body,token=service,key=service){const r=aw
  if(process.env.GYMMI_QA_DIR){const fs=require('node:fs/promises');await fs.mkdir(process.env.GYMMI_QA_DIR,{recursive:true});await page.locator('#ai-proposal').screenshot({path:process.env.GYMMI_QA_DIR+'/ai-real-proposal.png'});}
  assert.deepEqual(await snapshot(),workouts);checks.push('real OpenAI proposal respects specified days and does not auto-save');
  await page.locator('#ai-apply').click();await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('השיבוץ שאישרת נשמר'));
+ await page.locator('#ai-dialog').waitFor({state:'hidden'});
  const saved=await snapshot();assert.deepEqual(saved.map(w=>w.date).slice(0,2).sort(),[shift(week,2),shift(week,4)]);assert.deepEqual(saved[2],workouts[2]);assert.equal(saved[0].exercises,workouts[0].exercises);
  await page.reload();await page.waitForFunction(()=>document.querySelector('#account-status').textContent.includes('שמירה בענן'));await page.locator('#week-start').fill(week);await page.locator('#week-start').dispatchEvent('change');
  assert.deepEqual(await snapshot(),saved);checks.push('explicit approval persists dates; completed workout and exercise details remain unchanged');
@@ -48,10 +49,15 @@ async function call(path,method='GET',body,token=service,key=service){const r=aw
  await page.locator('#ai-generate').click();await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('מכסת בקשות'));assert.deepEqual(await snapshot(),saved);checks.push('fourth daily attempt is rejected before a model call');
  await page.route(api+'/functions/v1/ai-week-plan',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({summary:'Mock used only to exercise stale-preview handling',assignments:[{workoutId:workouts[0].id,date:shift(week,2),reason:'test'}],warnings:[]})}));
  await page.locator('#ai-generate').click();await page.locator('#ai-proposal').waitFor({state:'visible'});
- await ui.editor(page);await page.locator('#workout-title').fill('Unsaved draft');await ui.closeEditor(page);await page.locator('#ai-apply').click();await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('סיים את עריכת האימון'));assert.deepEqual(await snapshot(),saved);await ui.editor(page);await page.locator('#workout-title').fill('');await ui.closeEditor(page);
+ await page.locator('#close-ai').click();await ui.editor(page);await page.locator('#workout-title').fill('Unsaved draft');await ui.closeEditor(page);
+ await page.locator('#open-ai').click();await page.locator('#ai-apply').click();
+ await page.waitForFunction(()=>document.querySelector('#ai-feedback').textContent.includes('סיים את עריכת האימון'));assert.deepEqual(await snapshot(),saved);
+ await page.locator('#close-ai').click();await ui.editor(page);await page.locator('#workout-title').fill('');await ui.closeEditor(page);
+ await page.locator('#open-ai').click();
  await page.locator('#ai-preferences').fill('A changed availability');assert.equal(await page.locator('#ai-proposal').isVisible(),false);
  await page.locator('#ai-generate').click();await page.locator('#ai-proposal').waitFor({state:'visible'});
- await page.locator('#workout-list article').first().getByRole('button',{name:'ערוך',exact:true}).click();await page.locator('#workout-title').fill('Edited after preview');await page.locator('#save-workout').click();await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('האימון נשמר בתוכנית'));assert.equal(await page.locator('#ai-proposal').isVisible(),false);
+ await page.locator('#close-ai').click();await page.locator('#workout-list article').first().getByRole('button',{name:'ערוך',exact:true}).click();await page.locator('#workout-title').fill('Edited after preview');await page.locator('#save-workout').click();await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('האימון נשמר בתוכנית'));
+ await page.locator('#open-ai').click();assert.equal(await page.locator('#ai-proposal').isVisible(),false);
  await page.unroute(api+'/functions/v1/ai-week-plan');checks.push('changing preferences or editing the diary invalidates a stale AI preview (mocked response)');
  assert.deepEqual(errors,[]);console.log(JSON.stringify({passed:checks.length,checks,url,real_model:'gpt-5.4-mini',real_model_calls:2,mail_sent:false},null,2));
  }finally{if(browser)await browser.close();for(const u of users){const r=await call('/auth/v1/admin/users/'+u.id,'DELETE');assert.equal(r.status,200,'QA cleanup failed');}}})().catch(e=>{console.error(e.message);process.exitCode=1;});

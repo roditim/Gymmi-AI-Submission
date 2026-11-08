@@ -37,9 +37,11 @@ function openAccount() {
 }
 function openAIPlanner() {
   if(busy||storageProblem) return;
-  showView('plan');byId('ai-panel').open=true;
+  const dialog=byId('ai-dialog');
+  byId('ai-feedback').hidden=true;
+  if(!dialog.open)dialog.showModal();
   const target=activeUser?byId('ai-preferences'):byId('ai-sign-in');
-  target.focus({preventScroll:true});byId('ai-panel').scrollIntoView({block:'start'});
+  target.focus({preventScroll:true});
 }
 function drawOnboarding() {
   const step=onboardingSteps[onboardingStep];
@@ -67,6 +69,7 @@ function refreshUX() {
   const start=byId('week-start').value,end=shiftDate(start,7);
   const format=day=>new Intl.DateTimeFormat('he-IL',{day:'numeric',month:'short'}).format(parseDate(day));
   byId('week-range').textContent=format(start)+' – '+format(shiftDate(start,6))+' · השבוע מתחיל ביום שני';
+  byId('ai-week-label').textContent='השבוע שנבחר · '+format(start)+' – '+format(shiftDate(start,6));
   const rows=state.workouts.filter(w=>w.date>=start&&w.date<end);
   const next=rows.filter(w=>w.status==='planned'&&w.date>=today()).sort((a,b)=>a.date.localeCompare(b.date))[0];
   byId('focus-title').textContent=next?next.title:rows.length?'בונים את הצעד הבא.':'אימון אחד.\nצעד חדש.';
@@ -99,13 +102,15 @@ function refreshUX() {
 }
 function setupUX() {
   const mobile=matchMedia('(max-width: 740px)').matches;
-  byId('account-panel').open=!mobile;byId('ai-panel').open=false;
+  byId('account-panel').open=!mobile;
   byId('today-label').textContent=new Intl.DateTimeFormat('he-IL',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
   try{byId('onboarding').hidden=localStorage.getItem(ONBOARDING_KEY)==='done';}
   catch{byId('onboarding').hidden=true;}
   drawOnboarding();refreshUX();
   byId('new-workout').addEventListener('click',openWorkoutEditor);
   byId('open-ai').addEventListener('click',openAIPlanner);
+  byId('close-ai').addEventListener('click',()=>byId('ai-dialog').close());
+  byId('ai-dialog').addEventListener('close',()=>byId('open-ai').focus({preventScroll:true}));
   byId('account-open').addEventListener('click',openAccount);
   byId('close-editor').addEventListener('click',()=>byId('workout-dialog').close());
   byId('close-account').addEventListener('click',()=>byId('account-dialog').close());
