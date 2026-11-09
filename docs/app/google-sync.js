@@ -192,11 +192,21 @@ function renderGoogleAvailability() {
   const weekly = googleAvailability.get(planWeek)?.busy;
   const daily = googleAvailability.get(dayWeek)?.busy;
   byId('google-dashboard').hidden = byId('view-plan').hidden;
-  byId('google-sync-title').textContent = googleDemoEnabled ? 'Google Calendar · מצב דמו' : 'סנכרון עם Google Calendar';
+  byId('google-sync-title').textContent = googleDemoEnabled ? 'Google Calendar' : 'סנכרון עם Google Calendar';
   byId('google-sync-details').hidden = googleDemoEnabled;
   byId('google-sync-connect').hidden = googleDemoEnabled || googleSyncConnected;
   byId('google-sync-message').hidden = googleDemoEnabled;
   byId('google-sync-demo-message').hidden = !googleDemoEnabled;
+  const badgeState = googleDemoEnabled ? 'demo' : googleConnection;
+  const badgeLabels = {
+    demo: 'דמו פעיל', connected: 'מחובר', guest: 'נדרשת כניסה',
+    checking: 'בודק חיבור', unconfigured: 'ממתין להגדרה',
+    disconnected: 'לא מחובר', paused: 'מושהה', error: 'לא זמין',
+  };
+  for (const badge of document.querySelectorAll('[data-google-status-badge]')) {
+    badge.textContent = badgeLabels[badgeState];
+    badge.dataset.state = badgeState;
+  }
   for (const id of googleDemoButtons) {
     const button = byId(id);
     button.hidden = !googleDemoAvailable;
@@ -207,6 +217,9 @@ function renderGoogleAvailability() {
   byId('google-dashboard-status').textContent = availabilityMessage(planWeek);
   byId('ai-google-status').textContent = availabilityMessage(planWeek);
   byId('google-calendar-status').textContent = availabilityMessage(dayWeek);
+  byId('google-week-busy-label').hidden = !weekly;
+  byId('google-week-busy-label').textContent = googleDemoEnabled ? 'שעות תפוסות לדוגמה' : 'שעות תפוסות השבוע';
+  byId('ai-demo-availability').hidden = !googleDemoEnabled || !weekly;
   showBusyHours('google-week-busy', weekly, true);
   showBusyHours('ai-demo-busy', googleDemoEnabled ? weekly : null, true);
   showBusyHours('google-day-busy', daily && calendarDay ? {[calendarDay]: daily[calendarDay] || []} : null, false);

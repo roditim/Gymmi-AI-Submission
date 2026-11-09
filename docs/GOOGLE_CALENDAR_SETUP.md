@@ -6,6 +6,8 @@ The published connect button reports availability from the backend. The producti
 
 An operator can enable a labelled simulation for one account via the server-side `GYMMI_GOOGLE_DEMO_USER_ID` setting. It supplies sample busy hours without making a Google API request. An approved schedule is saved to the Gymmi journal.
 
+The [Google Calendar product icon](https://about.google/brand-resource-center/products-and-services/#more-products) identifies the integration in this school project. The adjacent badge reports whether a real connection or the labelled demo is active.
+
 ## Activate the application
 
 1. In the Gymmi Google Cloud project, enable **Google Calendar API**. Configure the OAuth consent screen and create an OAuth client of type **Web application**.
