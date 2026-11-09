@@ -218,7 +218,11 @@ byId("workout-form").addEventListener("submit", async event => {
   let saved;
   if (id) saved = await update(id, fields);
   else saved = await save({ version: 1, workouts: [...state.workouts, { id: crypto.randomUUID(), ...fields, status: "planned", resolvedAt: null }] });
-  if (saved) { byId("week-start").value = monday(fields.date); cancelEdit(); render(); notice("האימון נשמר בתוכנית."); }
+  if (saved) {
+    byId("week-start").value = monday(fields.date);
+    if (!byId('view-calendar').hidden) selectCalendarDay(fields.date);
+    cancelEdit(); render(); notice("האימון נשמר בתוכנית.");
+  }
 });
 byId("cancel-edit").addEventListener("click", cancelEdit);
 byId("example-plan").addEventListener("click", async () => {

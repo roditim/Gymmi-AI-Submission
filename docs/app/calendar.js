@@ -2,6 +2,27 @@
 let calendarMonth=new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
 let calendarDay=null;
 
+function selectCalendarDay(day) {
+  calendarDay=day;
+  calendarMonth=day.slice(0,7);
+}
+
+function openCalendarWorkout(day) {
+  if(busy||storageProblem) return;
+  if(byId('editing-id').value||byId('workout-title').value.trim()||byId('workout-exercises').value.trim()) {
+    notice('סיים או בטל את טיוטת האימון לפני הוספת אימון מהיומן.',true);
+    return;
+  }
+  if(day!==calendarDay) {
+    selectCalendarDay(day);
+    renderCalendar();
+    byId('calendar-days').querySelector('[data-add-date="'+day+'"]').focus({preventScroll:true});
+  }
+  cancelEdit();
+  byId('workout-date').value=day;
+  presentWorkoutEditor();
+}
+
 function showView(name, refreshGoogle = true) {
   for (const tab of document.querySelectorAll('[data-view]')) {
     const active=tab.dataset.view===name;
@@ -30,7 +51,7 @@ function renderCalendar() {
   for (const day of GymmiCalendar.monthDays(calendarMonth)) {
     const workouts=state.workouts.filter(w=>w.date===day).sort(GymmiCalendar.scheduleOrder);
     const label=new Intl.DateTimeFormat('he-IL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(parseDate(day));
-    const button=action('',()=>{ calendarDay=day; calendarMonth=day.slice(0,7); renderCalendar(); },false,'calendar-day');
+    const button=action('',()=>{ selectCalendarDay(day); renderCalendar(); },false,'calendar-day');
     button.dataset.date=day; button.setAttribute('aria-label',label+' · '+workouts.length+' אימונים');
     button.setAttribute('aria-pressed',String(day===calendarDay));
     if (day===today()) button.setAttribute('aria-current','date');
@@ -38,7 +59,12 @@ function renderCalendar() {
     button.append(element('span',String(Number(day.slice(-2))),'day-number'));
     for (const row of workouts.slice(0,2)) button.append(element('span',(row.startTime ? row.startTime+' · ' : '')+row.title,'calendar-event '+row.status));
     if (workouts.length>2) button.append(element('span','ועוד '+(workouts.length-2),'calendar-more'));
-    grid.append(button);
+    const add=action('+',()=>openCalendarWorkout(day),storageProblem,'calendar-day-add');
+    add.dataset.addDate=day;
+    add.setAttribute('aria-label','הוסף אימון ל'+label);
+    const cell=element('div',undefined,'calendar-cell');
+    cell.append(button,add);
+    grid.append(cell);
   }
   byId('calendar-day-heading').textContent=new Intl.DateTimeFormat('he-IL',{weekday:'long',day:'numeric',month:'long'}).format(parseDate(calendarDay));
   const selected=state.workouts.filter(w=>w.date===calendarDay).sort(GymmiCalendar.scheduleOrder);
@@ -68,12 +94,7 @@ function setupCalendar() {
     try { if(value<'1000-01'||value>'9998-12') throw Error('חודש לא תקין'); GymmiCalendar.monthDays(value);calendarMonth=value;calendarDay=value+'-01';renderCalendar(); }
     catch(error){byId('calendar-month').value=calendarMonth;notice(error.message,true);}
   });
-  byId('calendar-add').addEventListener('click',()=>{
-    if(busy||storageProblem) return;
-    if(byId('workout-title').value.trim()||byId('workout-exercises').value.trim()) {notice('סיים או בטל את טיוטת האימון לפני הוספת אימון מהיומן.',true);return;}
-    cancelEdit(); byId('workout-date').value=calendarDay; byId('week-start').value=monday(calendarDay);
-    showView('plan'); render(); presentWorkoutEditor();
-  });
+  byId('calendar-add').addEventListener('click',()=>openCalendarWorkout(calendarDay));
   byId('calendar-export').addEventListener('click',()=>{
     if(busy||storageProblem) return;
     try {

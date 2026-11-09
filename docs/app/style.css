@@ -1154,15 +1154,39 @@ dialog::backdrop {
   font-size:12px;
   padding:16px 0 10px
 }
+.calendar-cell {
+  position:relative;
+  min-width:0;
+}
 .calendar-day {
+  width:100%;
+  height:100%;
   min-height:96px;
   min-width:0;
-  padding:8px;
+  padding:8px 8px 33px;
   background:var(--panel);
   border:1px solid #30343b;
   text-align:right;
   color:var(--text);
   font-weight:400
+}
+.calendar-day-add {
+  position:absolute;
+  inset-inline-end:3px;
+  bottom:3px;
+  width:min(32px,calc(100% - 6px));
+  min-height:27px;
+  padding:0;
+  border:0;
+  border-radius:6px;
+  background:#303e28;
+  color:#dbfb86;
+  font-size:16px;
+  line-height:1;
+}
+.calendar-day-add:hover:not(:disabled),.calendar-day-add:focus-visible {
+  background:#dbfb86;
+  color:#171c1a;
 }
 .calendar-day[aria-current=date] {
   background:#262f1e;
@@ -1697,8 +1721,8 @@ footer a {
     gap:4px
   }
   .calendar-day {
-    min-height:69px;
-    padding:5px 3px;
+    min-height:84px;
+    padding:5px 3px 32px;
     border-radius:8px
   }
   .calendar-event {
