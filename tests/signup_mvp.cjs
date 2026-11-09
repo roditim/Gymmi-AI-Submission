@@ -32,7 +32,7 @@ async function signOut(page) {
   const first=await browser.newContext(options), second=await browser.newContext(options);
   const page=await first.newPage(), device=await second.newPage(); const errors=[];
   for(const p of [page,device]) p.on('pageerror',e=>errors.push(e.message));
-  await page.goto(url); await authForm(page);
+  await page.goto(url); await ui.dismissOnboarding(page); await authForm(page);
   const signup=page.waitForResponse(r=>r.url().startsWith(config.url+'/auth/v1/signup') && r.request().method()==='POST');
   await page.locator('#sign-up').click(); const response=await signup; const payload=await response.json();
   userId=payload.user?.id; // Capture immediately so assertions cannot leave a QA account behind.
@@ -53,7 +53,7 @@ async function signOut(page) {
   await authForm(page); await page.locator('#sign-in').click(); await signedIn(page);
   assert.equal(await page.locator('#completed-count').innerText(),'1');
   checks.push('sign-out and password sign-in restore the same cloud diary');
-  await device.goto(url); await authForm(device); await device.locator('#sign-in').click(); await signedIn(device);
+  await device.goto(url); await ui.dismissOnboarding(device); await authForm(device); await device.locator('#sign-in').click(); await signedIn(device);
   assert.equal(await device.locator('#completed-count').innerText(),'1');
   checks.push('independent browser device loads the registered account and completion');
   await signOut(device); await authForm(device,'wrong-password-'+crypto.randomUUID());
