@@ -11,6 +11,7 @@ const googleDemoKey = 'gymmi-google-calendar-demo';
 const googleDemoButtons = ['google-demo-dashboard', 'google-demo-calendar', 'google-demo-ai'];
 let googleDemoAvailable = false;
 let googleDemoEnabled = false;
+let googleDemoPreference;
 
 const googleSyncMessages = {
   permission: "ההרשאה ל־Google פגה או שהיומן הוסר. נתק את החיבור וחבר מחדש.",
@@ -45,14 +46,13 @@ function showGoogleSync(result) {
     : result.paused ? 'paused' : result.connected ? 'connected' : 'disconnected';
   const previousDemo = googleDemoEnabled;
   googleDemoAvailable = result.demoAvailable === true && !result.connected;
-  googleDemoEnabled = false;
   if (googleDemoAvailable) {
-    try { googleDemoEnabled = sessionStorage.getItem(googleDemoKey) === 'on'; }
-    catch { googleDemoEnabled = previousDemo; }
+    try { googleDemoPreference = sessionStorage.getItem(googleDemoKey); }
+    catch { /* Keep the preference in memory if tab storage is blocked. */ }
   }
+  googleDemoEnabled = googleDemoAvailable && googleDemoPreference !== 'off';
   if (previousDemo !== googleDemoEnabled) clearAIDraft();
   if (previousDemo !== googleDemoEnabled || (!googleDemoEnabled && googleConnection !== 'connected')) clearGoogleAvailability();
-  byId("google-sync-connect").hidden = result.connected;
   byId("google-sync-connect").disabled = !result.available || googleSyncBusy;
   byId("google-sync-now").hidden = !result.connected;
   byId("google-sync-now").disabled = !result.available || result.paused || googleSyncBusy;
@@ -151,7 +151,7 @@ function clearGoogleAvailability() {
 function availabilityMessage(week) {
   const data = googleAvailability.get(week);
   if (googleDemoEnabled) {
-    return 'מצב דמו · שעות לדוגמה · Google לא מחובר'
+    return 'מצב דמו · מחובר ליומן לדוגמה'
       + (data?.reason ? ' · טעינת שעות ההדגמה נכשלה.' : data?.busy ? '' : ' · טוען שעות לדוגמה…');
   }
   const status = {
@@ -192,6 +192,11 @@ function renderGoogleAvailability() {
   const weekly = googleAvailability.get(planWeek)?.busy;
   const daily = googleAvailability.get(dayWeek)?.busy;
   byId('google-dashboard').hidden = byId('view-plan').hidden;
+  byId('google-sync-title').textContent = googleDemoEnabled ? 'Google Calendar · מצב דמו' : 'סנכרון עם Google Calendar';
+  byId('google-sync-details').hidden = googleDemoEnabled;
+  byId('google-sync-connect').hidden = googleDemoEnabled || googleSyncConnected;
+  byId('google-sync-message').hidden = googleDemoEnabled;
+  byId('google-sync-demo-message').hidden = !googleDemoEnabled;
   for (const id of googleDemoButtons) {
     const button = byId(id);
     button.hidden = !googleDemoAvailable;
@@ -203,6 +208,7 @@ function renderGoogleAvailability() {
   byId('ai-google-status').textContent = availabilityMessage(planWeek);
   byId('google-calendar-status').textContent = availabilityMessage(dayWeek);
   showBusyHours('google-week-busy', weekly, true);
+  showBusyHours('ai-demo-busy', googleDemoEnabled ? weekly : null, true);
   showBusyHours('google-day-busy', daily && calendarDay ? {[calendarDay]: daily[calendarDay] || []} : null, false);
   for (const day of document.querySelectorAll('#calendar-days [data-date]')) {
     const hasBusy = Boolean(daily?.[day.dataset.date]?.length);
@@ -245,10 +251,9 @@ function updateAvailabilityViews() {
 function toggleGoogleDemo() {
   if (!googleDemoAvailable || !activeUser || busy || accountLoading) return;
   googleDemoEnabled = !googleDemoEnabled;
-  try {
-    if (googleDemoEnabled) sessionStorage.setItem(googleDemoKey, 'on');
-    else sessionStorage.removeItem(googleDemoKey);
-  } catch { /* Keep the setting for the current page if storage is unavailable. */ }
+  googleDemoPreference = googleDemoEnabled ? 'on' : 'off';
+  try { sessionStorage.setItem(googleDemoKey, googleDemoPreference); }
+  catch { /* Keep the preference in memory if tab storage is blocked. */ }
   clearAIDraft();
   byId('ai-feedback').hidden = true;
   clearGoogleAvailability();
