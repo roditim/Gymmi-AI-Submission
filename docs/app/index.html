@@ -80,8 +80,8 @@
 <p class="eyebrow">YOUR TRAINING CALENDAR</p><h2 id="calendar-heading">יומן חודשי</h2>
 <section id="google-sync-panel" aria-labelledby="google-sync-title">
 <h3 id="google-sync-title">סנכרון עם Google Calendar</h3>
-<p>חבר חשבון Google כדי לסנכרן אימונים מתוכננים דרך יומן נפרד בשם Gymmi. בטלפון בחר את יומן Gymmi בעת הוספת אירוע יום שלם.</p>
-<p class="muted">הסנכרון משתף את שמות האימונים המתוכננים ואת התאריכים והשעות שלהם. Gymmi קוראת רק שעות תפוסות מהיומן הראשי. מחיקת אירוע מקושר מסירה את האימון המתוכנן גם בצד השני.</p>
+<div id="google-sync-details"><p>חבר חשבון Google כדי לסנכרן אימונים מתוכננים דרך יומן נפרד בשם Gymmi. בטלפון בחר את יומן Gymmi בעת הוספת אירוע יום שלם.</p>
+<p class="muted">הסנכרון משתף את שמות האימונים המתוכננים ואת התאריכים והשעות שלהם. Gymmi קוראת רק שעות תפוסות מהיומן הראשי. מחיקת אירוע מקושר מסירה את האימון המתוכנן גם בצד השני.</p></div><p id="google-sync-demo-message" class="muted" role="status" hidden>יומן הדמו פעיל. השעות התפוסות הן לדוגמה. שיבוצים שאושרו נשמרים ביומן Gymmi.</p>
 <div class="actions">
 <button id="google-demo-calendar" type="button" class="secondary google-demo-toggle" aria-pressed="false" hidden>הפעל הדמיית Google Calendar</button><button id="google-sync-connect" type="button" class="secondary">חבר חשבון Google</button>
 <button id="google-sync-now" type="button" class="secondary" hidden>סנכרן עכשיו</button>
@@ -105,7 +105,7 @@
 <dialog id="ai-dialog" aria-labelledby="ai-heading">
 <div class="dialog-top"><span>✦ עוזר השיבוץ · GYMMI AI</span><button id="close-ai" type="button" class="close-button" aria-label="סגור עוזר AI">✕</button></div>
 <p id="ai-feedback" class="dialog-feedback" role="status" hidden></p><div class="ai-content">
-<h2 id="ai-heading">מתי נוח לך להתאמן?</h2><p id="ai-week-label"></p><div class="ai-google-note"><p id="ai-google-status"></p><button id="google-demo-ai" type="button" class="secondary google-demo-toggle" aria-pressed="false" hidden>הפעל הדמיית Google Calendar</button><button id="ai-google-settings" class="secondary" type="button">הגדרות יומן</button></div>
+<h2 id="ai-heading">מתי נוח לך להתאמן?</h2><p id="ai-week-label"></p><div class="ai-google-note"><p id="ai-google-status"></p><button id="google-demo-ai" type="button" class="secondary google-demo-toggle" aria-pressed="false" hidden>הפעל הדמיית Google Calendar</button><button id="ai-google-settings" class="secondary" type="button">הגדרות יומן</button><ul id="ai-demo-busy" class="google-busy-list"></ul></div>
 <button id="ai-sign-in" type="button" class="secondary">כניסה לשימוש ב־AI</button><p class="muted" id="ai-status">התחבר לחשבון כדי לקבל הצעת שיבוץ לאימונים שלך.</p>
 <form id="ai-form"><label for="ai-preferences">ימים פנויים ומגבלות זמן</label><textarea id="ai-preferences" minlength="5" maxlength="500" rows="2" required placeholder="למשל: פנוי בשני ובחמישי, עד 30 דקות ביום"></textarea>
 <p class="muted">נשתף עם OpenAI את הזמינות, שמות האימונים המתוכננים ואת משכם כדי להציע תאריכים. בחיבור Google נשתף גם שעות תפוסות מהיומן הראשי, ללא שמות אירועים. אין צורך להזין מידע אישי או רפואי.</p>

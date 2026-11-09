@@ -95,6 +95,7 @@ a {
   background:#392b4f
 }
 .google-availability-card p,.ai-google-note p {margin:0}
+.ai-google-note .google-busy-list {flex-basis:100%;margin-top:0}
 .google-busy-list {
   display:grid;
   gap:5px;
