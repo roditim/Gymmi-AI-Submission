@@ -10,16 +10,16 @@
     "key": "cover"
   },
   {
-    "title": "From weekly plan to monthly calendar",
+    "title": "First visit and workout workflow",
     "lines": [
-      "01  Add a workout with a date, duration and routine.",
-      "02  Mark the workout complete and see weekly progress update.",
-      "03  Reload the page to confirm the cloud save.",
-      "04  Find the same completed workout in the monthly calendar.",
-      "Next, ask AI to reschedule two planned workouts."
+      "The animated guide shows how to add a workout, schedule with AI, earn EXP and find a coach.",
+      "Add a workout to the weekly plan. Mark it complete to update your progress.",
+      "When signed in, reload to confirm the cloud save and find the workout in the monthly calendar."
     ],
     "kind": "steps",
-    "key": "journey"
+    "key": "journey",
+    "image": "assets/gymmi-onboarding-popup.png",
+    "caption": "Public app on first visit. Visitors can reopen the guide from the header."
   },
   {
     "title": "Progress and the optional league",
