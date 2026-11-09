@@ -47,7 +47,7 @@
     "title": "The AI scheduling dialog",
     "lines": [
       "01  Open the AI scheduler from the top of the weekly plan.",
-      "02  Describe your available days and hours. When Google is connected, Gymmi checks busy times.",
+      "02  Enter available days and hours. The labelled calendar demo supplies sample busy times.",
       "03  Review each proposed date and time range in the dialog.",
       "04  Approve to save dates and times to Supabase. Reload to see them in the calendar."
     ],
@@ -61,14 +61,15 @@
     "lines": [
       "Select a day to see, add or complete a workout.",
       "Reload and find the same completed workout.",
-      "Approved AI dates appear in this calendar after saving.",
+      "Approved AI dates and times appear in this calendar after saving.",
       "Optional: open a Google Calendar draft or export an ICS file."
     ]
   },
   {
     "title": "Verification on the public app",
     "lines": [
-      "Workout dates changed only after approval and survived a reload.",
+      "Workout dates and times changed only after approval and survived a reload.",
+      "The calendar demo avoided sample busy times and saved the schedule in Gymmi.",
       "Two live questionnaires returned the expected demo coaches and the correct contact links."
     ],
     "kind": "tests",
@@ -144,7 +145,7 @@
     "lines": [
       "Production: public HTTPS app, GitHub source and cloud accounts.",
       "AI proposes workout dates and ranks eligible coaches. Users choose what to save or whom to contact.",
-      "Google drafts and ICS export are available. Busy-time checks and automatic sync require Google OAuth setup.",
+      "Google drafts and ICS export are available. The calendar demo uses sample busy times. A live Google connection requires OAuth setup.",
       "Weekly competition uses self-reported workout completions.",
       "Coaches self-publish their details. The two demo profiles and their ratings are fictional.",
       "MVP limits: unverified emails, no password recovery and capped AI requests."
