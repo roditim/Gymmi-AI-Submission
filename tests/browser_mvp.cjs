@@ -24,7 +24,7 @@ const ui=require('./ui_helpers.cjs');
     await page.getByRole('button', { name: 'הוסף אימון', exact: true }).click();
   };
   try {
-    await page.goto(url); await page.getByRole('heading', { level: 1 }).waitFor();
+    await page.goto(url); await ui.dismissOnboarding(page); await page.getByRole('heading', { level: 1 }).waitFor();
     const today = await page.locator('#workout-date').inputValue();
     assert.equal((await state()).workouts.length, 0);
     await fill('Today workout', today);
@@ -76,7 +76,7 @@ const ui=require('./ui_helpers.cjs');
     checks.push('backup round trip, invalid import does not replace data, confirmed reset');
 
     const other = await browser.newContext({ timezoneId: 'Asia/Jerusalem' });
-    const fresh = await other.newPage(); await fresh.goto(url);
+    const fresh = await other.newPage(); await fresh.goto(url); await ui.dismissOnboarding(fresh);
     assert.equal(await fresh.locator('#planned-count').innerText(), '0'); await other.close();
     checks.push('separate browser visitors have separate data');
 

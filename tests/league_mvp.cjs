@@ -42,7 +42,7 @@ async function as(user, path, method = 'GET', body) {
 }
 
 async function signIn(page, user) {
-  await page.goto(url);
+  await page.goto(url); await ui.dismissOnboarding(page);
   await ui.account(page);
   await page.locator('#auth-email').fill(user.email);
   await page.locator('#auth-password').fill(user.password);

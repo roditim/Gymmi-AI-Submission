@@ -5,7 +5,7 @@ const {chromium}=require('playwright');const ui=require('./ui_helpers.cjs');
  const browser=await chromium.launch({headless:true,...(process.env.GYMMI_BROWSER_PATH?{executablePath:process.env.GYMMI_BROWSER_PATH}:{})});
  const checks=[],errors=[];try{
   const page=await browser.newPage({viewport:{width:1365,height:900},timezoneId:'Asia/Jerusalem'});page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(url);await page.evaluate(()=>document.fonts.ready);
+  await page.goto(url); await ui.dismissOnboarding(page);await page.evaluate(()=>document.fonts.ready);
   assert.equal(await page.evaluate(()=>document.fonts.check('16px Heebo')),true);
   assert.equal(await page.locator('#workout-title').isVisible(),false);assert.equal(await page.locator('#auth-email').isVisible(),false);
   assert.equal(await page.locator('.app-nav svg').count(),4);assert.equal(await page.locator('.app-rail').evaluate(e=>getComputedStyle(e).position),'sticky');

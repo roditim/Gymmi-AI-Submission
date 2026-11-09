@@ -28,11 +28,39 @@
 <div class="google-availability-header"><div class="google-calendar-identity"><img src="google-calendar.webp" width="42" height="42" alt=""><div><div class="google-calendar-name"><h2 id="google-dashboard-heading">Google Calendar</h2><span class="google-calendar-badge" data-google-status-badge role="status"></span></div><p id="google-dashboard-status" class="muted"></p></div></div>
 <div class="google-availability-actions"><button id="google-demo-dashboard" type="button" class="secondary google-demo-toggle" aria-pressed="false" hidden>הפעל הדמיית Google Calendar</button><button id="google-dashboard-settings" type="button" class="secondary">חיבור והגדרות</button></div></div>
 <p id="google-week-busy-label" class="google-busy-label" hidden></p><ul id="google-week-busy" class="google-busy-list"></ul></section>
-<section id="onboarding" class="onboarding" aria-labelledby="onboarding-title" hidden>
-<div class="onboarding-top"><p id="onboarding-count" class="eyebrow">היכרות קצרה · 1 מתוך 3</p><button id="onboarding-skip" type="button" class="text-button">דלג על ההדרכה</button></div>
-<h2 id="onboarding-title" tabindex="-1">מתחילים באימון אחד</h2><p id="onboarding-text"></p>
-<div class="actions"><button id="onboarding-action" type="button">הוסף אימון ראשון</button><button id="onboarding-back" type="button" class="secondary" hidden>חזרה</button><button id="onboarding-next" type="button" class="secondary">הבא</button></div>
-</section>
+<dialog id="onboarding" aria-labelledby="onboarding-title" aria-describedby="onboarding-text">
+  <div class="onboarding-top"><span class="onboarding-brand" aria-hidden="true">✦</span><span>ברוכים הבאים ל־Gymmi</span><button id="onboarding-skip" type="button" class="text-button">דלג על ההדרכה</button></div>
+  <div class="onboarding-progress">
+    <p id="onboarding-count" aria-live="polite"></p>
+    <progress id="onboarding-progress" aria-label="התקדמות בהדרכה"></progress>
+  </div>
+  <h2 id="onboarding-title" tabindex="-1" autofocus></h2>
+  <p id="onboarding-text"></p>
+  <div class="onboarding-stage">
+    <span class="onboarding-stage-label">✦ תצוגה לדוגמה</span>
+    <div class="onboarding-scene" data-tour-scene>
+      <div class="onboarding-days" aria-label="יום ד׳ נבחר"><span>ב׳</span><span>ג׳</span><strong>ד׳</strong><span>ה׳</span><span>ו׳</span></div>
+      <div class="onboarding-card tour-pop"><span class="tour-icon" aria-hidden="true">＋</span><div><strong>אימון כוח</strong><small>יום ד׳ · 30 דקות</small></div><span class="tour-tag">מתוכנן</span></div>
+    </div>
+    <div class="onboarding-scene" data-tour-scene hidden>
+      <div class="onboarding-card tour-busy"><span class="tour-icon" aria-hidden="true">▦</span><div><strong>תפוס ביומן</strong><small><bdi>18:00–18:30</bdi></small></div></div>
+      <div class="onboarding-card tour-pop"><span class="tour-icon" aria-hidden="true">✦</span><div><strong>הצעת AI</strong><small><bdi>18:30–19:00</bdi></small></div><span class="tour-tag">מחכה לאישור</span></div>
+    </div>
+    <div class="onboarding-scene" data-tour-scene hidden>
+      <div class="onboarding-card"><span class="tour-icon" aria-hidden="true">✓</span><div><strong>אימון כוח</strong><small>30 דקות</small></div><button id="onboarding-practice" type="button" class="secondary" aria-pressed="false">נסה לסמן הושלם</button></div>
+      <div class="onboarding-xp" aria-hidden="true"><span>EXP</span><div><span></span></div><bdi>+100</bdi><span class="tour-sparks">✦ · ✧</span></div>
+      <p id="onboarding-result" role="status">אפשר להתנסות כאן בלי לשנות את התוכנית שלך.</p>
+    </div>
+    <div class="onboarding-scene" data-tour-scene hidden>
+      <div class="onboarding-card tour-pop"><span class="tour-icon" aria-hidden="true">✦</span><div><strong>מאמן לדוגמה א׳</strong><small>כוח ומסה · מתחילים</small></div><span class="tour-tag">מתאים לשאלון</span></div>
+      <div class="onboarding-card"><span class="tour-icon" aria-hidden="true">♢</span><div><strong>מאמנת לדוגמה ב׳</strong><small>חיטוב ואימוני בית</small></div></div>
+    </div>
+  </div>
+  <div class="onboarding-footer">
+    <button id="onboarding-action" type="button" class="text-button"></button>
+    <div class="onboarding-nav"><button id="onboarding-back" type="button" class="secondary" hidden>חזרה</button><button id="onboarding-next" type="button">הבא ←</button></div>
+  </div>
+</dialog>
 <div class="dashboard">
 
 <div class="planner" id="planner-start" tabindex="-1">

@@ -10,7 +10,7 @@ async function call(path,method='GET',body,token=service,key=service){const r=aw
  for(let i=0;i<2;i++){const email='gymmi-qa-'+crypto.randomUUID()+'@example.com',password=crypto.randomBytes(24).toString('base64url');const r=await call('/auth/v1/admin/users','POST',{email,password,email_confirm:true});assert.equal(r.status,200);const u={id:r.data.id,email,password};users.push(u);const s=await call('/auth/v1/token?grant_type=password','POST',{email,password},config.publishableKey,config.publishableKey);assert.equal(s.status,200);u.token=s.data.access_token;}
  browser=await chromium.launch({headless:true,...(process.env.GYMMI_BROWSER_PATH?{executablePath:process.env.GYMMI_BROWSER_PATH}:{})});
  const page=await browser.newPage({timezoneId:'Asia/Jerusalem'}),errors=[];page.setDefaultTimeout(45000);page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
- await page.goto(url);assert.equal(await page.locator('#ai-generate').isDisabled(),true);
+ await page.goto(url); await ui.dismissOnboarding(page);assert.equal(await page.locator('#ai-generate').isDisabled(),true);
  const unauth=await call('/functions/v1/ai-week-plan','POST',{},config.publishableKey,config.publishableKey);assert.equal(unauth.status,401);
  checks.push('guest UI and server reject unauthenticated AI access');
  await ui.account(page);await page.locator('#auth-email').fill(users[0].email);await page.locator('#auth-password').fill(users[0].password);await page.locator('#sign-in').click();await page.waitForFunction(()=>document.querySelector('#account-status').textContent.includes('שמירה בענן'));

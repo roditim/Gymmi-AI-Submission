@@ -21,7 +21,7 @@ async function request(path, method='GET', body, token=service, key=service) {
   return {status:r.status, data:raw ? JSON.parse(raw) : null};
 }
 async function login(page, user) {
-  await page.goto(url);
+  await page.goto(url); await ui.dismissOnboarding(page);
   await ui.account(page);
   await page.locator('#auth-email').fill(user.email);
   await page.locator('#auth-password').fill(user.password);
@@ -57,7 +57,7 @@ async function snapshot(token) {
     const [a,b,device]=await Promise.all(contexts.map(c=>c.newPage()));
     for (const p of [a,b,device]) p.on('dialog',d=>d.accept());
     const errors=[]; for(const p of [a,b,device]) p.on('pageerror',e=>errors.push(e.message));
-    await a.goto(url); await add(a,'Guest kept locally');
+    await a.goto(url); await ui.dismissOnboarding(a); await add(a,'Guest kept locally');
     await login(a,users[0]);
     assert.equal(await a.locator('#planned-count').innerText(),'0');
     assert.equal(await a.evaluate(()=>JSON.parse(localStorage.getItem('gymmi-workouts-v1')).workouts[0].title),'Guest kept locally');

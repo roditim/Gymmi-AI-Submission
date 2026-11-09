@@ -9,7 +9,7 @@ const ui=require('./ui_helpers.cjs');
   try {
     const page=await browser.newPage({timezoneId:'Asia/Jerusalem',acceptDownloads:true}),errors=[];
     page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
-    await page.goto(url); const today=await page.locator('#workout-date').inputValue(), month=today.slice(0,7);
+    await page.goto(url); await ui.dismissOnboarding(page); const today=await page.locator('#workout-date').inputValue(), month=today.slice(0,7);
     const fixture=[{id:'sample-plan',date:today,title:'אימון כוח',minutes:30,exercises:'PRIVATE EXERCISE',status:'planned',resolvedAt:null},
       {id:'sample-done',date:today,title:'הליכה שהושלמה',minutes:30,exercises:'PRIVATE EXERCISE',status:'completed',resolvedAt:new Date().toISOString()},
       {id:'sample-skip',date:today,title:'תנועתיות בדילוג',minutes:30,exercises:'PRIVATE EXERCISE',status:'skipped',resolvedAt:new Date().toISOString()}];
