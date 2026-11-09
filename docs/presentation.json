@@ -57,12 +57,15 @@
   },
   {
     "key": "calendar",
-    "title": "Approved workouts in the monthly calendar",
+    "title": "Adding and scheduling workouts in the calendar",
     "kind": "calendar",
     "lines": [
-      "Approval saves the workout dates and times to Supabase.",
-      "After a reload, the same schedule appears in the Gymmi calendar.",
-      "The Wednesday workout starts at 18:30, when the sample busy block ends."
+      "Add a workout from a day\nThe plus button pre-fills the selected date. After saving and reloading, the workout remains on that day.",
+      "Review and approve an AI suggestion\nApproval saves the time to Supabase. After reload, the workout starts at 18:30, when the sample busy block ends."
+    ],
+    "images": [
+      "assets/calendar-quick-add.png",
+      "assets/calendar-demo-after-approval.png"
     ]
   },
   {
