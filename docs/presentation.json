@@ -44,25 +44,24 @@
     "key": "architecture"
   },
   {
-    "title": "The AI scheduling dialog",
+    "title": "AI scheduling with sample busy times",
     "lines": [
-      "01  Open the AI scheduler from the top of the weekly plan.",
-      "02  Enter available days and hours. The labelled calendar demo supplies sample busy times.",
-      "03  Review each proposed date and time range in the dialog.",
-      "04  Approve to save dates and times to Supabase. Reload to see them in the calendar."
+      "01  The demo calendar opens automatically for the demo account.",
+      "02  Busy hours appear on the dashboard and in the AI dialog.",
+      "03  The AI proposes Wednesday 18:30–19:00 and Friday 09:30–10:00.",
+      "04  The preview leaves the journal unchanged until approval."
     ],
     "kind": "steps",
     "key": "ai"
   },
   {
     "key": "calendar",
-    "title": "One journal in the weekly and monthly views",
+    "title": "Approved workouts in the monthly calendar",
     "kind": "calendar",
     "lines": [
-      "Select a day to see, add or complete a workout.",
-      "Reload and find the same completed workout.",
-      "Approved AI dates and times appear in this calendar after saving.",
-      "Optional: open a Google Calendar draft or export an ICS file."
+      "Approval saves the workout dates and times to Supabase.",
+      "After a reload, the same schedule appears in the Gymmi calendar.",
+      "The Wednesday workout starts at 18:30, when the sample busy block ends."
     ]
   },
   {
