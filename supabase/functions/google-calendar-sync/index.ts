@@ -1,5 +1,5 @@
 import { eventBody, hash, matchesGoogleEvent, planSync, workoutSchedule } from './planner.mjs';
-import { busyByDay, googleWeek } from '../_shared/google-availability.mjs';
+import { busyByDay, demoBusyByDay, googleWeek } from '../_shared/google-availability.mjs';
 
 const app = 'https://roditim.github.io/Gymmi-AI-Submission/app/';
 const origin = new URL(app).origin;
@@ -13,6 +13,7 @@ const clientSecret = Deno.env.get('GOOGLE_CALENDAR_CLIENT_SECRET');
 const tokenKey = Deno.env.get('GOOGLE_CALENDAR_TOKEN_KEY');
 const workerKey = Deno.env.get('GOOGLE_CALENDAR_WORKER_KEY');
 const configured = Boolean(clientId && clientSecret && tokenKey && workerKey);
+const demoUser = Deno.env.get('GYMMI_GOOGLE_DEMO_USER_ID');
 const connections = 'google_calendar_connections';
 const queryUser = (id: string) => 'user_id=eq.' + encodeURIComponent(id);
 const iso = (offset = 0) => new Date(Date.now() + offset).toISOString();
@@ -226,7 +227,8 @@ async function syncOne(user: string) {
 
 async function status(user: string) {
   const [link] = await db(connections + '?select=last_sync_at,last_error,paused&' + queryUser(user));
-  if (!link) return { available: configured, connected: false };
+  const demoAvailable = user === demoUser && !link;
+  if (!link) return { available: configured, connected: false, demoAvailable };
   const [journal] = await db('workout_journals?select=revision&' + queryUser(user));
   return { available: configured, connected: true, lastSync: link.last_sync_at,
     problem: link.last_error, paused: link.paused, revision: journal?.revision || 0 };
@@ -287,6 +289,14 @@ Deno.serve(async req => {
     const { id: user } = await auth.json();
     if (!user) return reply({ error: 'auth' }, 401);
     if (body.action === 'status') return reply(await status(user));
+    if (body.action === 'availability' && body.demo === true) {
+      if (user !== demoUser) return reply({ error: 'demo_forbidden' }, 403);
+      const link = await db(connections + '?select=user_id&' + queryUser(user));
+      if (link.length) return reply({ error: 'demo_requires_disconnected_calendar' }, 409);
+      try {
+        return reply({ available: true, source: 'demo', busy: demoBusyByDay(googleWeek(body.weekStart)) });
+      } catch { return reply({ error: 'request' }, 400); }
+    }
     if (!configured && body.action !== 'disconnect') return reply({ error: 'unconfigured' }, 503);
     switch (body.action) {
       case 'availability': return reply(await availability(user, body.weekStart));

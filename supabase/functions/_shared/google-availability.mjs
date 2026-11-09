@@ -49,6 +49,13 @@ export function busyByDay(week, response) {
   }));
 }
 
+export function demoBusyByDay(week) {
+  return Object.fromEntries(week.dates.map((date, index) => [date,
+    index === 2 ? [{start:'18:00',end:'18:30'}]
+      : index === 4 ? [{start:'09:00',end:'09:30'}] : [],
+  ]));
+}
+
 const minutes = value => Number(value.slice(0, 2)) * 60 + Number(value.slice(3));
 export const clockTime = value => String(Math.floor(value / 60)).padStart(2, '0') + ':' + String(value % 60).padStart(2, '0');
 export const toMinutes = minutes;

@@ -7,7 +7,8 @@ test('OAuth state belongs to one account and the worker pushes and pulls through
   const settings = {
     SUPABASE_URL: 'https://supabase.test', SUPABASE_ANON_KEY: 'anon', SUPABASE_SERVICE_ROLE_KEY: 'service',
     GOOGLE_CALENDAR_CLIENT_ID: 'fake-client', GOOGLE_CALENDAR_CLIENT_SECRET: 'fake-secret',
-    GOOGLE_CALENDAR_TOKEN_KEY: Buffer.alloc(32, 4).toString('base64'), GOOGLE_CALENDAR_WORKER_KEY: 'worker-test'
+    GOOGLE_CALENDAR_TOKEN_KEY: Buffer.alloc(32, 4).toString('base64'), GOOGLE_CALENDAR_WORKER_KEY: 'worker-test',
+    GYMMI_GOOGLE_DEMO_USER_ID: 'b'
   };
   let handler, state, link, event;
   let revision = 1;
@@ -92,6 +93,15 @@ test('OAuth state belongs to one account and the worker pushes and pulls through
       body: JSON.stringify(body), headers: { ...(user ? { Authorization: 'Bearer ' + user } : {}),
         ...(worker ? { 'x-gymmi-calendar-worker': worker } : {}) } }));
     assert.equal((await invoke({ action: 'status' })).status, 401);
+    const demoAvailability = {action:'availability',weekStart:'2026-11-16',demo:true};
+    assert.equal((await invoke(demoAvailability,'a')).status,403);
+    assert.equal((await (await invoke({action:'status'},'a')).json()).demoAvailable,false);
+    assert.equal((await (await invoke({action:'status'},'b')).json()).demoAvailable,true);
+    const demo = await (await invoke(demoAvailability,'b')).json();
+    assert.equal(demo.source,'demo');
+    assert.deepEqual(demo.busy['2026-11-18'],[{start:'18:00',end:'18:30'}]);
+    assert.deepEqual(demo.busy['2026-11-20'],[{start:'09:00',end:'09:30'}]);
+    assert.deepEqual(demo.busy['2026-11-19'],[]);
     const authUrl = new URL((await (await invoke({ action: 'start' }, 'a')).json()).url);
     assert.deepEqual(authUrl.searchParams.get('scope').split(' '), [scope,freeBusyScope]);
     assert.equal(authUrl.searchParams.get('access_type'), 'offline');

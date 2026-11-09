@@ -1,5 +1,5 @@
 "use strict";
-// AI proposes dates only. Existing save() remains the single persistence path.
+// The planner returns a preview. Existing save() remains the only persistence path.
 let aiDraft = null;
 function clearAIDraft() {
   aiDraft = null;
@@ -37,15 +37,19 @@ function setupAI() {
     if (!rows.length || rows.length > 7) { notice('הוסף לתוכנית בין אימון אחד ל־7 אימונים שטרם סומנו בשבוע הנבחר.',true); return; }
     const preferences = byId('ai-preferences').value.trim();
     const base = JSON.stringify(state), userId = activeUser.id, generation = accountGeneration;
+    const calendarDemo = googleDemoEnabled;
     setBusy(true); notice('עוזר ה־AI מכין הצעה. עדיין לא מתבצעת שמירה…');
     try {
       const proposal = await cloud.plan({weekStart:week,preferences,workoutIds:rows.map(w=>w.id),
-        useGoogleAvailability:googleConnection === 'connected'});
+        useGoogleAvailability:googleConnection === 'connected',calendarDemo});
       if (generation !== accountGeneration || week !== byId('week-start').value || base !== JSON.stringify(state)) throw Error('היומן או החשבון השתנו בזמן הבקשה. בקש הצעה חדשה.');
+      if ((proposal?.availability === 'demo') !== calendarDemo || calendarDemo !== googleDemoEnabled) throw Error('מצב היומן השתנה. בקש הצעה חדשה.');
       checkAIResult(proposal,rows,dates);
       aiDraft = {proposal,week,base,userId};
       byId('ai-summary').textContent = proposal.summary;
-      byId('ai-proposal-calendar').textContent = proposal.availability === 'used'
+      byId('ai-proposal-calendar').textContent = proposal.availability === 'demo'
+        ? 'ההצעה נבדקה מול שעות תפוסות לדוגמה. לאחר אישור היא תישמר ביומן Gymmi בלבד.'
+        : proposal.availability === 'used'
         ? 'השעות נבדקו מול היומן הראשי ב־Google. לפני שמירה נבדוק שוב שהן פנויות.'
         : 'ההצעה מבוססת על הזמינות שהקלדת. שעות ההצעה לפי שעון ישראל.';
       for (const item of proposal.assignments) {
@@ -70,20 +74,22 @@ function setupAI() {
     if (!confirm('לשמור את התאריכים והשעות שהוצעו? רק האימונים בהצעה ישתנו.')) return;
     const draft = aiDraft;
     const assignments = draft.proposal.assignments;
-    if (draft.proposal.availability === 'used') {
+    const demo = draft.proposal.availability === 'demo';
+    if (demo || draft.proposal.availability === 'used') {
       const generation = accountGeneration;
       setBusy(true);
       try {
-        const calendar = await cloud.googleCalendar({action:'availability',weekStart:draft.week});
+        const calendar = await cloud.googleCalendar({action:'availability',weekStart:draft.week,demo});
         if (generation !== accountGeneration || draft !== aiDraft) return;
-        if (!calendar.available || assignments.some(item => {
+        if (!calendar.available || (calendar.source === 'demo') !== demo || assignments.some(item => {
           const row = state.workouts.find(workout => workout.id === item.workoutId);
           return !row || !GymmiCalendar.fitsBusy({...row,date:item.date,startTime:item.startTime},calendar.busy?.[item.date]);
         })) throw Error('הזמינות השתנתה או לא נטענה.');
       } catch {
         if (generation === accountGeneration) {
           clearAIDraft();
-          notice('לא ניתן לאשר את השעות מול Google Calendar. בקש הצעה חדשה. היומן לא השתנה.', true);
+          notice(demo ? 'לא ניתן לאמת את שעות ההדגמה. בקש הצעה חדשה. היומן לא השתנה.'
+            : 'לא ניתן לאשר את השעות מול Google Calendar. בקש הצעה חדשה. היומן לא השתנה.', true);
         }
         return;
       } finally {
@@ -95,7 +101,7 @@ function setupAI() {
     })};
     if (await save(next)) {
       clearAIDraft(); cancelEdit(); refreshAI(); byId('ai-dialog').close(); notice('השיבוץ שאישרת נשמר בחשבון.');
-      if (googleConnection === 'connected') updateGoogleSync('sync');
+      if (!demo && googleConnection === 'connected') updateGoogleSync('sync');
     }
   });
 }

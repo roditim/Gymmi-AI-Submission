@@ -4,6 +4,8 @@ Gymmi stores an optional Google link per signed-in Gymmi account. Google creates
 
 The published connect button reports availability from the backend. The production backend has no Google OAuth application credentials yet. Draft links and ICS export remain available.
 
+An operator can enable a labelled simulation for one account via the server-side `GYMMI_GOOGLE_DEMO_USER_ID` setting. It supplies sample busy hours without making a Google API request. An approved schedule is saved to the Gymmi journal.
+
 ## Activate the application
 
 1. In the Gymmi Google Cloud project, enable **Google Calendar API**. Configure the OAuth consent screen and create an OAuth client of type **Web application**.

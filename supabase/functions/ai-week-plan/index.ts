@@ -28,6 +28,10 @@ Deno.serve(async req => {
     if (raw.length > 4000) return reply(400,{error:'הבקשה ארוכה מדי.'});
     let request, body;
     try { body = JSON.parse(raw); request = requestData(body); } catch { return reply(400,{error:'בדוק את השבוע, הזמינות ורשימת האימונים (עד 7).'}); }
+    const calendarDemo = body.calendarDemo === true;
+    if (calendarDemo && user.id !== Deno.env.get('GYMMI_GOOGLE_DEMO_USER_ID')) {
+      return reply(403,{error:'הדמיית Google Calendar זמינה בחשבון ההדגמה בלבד.'});
+    }
     const journal = await fetch(url+'/rest/v1/workout_journals?select=workouts&user_id=eq.'+encodeURIComponent(user.id),
       {headers:{apikey:anon,Authorization:authorization},signal:AbortSignal.timeout(5000)});
     if (!journal.ok) return reply(503,{error:'לא ניתן לטעון את היומן. נסה שוב מאוחר יותר.'});
@@ -37,20 +41,21 @@ Deno.serve(async req => {
     let input;
     try { input = candidates(request,rows[0]?.workouts,today); } catch { return reply(400,{error:'יש לבחור עד 7 אימונים שטרם סומנו, בשבוע הנבחר עם ימים עתידיים או היום.'}); }
     let availability = 'manual';
-    if (body.useGoogleAvailability === true) {
+    if (calendarDemo || body.useGoogleAvailability === true) {
       availability = 'unavailable';
       try {
         const response = await fetch(url+'/functions/v1/google-calendar-sync', {
           method:'POST', headers:{apikey:anon,Authorization:authorization,'Content-Type':'application/json'},
-          body:JSON.stringify({action:'availability',weekStart:body.weekStart}), signal:AbortSignal.timeout(8000),
+          body:JSON.stringify({action:'availability',weekStart:body.weekStart,demo:calendarDemo}), signal:AbortSignal.timeout(8000),
         });
         const result = response.ok && await response.json();
-        if (result?.available && input.dates.every(date => Array.isArray(result.busy?.[date]))) {
+        if (result?.available && (result.source === 'demo') === calendarDemo && input.dates.every(date => Array.isArray(result.busy?.[date]))) {
           input = {...input,busy:result.busy};
           availability = 'used';
         }
       } catch { /* A connected calendar must be checked before proposing a time. */ }
-      if (availability !== 'used') return reply(503,{error:'לא ניתן לבדוק את שעות Google Calendar כרגע. נסו שוב או בדקו את החיבור ביומן.'});
+      if (availability !== 'used') return reply(503,{error:calendarDemo
+        ? 'לא ניתן לטעון את שעות ההדגמה. נסו שוב.' : 'לא ניתן לבדוק את שעות Google Calendar כרגע. נסו שוב או בדקו את החיבור ביומן.'});
     }
     const key = Deno.env.get('OPENAI_API_KEY');
     if (!key) return reply(503,{error:'עוזר ה־AI אינו מוגדר כרגע.'});
@@ -68,7 +73,7 @@ Deno.serve(async req => {
     try {
       const text = (data.output || []).flatMap((o:any)=>o.content || []).filter((c:any)=>c.type==='output_text').map((c:any)=>c.text).join('');
       const proposal = modelProposal(JSON.parse(text),input);
-      return reply(200,{...proposal,model:'gpt-5.4-mini',availability});
+      return reply(200,{...proposal,model:'gpt-5.4-mini',availability:calendarDemo ? 'demo' : availability});
     } catch { return reply(502,{error:'הצעת ה־AI לא עברה בדיקה. היומן לא השתנה.'}); }
   } catch { return reply(503,{error:'עוזר ה־AI לא הצליח להשלים את הבקשה. היומן לא השתנה.'}); }
 });
