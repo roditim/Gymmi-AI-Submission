@@ -100,7 +100,7 @@ function resetLeague() {
 }
 
 async function loadLeague() {
-  if (!byId("league-panel").open || accountLoading) return;
+  if (byId("view-league").hidden || accountLoading) return;
   const request = ++leagueRequest;
   const user = activeUser;
   byId("league-guest").hidden = !!user;
@@ -164,7 +164,6 @@ async function saveLeagueMembership(nickname) {
 
 function setupLeague() {
   byId('exp-celebration-close').addEventListener('click', closeExperienceToast);
-  byId("league-panel").addEventListener("toggle", loadLeague);
   byId("league-calendar").addEventListener("click", () => {
     showView("calendar");
     focusCurrentView();

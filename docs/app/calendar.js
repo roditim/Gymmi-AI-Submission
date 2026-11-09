@@ -11,6 +11,7 @@ function showView(name, refreshGoogle = true) {
   renderCalendar();
   if (name === 'plan') updateAvailabilityViews();
   if (name === 'calendar' && refreshGoogle) updateGoogleSync();
+  if (name === 'league') loadLeague();
 }
 function renderCalendar() {
   const list=byId('calendar-day-list'); list.replaceChildren();

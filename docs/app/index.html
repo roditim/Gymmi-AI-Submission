@@ -11,7 +11,7 @@
 </head>
 <body>
 <a class="skip-link" href="#planner-start">דלג לתוכנית האימונים</a>
-<div class="app-shell"><aside class="app-rail" aria-label="ניווט ראשי"><a class="rail-brand" href="./" aria-label="Gymmi — הבית"><span class="brand-mark">G</span><span>GYMMI<span class="rail-sub">MAKE YOUR NEXT MOVE</span></span></a><p class="rail-caption">המרחב שלך להתקדם</p><nav class="app-nav" aria-label="מסכי האפליקציה"><button type="button" data-view="plan" aria-pressed="true">התוכנית השבועית</button><button type="button" data-view="calendar" aria-pressed="false">יומן חודשי</button><button type="button" data-view="history" aria-pressed="false">היסטוריה</button><button type="button" data-view="backup" aria-pressed="false">גיבוי ונתונים</button></nav><div class="rail-note"><span class="rail-note-mark">✦</span><strong>אימון אחד בכל פעם.</strong><p>תוכנית קטנה. מקום קבוע בשבוע.</p></div><a class="rail-deck" href="../">מצגת הפרויקט ↗</a></aside><div class="workspace"><header class="wrap"><a class="brand mobile-brand" href="./" aria-label="Gymmi — הבית"><span class="brand-mark" aria-hidden="true">G</span>GYMMI<span class="brand-sub">TRAINING JOURNAL</span></a><div class="workspace-title"><span id="today-label"></span><strong>המרחב האישי שלך</strong></div><div class="header-actions"><a class="coach-nav-link" href="coaches/">מאמנים</a><button id="help-open" type="button" class="secondary">איך מתחילים?</button><button id="account-open" type="button" class="secondary">החשבון שלי</button></div></header>
+<div class="app-shell"><aside class="app-rail" aria-label="ניווט ראשי"><a class="rail-brand" href="./" aria-label="Gymmi — הבית"><span class="brand-mark">G</span><span>GYMMI<span class="rail-sub">MAKE YOUR NEXT MOVE</span></span></a><p class="rail-caption">המרחב שלך להתקדם</p><nav class="app-nav" aria-label="מסכי האפליקציה"><button type="button" data-view="plan" aria-pressed="true">התוכנית השבועית</button><button type="button" data-view="calendar" aria-pressed="false">יומן חודשי</button><button type="button" data-view="league" aria-pressed="false">טבלת דירוג</button><button type="button" data-view="history" aria-pressed="false">היסטוריה</button><button type="button" data-view="backup" aria-pressed="false">גיבוי ונתונים</button></nav><div class="rail-note"><span class="rail-note-mark">✦</span><strong>אימון אחד בכל פעם.</strong><p>תוכנית קטנה. מקום קבוע בשבוע.</p></div><a class="rail-deck" href="../">מצגת הפרויקט ↗</a></aside><div class="workspace"><header class="wrap"><a class="brand mobile-brand" href="./" aria-label="Gymmi — הבית"><span class="brand-mark" aria-hidden="true">G</span>GYMMI<span class="brand-sub">TRAINING JOURNAL</span></a><div class="workspace-title"><span id="today-label"></span><strong>המרחב האישי שלך</strong></div><div class="header-actions"><a class="coach-nav-link" href="coaches/">מאמנים</a><button id="help-open" type="button" class="secondary">איך מתחילים?</button><button id="account-open" type="button" class="secondary">החשבון שלי</button></div></header>
 <main class="wrap">
 <p id="message" role="status" aria-live="polite" hidden></p>
 <aside id="exp-celebration" class="exp-celebration" hidden>
@@ -77,8 +77,28 @@
 <p class="section-intro">האימונים שהגדרת, בקצב ובימים שלך.</p>
 <p id="next-action" class="next-action" aria-live="polite"></p><div id="workout-list"></div>
 
-<details id="league-panel" class="league-panel">
-<summary><strong>רמות ודירוג שבועי</strong><span id="exp-level">רמה 1</span><bdi id="exp-total">0 EXP</bdi></summary>
+</section>
+<section id="view-league" hidden aria-labelledby="league-heading">
+<p class="eyebrow">WEEKLY LEADERBOARD</p><h2 id="league-heading">טבלת דירוג</h2>
+<section class="league-panel league-demo" aria-labelledby="league-demo-heading">
+<div class="league-heading"><h3 id="league-demo-heading">חברים לדוגמה</h3><span class="league-demo-badge">דמו</span></div>
+<div class="league-content">
+<p class="muted">כינויים, רמות וניקוד לדוגמה.</p>
+<table id="league-demo-table" aria-labelledby="league-demo-heading">
+<thead><tr><th scope="col">מקום</th><th scope="col">כינוי</th><th scope="col">רמה</th><th scope="col">EXP השבוע</th></tr></thead>
+<tbody>
+<tr><td>1</td><th scope="row">נובה ספרינט</th><td>6</td><td>700</td></tr>
+<tr><td>2</td><th scope="row">טורבו מאיה</th><td>3</td><td>500</td></tr>
+<tr><td>3</td><th scope="row">רוקי רון</th><td>4</td><td>300</td></tr>
+<tr><td>4</td><th scope="row">זואי פאוור</th><td>2</td><td>200</td></tr>
+<tr><td>5</td><th scope="row">ליאו ליפט</th><td>1</td><td>100</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="league-panel" class="league-panel" aria-labelledby="league-live-heading">
+<div class="league-heading"><h3 id="league-live-heading">דירוג אמיתי</h3><span id="exp-level">רמה 1</span><bdi id="exp-total">0 EXP</bdi></div>
 <div class="league-content">
 <p>כל אימון שמסומן ״הושלם״ שווה 100 EXP. כל 500 EXP מעלים רמה.</p>
 <progress id="exp-progress" max="500" value="0" aria-label="התקדמות לרמה הבאה"></progress>
@@ -103,9 +123,7 @@
 <tbody id="league-body"></tbody>
 </table>
 </div>
-</div></details>
-
-
+</div></section>
 </section>
 <section id="view-calendar" hidden aria-label="יומן אימונים חודשי">
 <p class="eyebrow">YOUR TRAINING CALENDAR</p><h2 id="calendar-heading">יומן חודשי</h2>

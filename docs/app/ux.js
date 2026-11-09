@@ -172,8 +172,8 @@ function setupUX() {
     if(card){card.querySelector('.routine-details').open=true;card.focus();card.scrollIntoView({block:'center'});}
   });
   byId('ai-sign-in').addEventListener('click',openAccount);
-  const labels={plan:'התוכנית',calendar:'יומן',history:'היסטוריה',backup:'נתונים'};
-  const icons={plan:'M4 5h16v15H4z M8 2v6 M16 2v6 M4 10h16',calendar:'M4 5h16v15H4z M8 2v6 M16 2v6 M8 13h2 M14 13h2 M8 17h2',history:'M4 4v6h6 M4 10a8 8 0 1 1 0 5 M12 7v5l3 2',backup:'M5 3h12l3 3v15H4V3z M8 3v6h8V3 M8 21v-7h8v7'};
+  const labels={plan:'התוכנית',calendar:'יומן',league:'טבלת דירוג',history:'היסטוריה',backup:'נתונים'};
+  const icons={plan:'M4 5h16v15H4z M8 2v6 M16 2v6 M4 10h16',calendar:'M4 5h16v15H4z M8 2v6 M16 2v6 M8 13h2 M14 13h2 M8 17h2',league:'M3 21V12h6v9 M9 21V4h6v17 M15 21v-7h6v7 M2 21h20',history:'M4 4v6h6 M4 10a8 8 0 1 1 0 5 M12 7v5l3 2',backup:'M5 3h12l3 3v15H4V3z M8 3v6h8V3 M8 21v-7h8v7'};
   for(const tab of document.querySelectorAll('[data-view]')){
     tab.setAttribute('aria-controls','view-'+tab.dataset.view);tab.setAttribute('aria-label',tab.textContent);
     tab.textContent=labels[tab.dataset.view];
