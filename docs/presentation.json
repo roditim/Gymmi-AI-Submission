@@ -22,15 +22,16 @@
     "caption": "Public app on first visit. Visitors can reopen the guide from the header."
   },
   {
-    "title": "Progress and the optional league",
+    "title": "EXP, levels and the weekly leaderboard",
     "lines": [
-      "100 EXP per completed workout\nA celebration shows the points moving into the EXP meter.",
-      "500 EXP per level\nYour level uses all completed workouts in your journal.",
-      "Optional weekly league\nJoin with a nickname from a signed-in account.",
-      "Weekly standings\nThe top 20 by EXP, Monday to Sunday in Israel."
+      "Personal progress\nEach completed workout earns 100 EXP. Every 500 lifetime EXP adds one level.",
+      "Demo friends\nFive fictional profiles show levels and weekly EXP. Anyone can view the demo.",
+      "Live standings\nSigned-in users can opt in with a nickname. The top 20 are ranked by EXP earned Monday to Sunday, Israel time."
     ],
     "kind": "features",
-    "key": "features"
+    "key": "features",
+    "image": "assets/gymmi-leaderboard-demo.png",
+    "caption": "Public app in guest mode. The demo table uses fictional data."
   },
   {
     "title": "The browser, the cloud journal and the AI key",
