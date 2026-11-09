@@ -7,6 +7,10 @@ let googleSyncCallback = null;
 let googleConnection = 'guest';
 let googleAvailabilityGeneration = 0;
 const googleAvailability = new Map();
+const googleDemoKey = 'gymmi-google-calendar-demo';
+const googleDemoButtons = ['google-demo-dashboard', 'google-demo-calendar', 'google-demo-ai'];
+let googleDemoAvailable = false;
+let googleDemoEnabled = false;
 
 const googleSyncMessages = {
   permission: "ההרשאה ל־Google פגה או שהיומן הוסר. נתק את החיבור וחבר מחדש.",
@@ -24,6 +28,8 @@ function resetGoogleSync() {
   googleSyncRequest += 1;
   googleSyncBusy = false;
   googleSyncConnected = false;
+  googleDemoAvailable = false;
+  googleDemoEnabled = false;
   googleConnection = activeUser ? 'checking' : 'guest';
   clearGoogleAvailability();
   byId("google-sync-connect").hidden = false;
@@ -37,7 +43,15 @@ function showGoogleSync(result) {
   googleSyncConnected = result.connected;
   googleConnection = !result.available ? 'unconfigured'
     : result.paused ? 'paused' : result.connected ? 'connected' : 'disconnected';
-  if (googleConnection !== 'connected') clearGoogleAvailability();
+  const previousDemo = googleDemoEnabled;
+  googleDemoAvailable = result.demoAvailable === true && !result.connected;
+  googleDemoEnabled = false;
+  if (googleDemoAvailable) {
+    try { googleDemoEnabled = sessionStorage.getItem(googleDemoKey) === 'on'; }
+    catch { googleDemoEnabled = previousDemo; }
+  }
+  if (previousDemo !== googleDemoEnabled) clearAIDraft();
+  if (previousDemo !== googleDemoEnabled || (!googleDemoEnabled && googleConnection !== 'connected')) clearGoogleAvailability();
   byId("google-sync-connect").hidden = result.connected;
   byId("google-sync-connect").disabled = !result.available || googleSyncBusy;
   byId("google-sync-now").hidden = !result.connected;
@@ -135,6 +149,11 @@ function clearGoogleAvailability() {
 }
 
 function availabilityMessage(week) {
+  const data = googleAvailability.get(week);
+  if (googleDemoEnabled) {
+    return 'מצב דמו · שעות לדוגמה · Google לא מחובר'
+      + (data?.reason ? ' · טעינת שעות ההדגמה נכשלה.' : data?.busy ? '' : ' · טוען שעות לדוגמה…');
+  }
   const status = {
     guest: 'התחברו ל־Gymmi כדי לחבר את Google Calendar.',
     checking: 'בודק את מצב החיבור ל־Google Calendar…',
@@ -144,7 +163,6 @@ function availabilityMessage(week) {
     error: 'מצב החיבור ל־Google Calendar אינו זמין כרגע.',
   };
   if (googleConnection !== 'connected') return status[googleConnection];
-  const data = googleAvailability.get(week);
   if (data?.busy) return 'מחובר ל־Google Calendar · שעות תפוסות מהיומן הראשי (שעון ישראל)';
   if (data?.reason === 'freebusy_permission') return 'מחובר ל־Google · כדי לראות שעות תפוסות, חברו מחדש ואשרו גישה לזמינות.';
   if (data?.reason) return 'מחובר ל־Google · השעות התפוסות לא נטענו כרגע.';
@@ -174,6 +192,13 @@ function renderGoogleAvailability() {
   const weekly = googleAvailability.get(planWeek)?.busy;
   const daily = googleAvailability.get(dayWeek)?.busy;
   byId('google-dashboard').hidden = byId('view-plan').hidden;
+  for (const id of googleDemoButtons) {
+    const button = byId(id);
+    button.hidden = !googleDemoAvailable;
+    button.disabled = busy || accountLoading;
+    button.setAttribute('aria-pressed', String(googleDemoEnabled));
+    button.textContent = googleDemoEnabled ? 'כבה הדמיית Google Calendar' : 'הפעל הדמיית Google Calendar';
+  }
   byId('google-dashboard-status').textContent = availabilityMessage(planWeek);
   byId('ai-google-status').textContent = availabilityMessage(planWeek);
   byId('google-calendar-status').textContent = availabilityMessage(dayWeek);
@@ -182,20 +207,22 @@ function renderGoogleAvailability() {
   for (const day of document.querySelectorAll('#calendar-days [data-date]')) {
     const hasBusy = Boolean(daily?.[day.dataset.date]?.length);
     day.toggleAttribute('data-google-busy', hasBusy);
-    if (hasBusy) day.setAttribute('aria-description', 'יש שעות תפוסות ב־Google Calendar');
+    if (hasBusy) day.setAttribute('aria-description', googleDemoEnabled ? 'יש שעות תפוסות לדוגמה' : 'יש שעות תפוסות ב־Google Calendar');
     else day.removeAttribute('aria-description');
   }
 }
 
 async function loadGoogleAvailability(week) {
-  if (!activeUser || googleConnection !== 'connected' || !week) return;
+  if (!activeUser || (!googleDemoEnabled && googleConnection !== 'connected') || !week) return;
   const current = googleAvailability.get(week);
   if (current?.pending || current?.until > Date.now()) return;
   const generation = googleAvailabilityGeneration;
+  const demo = googleDemoEnabled;
   googleAvailability.set(week, {pending: true});
   let result;
   try {
-    result = await cloud.googleCalendar({action: 'availability', weekStart: week});
+    result = await cloud.googleCalendar({action: 'availability', weekStart: week, demo});
+    if (result.available && (result.source === 'demo') !== demo) throw Error('Wrong calendar source');
   } catch {
     result = {reason: 'temporary'};
   }
@@ -213,6 +240,20 @@ function updateAvailabilityViews() {
   renderGoogleAvailability();
   if (!byId('view-plan').hidden || byId('ai-dialog').open) loadGoogleAvailability(byId('week-start').value);
   if (!byId('view-calendar').hidden && calendarDay) loadGoogleAvailability(monday(calendarDay));
+}
+
+function toggleGoogleDemo() {
+  if (!googleDemoAvailable || !activeUser || busy || accountLoading) return;
+  googleDemoEnabled = !googleDemoEnabled;
+  try {
+    if (googleDemoEnabled) sessionStorage.setItem(googleDemoKey, 'on');
+    else sessionStorage.removeItem(googleDemoKey);
+  } catch { /* Keep the setting for the current page if storage is unavailable. */ }
+  clearAIDraft();
+  byId('ai-feedback').hidden = true;
+  clearGoogleAvailability();
+  updateAvailabilityViews();
+  refreshAI();
 }
 
 function setupGoogleSync() {
@@ -238,6 +279,7 @@ function setupGoogleSync() {
     showView('calendar');
     focusCurrentView();
   });
+  for (const id of googleDemoButtons) byId(id).addEventListener('click', toggleGoogleDemo);
   setInterval(() => {
     if (!document.hidden && googleSyncConnected) updateGoogleSync();
   }, 60000);
