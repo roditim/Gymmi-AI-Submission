@@ -1509,9 +1509,9 @@ footer a {
     backdrop-filter:blur(12px);
     border-top:1px solid #333940;
     display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    padding:8px 14px calc(8px + env(safe-area-inset-bottom));
-    gap:8px;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+    gap:5px;
     z-index:30
   }
   .app-nav button {
@@ -2157,15 +2157,34 @@ footer a {
   background: #1b1e23;
 }
 
-.league-panel > summary {
+.league-heading {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.6rem;
   padding: 1rem;
-  cursor: pointer;
   color: #dbfb86;
 }
 
-.league-panel > summary span,
-.league-panel > summary bdi {
-  margin-inline-start: .65rem;
+.league-heading h3 {
+  margin:0;
+  margin-inline-end:auto;
+}
+
+.league-demo-badge {
+  padding:.15rem .65rem;
+  border:1px solid #607844;
+  border-radius:999px;
+  background:#293820;
+  font-size:.8rem;
+}
+
+.league-demo tbody tr:first-child {
+  background:#2c3621;
+}
+
+.league-demo td {
+  font-variant-numeric:tabular-nums;
 }
 
 .league-content {

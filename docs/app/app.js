@@ -301,6 +301,7 @@ setupUX();
 setupLeague();
 setupGoogleSync();
 if (location.hash === '#account') byId('account-open').click();
+if (location.hash === '#league') { showView('league'); focusCurrentView(); }
 (async () => {
   try {
     // The auth SDK also needs storage. Avoid starting it when access is denied.

@@ -49,7 +49,7 @@ async function signIn(page, user) {
   await page.locator('#sign-in').click();
   await page.waitForFunction(() => !document.querySelector('#account-dialog').open &&
     document.querySelector('#account-status').textContent.includes('שמירה בענן'));
-  await page.locator('#league-panel > summary').click();
+  await page.getByRole('button', { name: 'טבלת דירוג' }).click();
 }
 
 async function join(page, nickname) {
@@ -85,6 +85,21 @@ async function xp(page, amount) {
     browser = await chromium.launch({ headless: true,
       ...(process.env.GYMMI_BROWSER_PATH ? { executablePath: process.env.GYMMI_BROWSER_PATH } : {}) });
     const options = { viewport: { width: 390, height: 844 }, timezoneId: 'Asia/Jerusalem' };
+    const guest = await browser.newPage({ ...options, viewport: { width: 320, height: 740 } });
+    await guest.goto(url); await ui.dismissOnboarding(guest);
+    await guest.getByRole('button', { name: 'טבלת דירוג' }).click();
+    const demo = guest.getByRole('table', { name: 'חברים לדוגמה' });
+    assert.equal(await demo.locator('tbody tr').count(), 5);
+    const top = demo.locator('tbody tr').first();
+    assert.deepEqual(await top.locator('th, td').allTextContents(), ['1', 'נובה ספרינט', '6', '700']);
+    assert.ok(await guest.getByText('דמו', { exact: true }).isVisible());
+    assert.ok(await guest.locator('#league-sign-in').isVisible());
+    assert.equal(await guest.locator('#league-table').isVisible(), false);
+    assert.equal(await guest.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+    await guest.goto(url + '#league'); await guest.reload();
+    assert.ok(await demo.isVisible());
+    await guest.close();
+    checks.push('Leaderboard navigation, labelled demo levels and weekly EXP, narrow mobile layout and direct link');
     const pa = await browser.newPage(options), pb = await browser.newPage(options);
     const errors = [];
     for (const p of [pa, pb]) p.on('pageerror', error => errors.push(error.message));
@@ -99,7 +114,8 @@ async function xp(page, amount) {
     await xp(pa, 500);
     assert.equal(await pa.locator('#exp-level').innerText(), 'רמה 2');
     checks.push('Existing journal EXP, calendar completion and level 2');
-    assert.ok(!(await as(b, rpc, 'POST', {})).data.some(row => row.nickname === nickA));
+    assert.ok(!(await as(b, rpc, 'POST', {})).data.some(row => row.nickname === nickA || row.nickname === 'נובה ספרינט'));
+    await pa.getByRole('button', { name: 'טבלת דירוג' }).click();
     await join(pa, nickA);
     await join(pb, nickB);
     const result = await as(b, rpc, 'POST', {});
@@ -131,11 +147,13 @@ async function xp(page, amount) {
     assert.ok((await as(b, members + '?user_id=eq.' + b.id, 'PATCH', { nickname: 'qa@example.com' })).status >= 400);
     checks.push('Anonymous access blocked, membership RLS and nickname validation');
 
+    await pa.locator('[data-view="plan"]').click();
     await ui.menu(card);
     await card.getByRole('button', { name: 'בטל סימון' }).click();
     await xp(pa, 400);
     assert.equal(await pa.locator('#exp-level').innerText(), 'רמה 1');
     assert.equal((await as(b, rpc, 'POST', {})).data.find(row => row.nickname === nickA).weekly_exp, 0);
+    await pa.getByRole('button', { name: 'טבלת דירוג' }).click();
     await pa.locator('#league-leave').click();
     await pa.locator('#league-leave').waitFor({ state: 'hidden' });
     await pb.locator('#league-refresh').click();
