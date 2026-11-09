@@ -49,7 +49,21 @@ Auth identifies the user.
 Postgres stores the journal.
 RLS checks ownership.</p><p>OpenAI
 One function suggests workout dates. A second ranks eligible coaches from the directory.</p></div><p class="closing">Both Supabase Edge Functions call OpenAI. The API key stays in Supabase Secrets.</p><footer><span>GYMMI AI</span><span>4 / 10</span></footer></section>
-<section id="slide-5" class="ai" aria-label="Slide 5"><h1>AI scheduling with sample busy times</h1><figure class="calendar-demo-evidence"><img src="assets/calendar-demo-busy.png" alt="Gymmi dashboard showing an active demo calendar and two sample busy blocks"><figcaption class="caption">Sample busy hours · Wednesday 18:00–18:30 and Friday 09:00–09:30.</figcaption></figure><div class="items demo-steps"><p>01  The demo calendar opens automatically for the demo account.</p><p>02  Busy hours appear on the dashboard and in the AI dialog.</p><p>03  The AI proposes Wednesday 18:30–19:00 and Friday 09:30–10:00.</p><p>04  The preview leaves the journal unchanged until approval.</p></div><footer><span>GYMMI AI</span><span>5 / 10</span></footer></section>
+<section id="slide-5" class="ai" aria-label="Slide 5">
+  <h1>AI scheduling with sample busy times</h1>
+  <div class="calendar-layout">
+    <div class="items">
+      <p>The demo calendar opens automatically for the demo account.</p>
+      <p>The AI dialog shows sample busy times before a scheduling request.</p>
+      <p>In a previous rehearsal, the AI suggested Wednesday 18:30–19:00 and Friday 09:30–10:00. Gymmi saves the proposed times after user approval.</p>
+    </div>
+    <figure class="calendar-saved-evidence">
+      <img src="assets/ai-calendar-demo-popup.png" alt="Gymmi AI dialog with the Hebrew Demo Active badge and sample busy times on Wednesday 18:00–18:30 and Friday 09:00–09:30">
+      <figcaption class="caption">AI dialog before a scheduling request. Sample busy times are Wednesday 18:00–18:30 and Friday 09:00–09:30.</figcaption>
+    </figure>
+  </div>
+  <footer><span>GYMMI AI</span><span>5 / 10</span></footer>
+</section>
 <section id="slide-6" class="calendar" aria-label="Slide 6">
   <h1>Adding and scheduling workouts in the calendar</h1>
   <div class="calendar-layout calendar-workflow">

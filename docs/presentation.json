@@ -47,13 +47,14 @@
   {
     "title": "AI scheduling with sample busy times",
     "lines": [
-      "01  The demo calendar opens automatically for the demo account.",
-      "02  Busy hours appear on the dashboard and in the AI dialog.",
-      "03  The AI proposes Wednesday 18:30–19:00 and Friday 09:30–10:00.",
-      "04  The preview leaves the journal unchanged until approval."
+      "The demo calendar opens automatically for the demo account.",
+      "The AI dialog shows sample busy times before a scheduling request.",
+      "In a previous rehearsal, the AI suggested Wednesday 18:30–19:00 and Friday 09:30–10:00. Gymmi saves the proposed times after user approval."
     ],
     "kind": "steps",
-    "key": "ai"
+    "key": "ai",
+    "image": "assets/ai-calendar-demo-popup.png",
+    "caption": "AI dialog before a scheduling request. Sample busy times are Wednesday 18:00–18:30 and Friday 09:00–09:30."
   },
   {
     "key": "calendar",
